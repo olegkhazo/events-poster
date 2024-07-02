@@ -1,4 +1,13 @@
-// https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  devtools: { enabled: true }
+  runtimeConfig: {
+    public: {},
+  },
+  css: [
+    "@/assets/styles/main.scss",
+  ],
+  modules: [
+    "@pinia/nuxt", 
+    "@nuxtjs/style-resources", 
+    "@nuxt/image",
+  ],
 })
