@@ -10,9 +10,6 @@
 @import "@/assets/styles/_variables.scss";
 
 main {
-  width: 68%;
-  background-color: $gray-300;
-
   .mains-header {
     background-color: $gray-800;
     padding-left: 15px;
