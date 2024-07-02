@@ -1,0 +1,56 @@
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+    line-height: 1.4;
+    
+    
+    body {
+        height: 100%;
+        margin: 0 auto;
+
+        .content-wrapper {
+            width: 1010px;
+            margin: 0 auto;
+            min-height: 80vh;
+            display: flex;
+            justify-content: space-between;
+        
+            @media (max-width: 1080px) {
+                width: 90%;
+                margin: 0 auto;
+            }
+        } 
+        
+        a {
+            color: $gray-1000;
+            text-decoration: none;
+        }
+        
+        ul {
+            margin-block-start: 0;
+            margin-block-end: 0;
+            padding-inline-start: 0;
+            
+            li {
+                list-style: none;
+            }
+        }
+
+        select {
+            cursor: pointer;
+        }
+
+        .input-error-notification {
+            color: $red; 
+        }
+    }
+}
+
+
