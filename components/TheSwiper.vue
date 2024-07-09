@@ -57,6 +57,10 @@ onMounted(() => {
   border: 1px solid $gray-100;
   padding: 20px 0;
 
+  @media (max-width: 767px) {
+    padding: 0;
+  }
+
   .slider-container {
     display: flex;
     transition: transform 0.5s ease;
@@ -75,10 +79,35 @@ onMounted(() => {
       background-size: cover;
       background-position: center;
 
+      @media (max-width: 767px) {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        text-align: center;
+        background-color: rgba(0, 0, 0, 0.5);
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.6);
+          z-index: 0;
+        }
+      }
+
       .slide-content {
         width: 50%;
         box-sizing: border-box;
         z-index: 1;
+
+        @media (max-width: 767px) {
+          width: 70%;
+          z-index: 1;
+        }
       }
 
       .slide-image {
@@ -86,6 +115,10 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: center;
+
+        @media (max-width: 767px) {
+          display: none;
+        }
       }
 
       .slide-image img {
@@ -127,40 +160,6 @@ onMounted(() => {
 
   .nav-button.next {
     right: 10px;
-  }
-}
-
-@media (max-width: 767px) {
-  .slider {
-    padding: 0;
-
-    .slide {
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      text-align: center;
-      background-color: rgba(0, 0, 0, 0.5);
-
-      &::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        z-index: 0;
-      }
-
-      .slide-content {
-        width: 80%;
-        z-index: 1;
-      }
-      .slide-image {
-        display: none;
-      }
-    }
   }
 }
 </style>
