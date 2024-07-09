@@ -3,6 +3,7 @@
 <template>
   <main>
     <TheSwiper />
+    <TheFilter />
   </main>
 </template>
 
