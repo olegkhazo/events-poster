@@ -2,6 +2,11 @@
 import { slidesData } from "~/utils/slides-data";
 
 const currentIndex = ref(0);
+const isMobile = ref(false);
+
+const checkIsMobile = () => {
+  isMobile.value = window.innerWidth < 768;
+};
 
 const prevSlide = () => {
   currentIndex.value = (currentIndex.value - 1 + slidesData.length) % slidesData.length;
@@ -10,16 +15,28 @@ const prevSlide = () => {
 const nextSlide = () => {
   currentIndex.value = (currentIndex.value + 1) % slidesData.length;
 };
+
+onMounted(() => {
+  checkIsMobile();
+  window.addEventListener("resize", checkIsMobile);
+});
 </script>
 
 <template>
   <div class="slider">
     <div class="slider-container">
-      <div class="slide" v-for="(slide, index) in slidesData" :key="index" :class="{ active: index === currentIndex }">
+      <div
+        class="slide"
+        v-for="(slide, index) in slidesData"
+        :key="index"
+        :class="{ active: index === currentIndex }"
+        :style="isMobile ? { backgroundImage: `url(${slide.img})` } : {}"
+      >
         <div class="slide-content">
+          <h2>{{ slide.title }}</h2>
           <p>{{ slide.content }}</p>
         </div>
-        <div class="slide-image">
+        <div class="slide-image" v-if="!isMobile">
           <img :src="slide.img" alt="Slide image" />
         </div>
       </div>
@@ -29,71 +46,121 @@ const nextSlide = () => {
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+@import "@/assets/styles/_variables.scss";
+
 .slider {
   position: relative;
   width: 100%;
   overflow: hidden;
+  margin-top: 40px;
+  border: 1px solid $gray-100;
+  padding: 20px 0;
+
+  .slider-container {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: 100%;
+    height: 250px;
+
+    .slide {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: space-around;
+      flex-shrink: 0;
+      width: 100%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      position: absolute;
+      background-size: cover;
+      background-position: center;
+
+      .slide-content {
+        width: 50%;
+        box-sizing: border-box;
+        z-index: 1;
+      }
+
+      .slide-image {
+        width: 30%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .slide-image img {
+        max-width: 100%;
+        height: auto;
+        object-fit: contain;
+      }
+    }
+
+    .slide.active {
+      opacity: 1;
+      position: relative;
+    }
+  }
+
+  .nav-button {
+    position: absolute;
+    font-size: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $blue-200;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 4;
+    background: none;
+
+    &:hover {
+      background-color: $blue;
+      border-radius: 50%;
+      color: $white;
+      padding: 5px 10px;
+    }
+  }
+
+  .nav-button.prev {
+    left: 10px;
+  }
+
+  .nav-button.next {
+    right: 10px;
+  }
 }
 
-.slider-container {
-  display: flex;
-  transition: transform 0.5s ease;
-  transform: translateX(-100%);
-  width: 100%;
-}
+@media (max-width: 767px) {
+  .slider {
+    padding: 0;
 
-.slide {
-  display: flex;
-  flex-shrink: 0;
-  width: 100%;
-  height: 100vh; /* Ensure it takes full height of the viewport */
-  transition: opacity 0.5s ease;
-  opacity: 0;
-  position: absolute; /* Overlay slides */
-}
+    .slide {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.5);
 
-.slide.active {
-  opacity: 1;
-  position: relative; /* Show the active slide */
-}
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 0;
+      }
 
-.slide-content {
-  width: 60%;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.slide-image {
-  width: 40%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #f0f0f0;
-}
-
-.slide-image img {
-  max-width: 100%;
-  height: auto;
-}
-
-.nav-button {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  z-index: 10;
-}
-
-.nav-button.prev {
-  left: 10px;
-}
-
-.nav-button.next {
-  right: 10px;
+      .slide-content {
+        width: 80%;
+        z-index: 1;
+      }
+      .slide-image {
+        display: none;
+      }
+    }
+  }
 }
 </style>
