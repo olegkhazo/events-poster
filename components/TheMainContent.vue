@@ -2,7 +2,7 @@
 
 <template>
   <main>
-    <h1>Main Content</h1>
+    <TheSwiper />
   </main>
 </template>
 
@@ -10,6 +10,9 @@
 @import "@/assets/styles/_variables.scss";
 
 main {
+  width: 100%;
+  min-height: 80vh;
+
   .mains-header {
     background-color: $gray-800;
     padding-left: 15px;
