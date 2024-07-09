@@ -14,12 +14,14 @@ html {
     body {
         height: 100%;
         margin: 0 auto;
-
+        
         .content-wrapper {
             margin: 0 auto;
             width: 1024px;
             display: flex;
             justify-content: space-between;
+    
+
         
             @media (max-width: 1080px) {
                 width: 90%;

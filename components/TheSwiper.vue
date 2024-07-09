@@ -9,7 +9,8 @@ const checkIsMobile = () => {
 };
 
 const prevSlide = () => {
-  currentIndex.value = (currentIndex.value - 1 + slidesData.length) % slidesData.length;
+  currentIndex.value =
+    (currentIndex.value - 1 + slidesData.length) % slidesData.length;
 };
 
 const nextSlide = () => {
