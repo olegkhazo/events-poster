@@ -1,14 +1,17 @@
-<script setup></script>
+<script setup>
+const emit = defineEmits(["switchToAnotherMonth"]);
+const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
+</script>
 
 <template>
   <div class="calendar-monthes">
-    <div class="next-month">
+    <div @click="switchToAnotherMonth(-1)" class="next-month">
       <NuxtImg src="/images/next.png" />
-      <span>JUNE</span>
+      <span>June</span>
     </div>
-    <h2 class="curent-month">JULY 2024</h2>
-    <div class="prev-month">
-      <span>AUGUST</span>
+    <h2 class="curent-month">יולי 2024</h2>
+    <div @click="switchToAnotherMonth(1)" class="prev-month">
+      <span>August</span>
       <NuxtImg src="/images/next.png" />
     </div>
   </div>
@@ -31,9 +34,10 @@
     cursor: pointer;
     color: $gray-100;
     border-radius: 3px;
+    transition: background-color 0.5s ease, color 0.5s ease;
 
     &:hover {
-      background: $gray-300;
+      background: $gray-400;
     }
   }
 
