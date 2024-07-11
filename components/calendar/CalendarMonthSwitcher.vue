@@ -1,4 +1,11 @@
 <script setup>
+const props = defineProps({
+  months: {
+    type: Object,
+    required: true,
+  },
+});
+
 const emit = defineEmits(["switchToAnotherMonth"]);
 const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
 </script>
@@ -7,11 +14,11 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
   <div class="calendar-monthes">
     <div @click="switchToAnotherMonth(-1)" class="next-month">
       <NuxtImg src="/images/next.png" />
-      <span>June</span>
+      <span>{{ props.months.previousMonth }}</span>
     </div>
-    <h2 class="curent-month">יולי 2024</h2>
+    <h2 class="curent-month">{{ props.months.currentMonthAndYear }}</h2>
     <div @click="switchToAnotherMonth(1)" class="prev-month">
-      <span>August</span>
+      <span>{{ props.months.nextMonth }}</span>
       <NuxtImg src="/images/next.png" />
     </div>
   </div>

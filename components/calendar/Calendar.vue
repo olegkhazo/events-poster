@@ -64,11 +64,31 @@ function changeMonth(step) {
     }
   }
 }
+
+// Get data about current months and years for CalendarMonthSwitcher.vue
+const calendarMonthSwitcherData = {
+  currentMonthAndYear: computed(() =>
+    dayjs(new Date(currentYear.value, currentMonth.value)).format("MMMM YYYY")
+  ),
+  previousMonth: computed(() =>
+    dayjs(new Date(currentYear.value, currentMonth.value))
+      .subtract(1, "month")
+      .format("MMMM")
+  ),
+  nextMonth: computed(() =>
+    dayjs(new Date(currentYear.value, currentMonth.value))
+      .add(1, "month")
+      .format("MMMM")
+  ),
+};
 </script>
 
 <template>
   <div class="calendar-wrapper">
-    <CalendarMonthSwitcher @switch-to-another-month="changeMonth" />
+    <CalendarMonthSwitcher
+      :months="calendarMonthSwitcherData"
+      @switch-to-another-month="changeMonth"
+    />
     <div class="calendar">
       <div class="calendar-header">
         <div v-for="day in daysOfWeek" :key="day" class="day-of-week">
