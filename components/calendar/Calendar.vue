@@ -235,8 +235,7 @@ const calendarMonthSwitcherData = {
 
         .event-block {
           width: 100%;
-          padding: 0 20px;
-          height: 400px;
+          padding: 0 20px 40px 20px;
           border: 1px solid $gray-300;
           border-top: none;
           background: $gray-400;
@@ -250,6 +249,11 @@ const calendarMonthSwitcherData = {
           .date-of-list {
             color: $blue-200;
             font-size: 24px;
+            margin-right: 8px;
+
+            @media (max-width: 768px) {
+              font-size: 16px;
+            }
           }
         }
       }
