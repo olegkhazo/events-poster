@@ -6,14 +6,15 @@ const props = defineProps({
 
 <template>
   <div class="event-list">
-    <div
+    <p>something</p>
+    <!-- <div
       v-for="event in props.singleDataEvents"
       :key="event"
       class="single-event"
     >
       <span>{{ event.date }}</span>
       <span>{{ event.event }}</span>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -21,13 +22,5 @@ const props = defineProps({
 @import "@/assets/styles/_variables.scss";
 
 .event-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background-color: #f9f9f9;
-  border-top: 1px solid #ddd;
-  display: none;
-  padding: 40px 0;
 }
 </style>
