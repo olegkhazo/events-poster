@@ -4,4 +4,6 @@ export const events = [
     { date: "2024-07-12", event: "Event 3" },
     { date: "2024-07-13", event: "Event 3" },
     { date: "2024-07-14", event: "Event 3" },
+    { date: "2024-07-25", event: "Event 3" },
+    { date: "2024-07-26", event: "Event 3" },
   ];

@@ -44,8 +44,11 @@ const eventsForSelectedDate = computed(() => {
   );
 });
 
-const selectDate = (date) => {
+const selectedWeekIndex = ref(null);
+
+const selectDate = (date, weekIndex) => {
   selectedDate.value = date;
+  selectedWeekIndex.value = weekIndex;
 };
 
 function changeMonth(step) {
@@ -82,21 +85,24 @@ function changeMonth(step) {
             v-for="day in week"
             :key="day.format('YYYY-MM-DD')"
             class="calendar-day"
-            @click="selectDate(day)"
+            @click="selectDate(day, weekIndex)"
           >
             <span class="day-date">{{ day.date() }}</span>
             <span class="day-date-indicator"></span>
           </div>
-        </div>
-        <div class="event-block">
-          <div v-if="eventsForSelectedDate.length > 0">
+          <div
+            v-if="
+              eventsForSelectedDate.length > 0 &&
+              selectedWeekIndex === weekIndex
+            "
+            class="event-block"
+          >
             <p>
-              JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ
-              KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
+              JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
             </p>
             <!-- <div v-for="event in eventsForSelectedDate" :key="event.date">
-                {{ event.event }}
-              </div> -->
+                  {{ event.event }}
+                </div> -->
           </div>
         </div>
       </div>
@@ -134,6 +140,7 @@ function changeMonth(step) {
 
       .calendar-week {
         display: flex;
+        flex-wrap: wrap;
 
         .calendar-day {
           width: calc(100% / 7);
@@ -182,6 +189,14 @@ function changeMonth(step) {
               height: 5px;
             }
           }
+        }
+
+        .event-block {
+          width: 100%;
+          background-color: $gray-100;
+          padding: 10px;
+          border: 1px solid $gray-300;
+          margin-top: 10px;
         }
       }
     }
