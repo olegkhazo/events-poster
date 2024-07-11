@@ -10,8 +10,7 @@ dayjs.extend(isoWeek);
 
 const currentMonth = ref(dayjs().month());
 const currentYear = ref(dayjs().year());
-
-const selectedDate = ref(null);
+const selectedDate = ref({});
 
 const startOfMonth = computed(() =>
   dayjs(new Date(currentYear.value, currentMonth.value, 1)).startOf("month")
@@ -104,7 +103,10 @@ const calendarMonthSwitcherData = {
           <div
             v-for="day in week"
             :key="day.format('YYYY-MM-DD')"
-            class="calendar-day"
+            :class="[
+              'calendar-day',
+              { 'selected-day': day.isSame(selectedDate, 'day') },
+            ]"
             @click="selectDate(day, weekIndex)"
           >
             <span class="day-date">{{ day.date() }}</span>
@@ -117,12 +119,14 @@ const calendarMonthSwitcherData = {
             "
             class="event-block"
           >
-            <p>
-              JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK
-            </p>
-            <!-- <div v-for="event in eventsForSelectedDate" :key="event.date">
-                  {{ event.event }}
-                </div> -->
+            <h3>
+              אירועים עבור
+              <span class="date-of-list">
+                {{ selectedDate.format("MMMM D") }}
+              </span>
+            </h3>
+            <hr />
+            <CalendarEventsBlock :single-data-events="eventsForSelectedDate" />
           </div>
         </div>
       </div>
@@ -211,12 +215,42 @@ const calendarMonthSwitcherData = {
           }
         }
 
+        .selected-day {
+          background: $gray-400;
+          border-bottom: none;
+
+          &:hover {
+            background: $gray-400;
+          }
+
+          .day-date-indicator {
+            display: none;
+          }
+
+          .day-date {
+            color: $gray-1000;
+            font-weight: 600;
+          }
+        }
+
         .event-block {
           width: 100%;
-          background-color: $gray-100;
-          padding: 10px;
+          padding: 0 20px;
+          height: 400px;
           border: 1px solid $gray-300;
-          margin-top: 10px;
+          border-top: none;
+          background: $gray-400;
+
+          hr {
+            height: 1px;
+            background-color: $gray-300;
+            border: none;
+          }
+
+          .date-of-list {
+            color: $blue-200;
+            font-size: 24px;
+          }
         }
       }
     }

@@ -6,11 +6,14 @@ const props = defineProps({
 
 <template>
   <div class="event-list">
-    <!-- <div v-if="day.isSame(selectedDate.value, 'day')">
-      <div v-for="event in getEventsForDate(day)" :key="event.date">
-        {{ event.event }}
-      </div>
-    </div> -->
+    <div
+      v-for="event in props.singleDataEvents"
+      :key="event"
+      class="single-event"
+    >
+      <span>{{ event.date }}</span>
+      <span>{{ event.event }}</span>
+    </div>
   </div>
 </template>
 
@@ -25,5 +28,6 @@ const props = defineProps({
   background-color: #f9f9f9;
   border-top: 1px solid #ddd;
   display: none;
+  padding: 40px 0;
 }
 </style>
