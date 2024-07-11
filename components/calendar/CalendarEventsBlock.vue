@@ -2,6 +2,13 @@
 const props = defineProps({
   singleDataEvents: Object,
 });
+
+import { useCurrentEventStore } from "~/stores/currentEventStore";
+const { currentEvent } = storeToRefs(useCurrentEventStore());
+
+function recordEventToStore(event) {
+  currentEvent.value = event;
+}
 </script>
 
 <template>
@@ -10,18 +17,22 @@ const props = defineProps({
       v-for="event in props.singleDataEvents"
       :key="event"
       class="single-event"
+      @click="recordEventToStore(event)"
     >
-      <div class="event-img">
-        <NuxtImg :src="event.img" alt="event img" />
-      </div>
-      <div class="event-description">
-        <span class="time">
-          <NuxtImg src="/images/clock.png" alt="clock" /> {{ event.time }}</span
-        >
-        <span class="title">{{ event.event }}</span>
+      <NuxtLink :to="'/event-page/' + event.id" class="single-event-link">
+        <div class="event-img">
+          <NuxtImg :src="event.img" alt="event img" />
+        </div>
+        <div class="event-description">
+          <span class="time">
+            <NuxtImg src="/images/clock.png" alt="clock" />
+            {{ event.time }}</span
+          >
+          <span class="title">{{ event.event }}</span>
 
-        <span class="description">{{ event.description }}</span>
-      </div>
+          <span class="description">{{ event.description }}</span>
+        </div>
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -31,68 +42,75 @@ const props = defineProps({
 
 .event-list {
   .single-event {
-    display: flex;
+    cursor: pointer;
     border-bottom: 1px solid $gray-150;
     padding: 20px;
+
+    &:hover {
+      background-color: $blue-300;
+    }
 
     @media (max-width: 768px) {
       padding: 20px 0;
     }
+    .single-event-link {
+      display: flex;
 
-    .event-img {
-      max-width: 150px;
-
-      @media (max-width: 768px) {
-        max-width: 120px;
-      }
-
-      img {
-        width: 100%;
-        height: auto;
-      }
-    }
-
-    .event-description {
-      margin-right: 20px;
-
-      span {
-        display: block;
-      }
-
-      .time {
-        color: $blue-200;
-        font-weight: 300;
+      .event-img {
+        max-width: 150px;
 
         @media (max-width: 768px) {
-          font-size: 8px;
+          max-width: 120px;
         }
 
         img {
-          width: 10px;
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      .event-description {
+        margin-right: 20px;
+
+        span {
+          display: block;
+        }
+
+        .time {
+          color: $blue-200;
+          font-weight: 300;
 
           @media (max-width: 768px) {
-            width: 8px;
+            font-size: 8px;
+          }
+
+          img {
+            width: 10px;
+
+            @media (max-width: 768px) {
+              width: 8px;
+            }
           }
         }
-      }
 
-      .title {
-        font-size: 16px;
-        font-weight: 600;
+        .title {
+          font-size: 16px;
+          font-weight: 600;
 
-        @media (max-width: 768px) {
-          font-size: 14px;
-          font-weight: 500;
+          @media (max-width: 768px) {
+            font-size: 14px;
+            font-weight: 500;
+          }
         }
-      }
 
-      .description {
-        margin-top: 10px;
-        font-size: 12px;
+        .description {
+          margin-top: 10px;
+          font-size: 12px;
 
-        @media (max-width: 768px) {
-          font-size: 10px;
-          font-weight: 300;
+          @media (max-width: 768px) {
+            font-size: 10px;
+            font-weight: 300;
+          }
         }
       }
     }
