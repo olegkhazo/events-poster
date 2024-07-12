@@ -244,6 +244,8 @@ const calendarMonthSwitcherData = {
             height: 1px;
             background-color: $gray-300;
             border: none;
+            margin-block-start: 0;
+            margin-block-end: 0;
           }
 
           .date-of-list {
