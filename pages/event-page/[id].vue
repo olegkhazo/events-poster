@@ -50,7 +50,7 @@ const { currentEvent } = storeToRefs(useCurrentEventStore());
 
     <div class="img-and-description">
       <div class="event-img">
-        <NuxtImg :src="currentEvent.img" alt="Event image" />
+        <NuxtImg src="/images/celebration.jpg" alt="event img" />
       </div>
       <div class="event-main-info">
         <span class="main-info-title">{{ currentEvent.event }}</span>

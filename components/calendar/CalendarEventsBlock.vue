@@ -21,7 +21,7 @@ function recordEventToStore(event) {
     >
       <NuxtLink :to="'/event-page/' + event.id" class="single-event-link">
         <div class="event-img">
-          <NuxtImg :src="event.img" alt="event img" />
+          <NuxtImg src="/images/celebration.jpg" alt="event img" />
         </div>
         <div class="event-description">
           <span class="time">
