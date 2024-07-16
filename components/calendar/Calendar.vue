@@ -4,6 +4,7 @@ import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
 import { daysOfWeek } from "~/utils/collections";
 import { events } from "~/utils/events-data";
+import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 dayjs.extend(weekday);
 dayjs.extend(isoWeek);
@@ -11,6 +12,98 @@ dayjs.extend(isoWeek);
 const currentMonth = ref(dayjs().month());
 const currentYear = ref(dayjs().year());
 const selectedDate = ref({});
+
+// BrowseAI ========================== BrowseAI ========================= BrowseAI
+const responseA = ref("");
+const ironitsData = ref([]);
+
+const fetchData = async () => {
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization:
+        "Bearer 8b8eca14-db37-4afc-b7b6-a0f07f2fb9ac:0453c0cf-ac6f-4917-bce4-fcbbe0d2f196",
+    },
+  };
+
+  try {
+    const res = await fetch(
+      "https://api.browse.ai/v2/robots/e3415206-2e2b-4742-b6e6-ee6276c3e619/tasks/fa6e6ff7-c4e8-48d9-a547-c259159d0cc1",
+      options
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    console.log("Full response data:", data);
+
+    const items = data.result.robotTasks.items;
+    console.log("Items:", items);
+
+    if (
+      items.length > 0 &&
+      items[0].capturedLists &&
+      items[0].capturedLists["ironits-data"]
+    ) {
+      ironitsData.value = items[0].capturedLists["ironits-data"];
+      responseA.value = JSON.stringify(ironitsData.value, null, 2);
+    } else {
+      responseA.value = "ironits-data not found";
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    responseA.value = "Error fetching data";
+  }
+};
+
+// const responseB = ref("");
+// const capturedTextsData = ref({});
+
+// const fetchEventData = async () => {
+//   const options = {
+//     method: "GET",
+//     headers: {
+//       Authorization:
+//         "Bearer 8b8eca14-db37-4afc-b7b6-a0f07f2fb9ac:0453c0cf-ac6f-4917-bce4-fcbbe0d2f196",
+//     },
+//   };
+
+//   try {
+//     const res = await fetch(
+//       "https://api.browse.ai/v2/robots/2988e6ca-467e-4980-b7b0-77fc0fc89c59/tasks",
+//       options
+//     );
+
+//     if (!res.ok) {
+//       throw new Error(`HTTP error! Status: ${res.status}`);
+//     }
+
+//     const data = await res.json();
+//     console.log("Full response data:", data);
+
+//     const items = data.result.robotTasks.items;
+//     console.log("Items:", items);
+
+//     if (items.length > 0 && items[0].capturedTexts) {
+//       capturedTextsData.value = items[0].capturedTexts;
+//       responseB.value = JSON.stringify(capturedTextsData.value, null, 2);
+//     } else {
+//       responseB.value = "capturedTexts not found";
+//     }
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//     responseB.value = "Error fetching data";
+//   }
+// };
+
+onMounted(() => {
+  fetchData();
+  // fetchEventData();
+});
+
+// ==================================================================
 
 const startOfMonth = computed(() =>
   dayjs(new Date(currentYear.value, currentMonth.value, 1)).startOf("month")
@@ -130,6 +223,10 @@ const calendarMonthSwitcherData = {
           </div>
         </div>
       </div>
+    </div>
+
+    <div class="data-from the bot">
+      <!-- {{ responseB }} -->
     </div>
   </div>
 </template>
