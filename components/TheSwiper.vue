@@ -38,7 +38,7 @@ onMounted(() => {
           <p>{{ slide.content }}</p>
         </div>
         <div class="slide-image" v-if="!isMobile">
-          <img :src="slide.img" alt="Slide image" />
+          <NuxtImg :src="slide.img" alt="Slide image" />
         </div>
       </div>
     </div>

@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
 import { daysOfWeek } from "~/utils/collections";
-import { events } from "~/utils/events-data";
 import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 dayjs.extend(weekday);
@@ -11,8 +10,112 @@ dayjs.extend(isoWeek);
 
 const currentMonth = ref(dayjs().month());
 const currentYear = ref(dayjs().year());
+
 const selectedDate = ref({});
-const ironitEventsCollection = ref({});
+const selectedWeekIndex = ref(null);
+
+const ironitEventsCollection = ref([]);
+
+onMounted(() => {
+  fetchData();
+  // fetchEventData();
+});
+
+const selectDate = (date, weekIndex) => {
+  selectedDate.value = date;
+  selectedWeekIndex.value = weekIndex;
+};
+
+const startOfMonth = computed(() =>
+  dayjs(new Date(currentYear.value, currentMonth.value, 1)).startOf("month")
+);
+
+const endOfMonth = computed(() =>
+  dayjs(new Date(currentYear.value, currentMonth.value, 1)).endOf("month")
+);
+
+const daysMatrix = computed(() => {
+  const startOfFirstWeek = startOfMonth.value.startOf("isoWeek");
+  const endOfLastWeek = endOfMonth.value.endOf("isoWeek");
+  const days = [];
+  let day = startOfFirstWeek;
+
+  while (day <= endOfLastWeek) {
+    days.push(day);
+    day = day.add(1, "day");
+  }
+
+  return Array.from({ length: 5 }, (_, i) => days.slice(i * 7, (i + 1) * 7));
+});
+
+function changeMonth(step) {
+  if (currentMonth.value !== null && currentYear.value !== null) {
+    currentMonth.value += step;
+
+    if (currentMonth.value < 0) {
+      currentMonth.value = 11;
+      currentYear.value -= 1;
+    } else if (currentMonth.value > 11) {
+      currentMonth.value = 0;
+      currentYear.value += 1;
+    }
+  }
+}
+
+function updateFormatOfEventDate(eventData) {
+  const splitDate = eventData.split(" ");
+  const datePart = splitDate.slice(-1)[0];
+
+  // Check the string format
+  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+  if (dateRegex.test(datePart)) {
+    return datePart;
+  } else {
+    throw new Error("Invalid date format in eventData");
+  }
+}
+
+// Rebuild the choose/clicked date format to dd/mm/yyyy ------ DONE
+// Filter ironitEventsCollection.value (events collection) by new date format
+// Rewrite eventsForSelectedDate with a new filtered date
+
+const eventsForSelectedDate = computed(() => {
+  if (!selectedDate.value) {
+    return [];
+  }
+
+  const formattedSelectedDate = dayjs(selectedDate.value).format("DD/MM/YYYY");
+
+  return ironitEventsCollection.value.filter((collection) => {
+    try {
+      const formattedEventDate = updateFormatOfEventDate(collection.data);
+      return dayjs(formattedEventDate, "DD/MM/YYYY").isSame(
+        formattedSelectedDate,
+        "day"
+      );
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return false;
+    }
+  });
+});
+
+// Get data about current months and years for CalendarMonthSwitcher.vue
+const calendarMonthSwitcherData = {
+  currentMonthAndYear: computed(() =>
+    dayjs(new Date(currentYear.value, currentMonth.value)).format("MMMM YYYY")
+  ),
+  previousMonth: computed(() =>
+    dayjs(new Date(currentYear.value, currentMonth.value))
+      .subtract(1, "month")
+      .format("MMMM")
+  ),
+  nextMonth: computed(() =>
+    dayjs(new Date(currentYear.value, currentMonth.value))
+      .add(1, "month")
+      .format("MMMM")
+  ),
+};
 
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 
@@ -83,81 +186,7 @@ const fetchData = async () => {
 //   }
 // };
 
-onMounted(() => {
-  fetchData();
-  // fetchEventData();
-});
-
-// ==================================================================
-
-const startOfMonth = computed(() =>
-  dayjs(new Date(currentYear.value, currentMonth.value, 1)).startOf("month")
-);
-
-const endOfMonth = computed(() =>
-  dayjs(new Date(currentYear.value, currentMonth.value, 1)).endOf("month")
-);
-
-const daysMatrix = computed(() => {
-  const startOfFirstWeek = startOfMonth.value.startOf("isoWeek");
-  const endOfLastWeek = endOfMonth.value.endOf("isoWeek");
-  const days = [];
-  let day = startOfFirstWeek;
-
-  while (day <= endOfLastWeek) {
-    days.push(day);
-    day = day.add(1, "day");
-  }
-
-  return Array.from({ length: 5 }, (_, i) => days.slice(i * 7, (i + 1) * 7));
-});
-
-const eventsForSelectedDate = computed(() => {
-  if (!selectedDate.value) {
-    return [];
-  }
-  return events.filter((event) =>
-    dayjs(event.date).isSame(selectedDate.value, "day")
-  );
-});
-
-const selectedWeekIndex = ref(null);
-
-const selectDate = (date, weekIndex) => {
-  selectedDate.value = date;
-  selectedWeekIndex.value = weekIndex;
-};
-
-function changeMonth(step) {
-  if (currentMonth.value !== null && currentYear.value !== null) {
-    currentMonth.value += step;
-
-    if (currentMonth.value < 0) {
-      currentMonth.value = 11;
-      currentYear.value -= 1;
-    } else if (currentMonth.value > 11) {
-      currentMonth.value = 0;
-      currentYear.value += 1;
-    }
-  }
-}
-
-// Get data about current months and years for CalendarMonthSwitcher.vue
-const calendarMonthSwitcherData = {
-  currentMonthAndYear: computed(() =>
-    dayjs(new Date(currentYear.value, currentMonth.value)).format("MMMM YYYY")
-  ),
-  previousMonth: computed(() =>
-    dayjs(new Date(currentYear.value, currentMonth.value))
-      .subtract(1, "month")
-      .format("MMMM")
-  ),
-  nextMonth: computed(() =>
-    dayjs(new Date(currentYear.value, currentMonth.value))
-      .add(1, "month")
-      .format("MMMM")
-  ),
-};
+// BrowseAI ========================== BrowseAI ========================= BrowseAI
 </script>
 
 <template>
@@ -180,7 +209,7 @@ const calendarMonthSwitcherData = {
         >
           <div
             v-for="day in week"
-            :key="day.format('YYYY-MM-DD')"
+            :key="day"
             :class="[
               'calendar-day',
               { 'selected-day': day.isSame(selectedDate, 'day') },
