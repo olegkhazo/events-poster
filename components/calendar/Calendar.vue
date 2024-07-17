@@ -12,10 +12,9 @@ dayjs.extend(isoWeek);
 const currentMonth = ref(dayjs().month());
 const currentYear = ref(dayjs().year());
 const selectedDate = ref({});
+const ironitEventsCollection = ref({});
 
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
-const responseA = ref("");
-const ironitsData = ref([]);
 
 const fetchData = async () => {
   const options = {
@@ -37,21 +36,7 @@ const fetchData = async () => {
     }
 
     const data = await res.json();
-    console.log("Full response data:", data);
-
-    const items = data.result.robotTasks.items;
-    console.log("Items:", items);
-
-    if (
-      items.length > 0 &&
-      items[0].capturedLists &&
-      items[0].capturedLists["ironits-data"]
-    ) {
-      ironitsData.value = items[0].capturedLists["ironits-data"];
-      responseA.value = JSON.stringify(ironitsData.value, null, 2);
-    } else {
-      responseA.value = "ironits-data not found";
-    }
+    ironitEventsCollection.value = data.result.capturedLists.Events;
   } catch (error) {
     console.error("Error fetching data:", error);
     responseA.value = "Error fetching data";
@@ -223,10 +208,6 @@ const calendarMonthSwitcherData = {
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="data-from the bot">
-      <!-- {{ responseB }} -->
     </div>
   </div>
 </template>
