@@ -17,7 +17,7 @@ const selectedWeekIndex = ref(null);
 const ironitEventsCollection = ref([]);
 
 onMounted(() => {
-  fetchData();
+  fetchMainIronitPageData();
   // fetchEventData();
 });
 
@@ -75,10 +75,6 @@ function updateFormatOfEventDate(eventData) {
   }
 }
 
-// Rebuild the choose/clicked date format to dd/mm/yyyy ------ DONE
-// Filter ironitEventsCollection.value (events collection) by new date format
-// Rewrite eventsForSelectedDate with a new filtered date
-
 const eventsForSelectedDate = computed(() => {
   if (!selectedDate.value) {
     return [];
@@ -119,18 +115,18 @@ const calendarMonthSwitcherData = {
 
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 
-const fetchData = async () => {
+// Get Ironit data from the main page
+const fetchMainIronitPageData = async () => {
   const options = {
     method: "GET",
     headers: {
-      Authorization:
-        "Bearer 8b8eca14-db37-4afc-b7b6-a0f07f2fb9ac:0453c0cf-ac6f-4917-bce4-fcbbe0d2f196",
+      Authorization: `Bearer ${BOT_API_URLS.ironit.BEARER}`,
     },
   };
 
   try {
     const res = await fetch(
-      "https://api.browse.ai/v2/robots/e3415206-2e2b-4742-b6e6-ee6276c3e619/tasks/fa6e6ff7-c4e8-48d9-a547-c259159d0cc1",
+      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ROBOT_ID}/tasks/${BOT_API_URLS.ironit.MAIN_PAGE_SCRAPER_ID}`,
       options
     );
 
@@ -142,7 +138,7 @@ const fetchData = async () => {
     ironitEventsCollection.value = data.result.capturedLists.Events;
   } catch (error) {
     console.error("Error fetching data:", error);
-    responseA.value = "Error fetching data";
+    ironitEventsCollection.value = "Error fetching data";
   }
 };
 
