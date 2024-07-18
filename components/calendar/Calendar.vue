@@ -3,14 +3,28 @@ import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
 import { daysOfWeek } from "~/utils/collections";
-import { events } from "~/utils/events-data";
+import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 dayjs.extend(weekday);
 dayjs.extend(isoWeek);
 
 const currentMonth = ref(dayjs().month());
 const currentYear = ref(dayjs().year());
+
 const selectedDate = ref({});
+const selectedWeekIndex = ref(null);
+
+const ironitEventsCollection = ref([]);
+
+onMounted(() => {
+  fetchMainIronitPageData();
+  // fetchEventData();
+});
+
+const selectDate = (date, weekIndex) => {
+  selectedDate.value = date;
+  selectedWeekIndex.value = weekIndex;
+};
 
 const startOfMonth = computed(() =>
   dayjs(new Date(currentYear.value, currentMonth.value, 1)).startOf("month")
@@ -34,22 +48,6 @@ const daysMatrix = computed(() => {
   return Array.from({ length: 5 }, (_, i) => days.slice(i * 7, (i + 1) * 7));
 });
 
-const eventsForSelectedDate = computed(() => {
-  if (!selectedDate.value) {
-    return [];
-  }
-  return events.filter((event) =>
-    dayjs(event.date).isSame(selectedDate.value, "day")
-  );
-});
-
-const selectedWeekIndex = ref(null);
-
-const selectDate = (date, weekIndex) => {
-  selectedDate.value = date;
-  selectedWeekIndex.value = weekIndex;
-};
-
 function changeMonth(step) {
   if (currentMonth.value !== null && currentYear.value !== null) {
     currentMonth.value += step;
@@ -63,6 +61,40 @@ function changeMonth(step) {
     }
   }
 }
+
+function updateFormatOfEventDate(eventData) {
+  const splitDate = eventData.split(" ");
+  const datePart = splitDate.slice(-1)[0];
+
+  // Check the string format
+  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+  if (dateRegex.test(datePart)) {
+    return datePart;
+  } else {
+    throw new Error("Invalid date format in eventData");
+  }
+}
+
+const eventsForSelectedDate = computed(() => {
+  if (!selectedDate.value) {
+    return [];
+  }
+
+  const formattedSelectedDate = dayjs(selectedDate.value).format("DD/MM/YYYY");
+
+  return ironitEventsCollection.value.filter((collection) => {
+    try {
+      const formattedEventDate = updateFormatOfEventDate(collection.data);
+      return dayjs(formattedEventDate, "DD/MM/YYYY").isSame(
+        formattedSelectedDate,
+        "day"
+      );
+    } catch (error) {
+      console.error("Error formatting date:", error);
+      return false;
+    }
+  });
+});
 
 // Get data about current months and years for CalendarMonthSwitcher.vue
 const calendarMonthSwitcherData = {
@@ -80,6 +112,77 @@ const calendarMonthSwitcherData = {
       .format("MMMM")
   ),
 };
+
+// BrowseAI ========================== BrowseAI ========================= BrowseAI
+
+// Get Ironit data from the main page
+const fetchMainIronitPageData = async () => {
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${BOT_API_URLS.ironit.BEARER}`,
+    },
+  };
+
+  try {
+    const res = await fetch(
+      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ROBOT_ID}/tasks/${BOT_API_URLS.ironit.MAIN_PAGE_SCRAPER_ID}`,
+      options
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    ironitEventsCollection.value = data.result.capturedLists.Events;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    ironitEventsCollection.value = "Error fetching data";
+  }
+};
+
+// const responseB = ref("");
+// const capturedTextsData = ref({});
+
+// const fetchEventData = async () => {
+//   const options = {
+//     method: "GET",
+//     headers: {
+//       Authorization:
+//         "Bearer 8b8eca14-db37-4afc-b7b6-a0f07f2fb9ac:0453c0cf-ac6f-4917-bce4-fcbbe0d2f196",
+//     },
+//   };
+
+//   try {
+//     const res = await fetch(
+//       "https://api.browse.ai/v2/robots/2988e6ca-467e-4980-b7b0-77fc0fc89c59/tasks",
+//       options
+//     );
+
+//     if (!res.ok) {
+//       throw new Error(`HTTP error! Status: ${res.status}`);
+//     }
+
+//     const data = await res.json();
+//     console.log("Full response data:", data);
+
+//     const items = data.result.robotTasks.items;
+//     console.log("Items:", items);
+
+//     if (items.length > 0 && items[0].capturedTexts) {
+//       capturedTextsData.value = items[0].capturedTexts;
+//       responseB.value = JSON.stringify(capturedTextsData.value, null, 2);
+//     } else {
+//       responseB.value = "capturedTexts not found";
+//     }
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//     responseB.value = "Error fetching data";
+//   }
+// };
+
+// BrowseAI ========================== BrowseAI ========================= BrowseAI
 </script>
 
 <template>
@@ -102,7 +205,7 @@ const calendarMonthSwitcherData = {
         >
           <div
             v-for="day in week"
-            :key="day.format('YYYY-MM-DD')"
+            :key="day"
             :class="[
               'calendar-day',
               { 'selected-day': day.isSame(selectedDate, 'day') },
