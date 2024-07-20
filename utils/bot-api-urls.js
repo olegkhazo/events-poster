@@ -1,9 +1,10 @@
 export const BOT_API_URLS = {
     ironit: {
       URL: "https://api.browse.ai/v2/robots",
-      BEARER: "8b8eca14-db37-4afc-b7b6-a0f07f2fb9ac:0453c0cf-ac6f-4917-bce4-fcbbe0d2f196",
-      ROBOT_ID: "e3415206-2e2b-4742-b6e6-ee6276c3e619",
-      MAIN_PAGE_SCRAPER_ID: "fa6e6ff7-c4e8-48d9-a547-c259159d0cc1", 
+      API_KEY: "ce288a74-7afa-494c-9581-ac1d4f70c511:ac2fd873-2837-469b-bebb-8ddc20f0c63a",
+      MAIN_PAGE_SCRAPER_ID: "7729e539-74e6-4627-83ff-98be753eee08",
+      MAIN_PAGE_SCRAPER_TASK_KEY: "f5b94e25-3f87-4ba5-956d-179259936793", 
+      ADDITIONAL_DATA_SCRAPER_ID: "",
     }
   };
   

@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted, computed } from "vue";
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
@@ -18,7 +19,6 @@ const ironitEventsCollection = ref([]);
 
 onMounted(() => {
   fetchMainIronitPageData();
-  // fetchEventData();
 });
 
 const selectDate = (date, weekIndex) => {
@@ -71,7 +71,8 @@ function updateFormatOfEventDate(eventData) {
   if (dateRegex.test(datePart)) {
     return datePart;
   } else {
-    throw new Error("Invalid date format in eventData");
+    console.error("Invalid date format in eventData: " + eventData);
+    throw new Error("Invalid date format in eventData: " + eventData);
   }
 }
 
@@ -84,11 +85,11 @@ const eventsForSelectedDate = computed(() => {
 
   return ironitEventsCollection.value.filter((collection) => {
     try {
-      const formattedEventDate = updateFormatOfEventDate(collection.data);
-      return dayjs(formattedEventDate, "DD/MM/YYYY").isSame(
-        formattedSelectedDate,
-        "day"
-      );
+      const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
+
+      const isSameDay = formattedEventDate === formattedSelectedDate;
+
+      return isSameDay;
     } catch (error) {
       console.error("Error formatting date:", error);
       return false;
@@ -120,13 +121,13 @@ const fetchMainIronitPageData = async () => {
   const options = {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${BOT_API_URLS.ironit.BEARER}`,
+      Authorization: `Bearer ${BOT_API_URLS.ironit.API_KEY}`,
     },
   };
 
   try {
     const res = await fetch(
-      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ROBOT_ID}/tasks/${BOT_API_URLS.ironit.MAIN_PAGE_SCRAPER_ID}`,
+      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.MAIN_PAGE_SCRAPER_ID}/tasks/${BOT_API_URLS.ironit.MAIN_PAGE_SCRAPER_TASK_KEY}`,
       options
     );
 
@@ -135,52 +136,19 @@ const fetchMainIronitPageData = async () => {
     }
 
     const data = await res.json();
-    ironitEventsCollection.value = data.result.capturedLists.Events;
+
+    ironitEventsCollection.value = data.result.capturedLists.Events.map(
+      (event) => {
+        const formattedEventDate = updateFormatOfEventDate(event.eventDate);
+
+        return { ...event, eventDate: formattedEventDate };
+      }
+    );
   } catch (error) {
     console.error("Error fetching data:", error);
     ironitEventsCollection.value = "Error fetching data";
   }
 };
-
-// const responseB = ref("");
-// const capturedTextsData = ref({});
-
-// const fetchEventData = async () => {
-//   const options = {
-//     method: "GET",
-//     headers: {
-//       Authorization:
-//         "Bearer 8b8eca14-db37-4afc-b7b6-a0f07f2fb9ac:0453c0cf-ac6f-4917-bce4-fcbbe0d2f196",
-//     },
-//   };
-
-//   try {
-//     const res = await fetch(
-//       "https://api.browse.ai/v2/robots/2988e6ca-467e-4980-b7b0-77fc0fc89c59/tasks",
-//       options
-//     );
-
-//     if (!res.ok) {
-//       throw new Error(`HTTP error! Status: ${res.status}`);
-//     }
-
-//     const data = await res.json();
-//     console.log("Full response data:", data);
-
-//     const items = data.result.robotTasks.items;
-//     console.log("Items:", items);
-
-//     if (items.length > 0 && items[0].capturedTexts) {
-//       capturedTextsData.value = items[0].capturedTexts;
-//       responseB.value = JSON.stringify(capturedTextsData.value, null, 2);
-//     } else {
-//       responseB.value = "capturedTexts not found";
-//     }
-//   } catch (error) {
-//     console.error("Error fetching data:", error);
-//     responseB.value = "Error fetching data";
-//   }
-// };
 
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 </script>
@@ -205,7 +173,7 @@ const fetchMainIronitPageData = async () => {
         >
           <div
             v-for="day in week"
-            :key="day"
+            :key="day.format('DD/MM/YYYY')"
             :class="[
               'calendar-day',
               { 'selected-day': day.isSame(selectedDate, 'day') },

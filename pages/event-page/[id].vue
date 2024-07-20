@@ -1,7 +1,49 @@
 <script setup>
 import { useCurrentEventStore } from "~/stores/currentEventStore";
+import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
+
+const additionalEventsData = ref([]);
+
+onMounted(() => {
+  fetchEventAdditionalData();
+});
+
+//Get data from robot "Event description"
+//Find necessary entry in data by link
+//Parse data from this entry
+
+// BrowseAI ========================== BrowseAI ========================= BrowseAI
+
+const fetchEventAdditionalData = async () => {
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${BOT_API_URLS.ironit.BEARER}`,
+    },
+  };
+
+  try {
+    const res = await fetch(
+      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ADDITIONAL_DATA_SCRAPER_ID}/tasks`,
+      options
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    additionalEventsData.value = data.result.robotTasks.items;
+    // console.log(additionalEventsData.value);
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    additionalEventsData.value = "Error fetching data";
+  }
+};
+
+console.log(currentEvent.value);
 </script>
 
 <template>

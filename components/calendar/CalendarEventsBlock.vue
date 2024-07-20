@@ -19,18 +19,19 @@ function recordEventToStore(event) {
       class="single-event"
       @click="recordEventToStore(event)"
     >
-      <NuxtLink :to="'/event-page/' + event.id" class="single-event-link">
+      <NuxtLink :to="'/event-page/' + event.Position" class="single-event-link">
         <div class="event-img">
-          <NuxtImg :src="event.img" alt="event img" />
+          <NuxtImg :src="event.Image" :alt="event.EventAltText" />
         </div>
         <div class="event-description">
           <span class="time">
             <NuxtImg src="/images/clock.png" alt="clock" />
-            {{ event.data }}</span
+            {{ event.eventTime }}
+            {{ event.eventDate }}</span
           >
-          <span v-if="event.title" class="title">{{ event.event }}</span>
+          <span v-if="event.title" class="title">{{ event.EventTitle }}</span>
 
-          <!-- <span class="description">{{ event.description }}</span> -->
+          <span class="location">{{ event.location }}</span>
         </div>
       </NuxtLink>
     </div>
@@ -103,7 +104,7 @@ function recordEventToStore(event) {
           }
         }
 
-        .description {
+        .location {
           margin-top: 10px;
           font-size: 12px;
 
