@@ -206,7 +206,7 @@ console.log(currentEvent.value);
       }
 
       @media (max-width: 425px) {
-        max-width: 100%;
+        width: 100%;
       }
 
       img {
