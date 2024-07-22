@@ -38,8 +38,8 @@ const endOfMonth = computed(() =>
 );
 
 const daysMatrix = computed(() => {
-  const startOfFirstWeek = startOfMonth.value.startOf("isoWeek");
-  const endOfLastWeek = endOfMonth.value.endOf("isoWeek");
+  const startOfFirstWeek = startOfMonth.value.startOf("week"); // Начало недели - воскресенье
+  const endOfLastWeek = endOfMonth.value.endOf("week"); // Конец недели - суббота
   const days = [];
   let day = startOfFirstWeek;
 
@@ -48,7 +48,9 @@ const daysMatrix = computed(() => {
     day = day.add(1, "day");
   }
 
-  return Array.from({ length: 5 }, (_, i) => days.slice(i * 7, (i + 1) * 7));
+  return Array.from({ length: Math.ceil(days.length / 7) }, (_, i) =>
+    days.slice(i * 7, (i + 1) * 7)
+  );
 });
 
 function changeMonth(step) {
