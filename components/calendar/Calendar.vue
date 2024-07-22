@@ -192,7 +192,6 @@ const fetchMishkanAsdodData = async () => {
       ...mishkanAshdodEventsCollection.value,
       ...ironitEventsCollection.value,
     ];
-    console.log(concantinatedEventsArray.value);
   } catch (error) {
     console.error("Error fetching data:", error);
     mishkanAshdodEventsCollection.value = "Error fetching data";

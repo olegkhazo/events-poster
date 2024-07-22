@@ -22,14 +22,14 @@ function recordEventToStore(event) {
       <NuxtLink :to="'/event-page/' + event.Position" class="single-event-link">
         <div class="event-img">
           <NuxtImg
-            v-if="event.Image"
-            :src="event.Image"
-            :alt="event.EventAltText"
+            v-if="event.image"
+            :src="event.image"
+            :alt="event.eventAltText"
           />
           <NuxtImg
             v-else
             src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-            :alt="event.EventAltText"
+            :alt="event.eventAltText"
           />
         </div>
         <div class="event-description">
@@ -43,8 +43,8 @@ function recordEventToStore(event) {
           <span v-if="event.location" class="location">{{
             event.location
           }}</span>
-          <span v-if="event.EventTitle" class="title">{{
-            event.EventTitle
+          <span v-if="event.eventTitle" class="title">{{
+            event.eventTitle
           }}</span>
         </div>
       </NuxtLink>

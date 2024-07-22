@@ -43,8 +43,8 @@ console.log(currentEvent.value);
 
 <template>
   <div class="single-event-wrapper">
-    <h1 v-if="currentEvent.EventTitle" class="title">
-      {{ currentEvent.EventTitle }}
+    <h1 v-if="currentEvent.eventTitle" class="title">
+      {{ currentEvent.eventTitle }}
     </h1>
     <div class="additional-info">
       <ul>
@@ -96,8 +96,8 @@ console.log(currentEvent.value);
     <div class="img-and-description">
       <div class="event-img">
         <NuxtImg
-          v-if="currentEvent.Image"
-          :src="currentEvent.Image"
+          v-if="currentEvent.image"
+          :src="currentEvent.image"
           alt="event image"
         />
         <NuxtImg
@@ -107,7 +107,7 @@ console.log(currentEvent.value);
         />
       </div>
       <div class="event-main-info">
-        <span class="main-info-title">{{ currentEvent.EventTitle }}</span>
+        <span class="main-info-title">{{ currentEvent.eventTitle }}</span>
         <span class="location">{{ currentEvent.location }}</span>
         <div class="description">
           <span>Event description</span>
