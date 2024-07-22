@@ -1,74 +1,76 @@
 <script setup>
 import { useCurrentEventStore } from "~/stores/currentEventStore";
-import { BOT_API_URLS } from "~/utils/bot-api-urls";
+// import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
 
-const additionalEventsData = ref([]);
+// const additionalEventsData = ref([]);
 
 onMounted(() => {
-  fetchEventAdditionalData();
+  // fetchEventAdditionalData();
 });
-
-//Get data from robot "Event description"
-//Find necessary entry in data by link
-//Parse data from this entry
 
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 
-const fetchEventAdditionalData = async () => {
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${BOT_API_URLS.ironit.BEARER}`,
-    },
-  };
+// const fetchEventAdditionalData = async () => {
+//   const options = {
+//     method: "GET",
+//     headers: {
+//       Authorization: `Bearer ${BOT_API_URLS.ironit.BEARER}`,
+//     },
+//   };
 
-  try {
-    const res = await fetch(
-      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ADDITIONAL_DATA_SCRAPER_ID}/tasks`,
-      options
-    );
+//   try {
+//     const res = await fetch(
+//       `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ADDITIONAL_DATA_SCRAPER_ID}/tasks`,
+//       options
+//     );
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
+//     if (!res.ok) {
+//       throw new Error(`HTTP error! Status: ${res.status}`);
+//     }
 
-    const data = await res.json();
-    additionalEventsData.value = data.result.robotTasks.items;
-    // console.log(additionalEventsData.value);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    additionalEventsData.value = "Error fetching data";
-  }
-};
+//     const data = await res.json();
+//     additionalEventsData.value = data.result.robotTasks.items;
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//     additionalEventsData.value = "Error fetching data";
+//   }
+// };
 
 console.log(currentEvent.value);
 </script>
 
 <template>
   <div class="single-event-wrapper">
-    <h1 class="title">{{ currentEvent.event }}</h1>
+    <h1 v-if="currentEvent.EventTitle" class="title">
+      {{ currentEvent.EventTitle }}
+    </h1>
     <div class="additional-info">
       <ul>
-        <li>
+        <li v-if="currentEvent.eventDate">
           <div class="additional-info-img">
             <NuxtImg src="/images/calendar.png" />
           </div>
           <div class="additional-info-text">
             <span class="additional-info-title">תַאֲרִיך</span>
-            <span class="additional-info-description">19.08.24</span>
+            <span class="additional-info-description">{{
+              currentEvent.eventDate
+            }}</span>
           </div>
         </li>
-        <li>
+        <li v-if="currentEvent.eventTime">
           <div class="additional-info-img">
             <NuxtImg src="/images/clock.png" />
           </div>
           <div class="additional-info-text">
             <span class="additional-info-title">זְמַן</span>
-            <span class="additional-info-description">10:00</span>
+            <span class="additional-info-description">{{
+              currentEvent.eventTime
+            }}</span>
           </div>
         </li>
+
         <li>
           <div class="additional-info-img">
             <NuxtImg src="/images/walet.png" />
@@ -78,6 +80,7 @@ console.log(currentEvent.value);
             <span class="additional-info-description">120</span>
           </div>
         </li>
+
         <li>
           <div class="additional-info-img">
             <NuxtImg src="/images/label.png" />
@@ -92,11 +95,23 @@ console.log(currentEvent.value);
 
     <div class="img-and-description">
       <div class="event-img">
-        <NuxtImg src="/images/celebration.jpg" alt="event img" />
+        <NuxtImg
+          v-if="currentEvent.Image"
+          :src="currentEvent.Image"
+          alt="event image"
+        />
+        <NuxtImg
+          v-else
+          src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
+          alt="event image"
+        />
       </div>
       <div class="event-main-info">
-        <span class="main-info-title">{{ currentEvent.event }}</span>
-        <span class="description">{{ currentEvent.description }}</span>
+        <span class="main-info-title">{{ currentEvent.EventTitle }}</span>
+        <span class="location">{{ currentEvent.location }}</span>
+        <div class="description">
+          <span>Event description</span>
+        </div>
       </div>
     </div>
 
@@ -185,10 +200,12 @@ console.log(currentEvent.value);
   }
 
   .img-and-description {
+    width: 100%;
     margin: 10px auto 0 auto;
     padding: 40px;
     border: 1px solid $gray-300;
     display: flex;
+    justify-content: space-evenly;
 
     @media (max-width: 768px) {
       padding: 10px;
@@ -202,10 +219,6 @@ console.log(currentEvent.value);
       max-width: 350px;
 
       @media (max-width: 768px) {
-        max-width: 220px;
-      }
-
-      @media (max-width: 425px) {
         width: 100%;
       }
 
@@ -219,6 +232,12 @@ console.log(currentEvent.value);
       display: flex;
       flex-direction: column;
       margin-right: 20px;
+      width: 50%;
+
+      @media (max-width: 768px) {
+        width: 90%;
+        margin: 30px 0 20px 0;
+      }
 
       .main-info-title {
         font-size: 18px;
@@ -243,6 +262,12 @@ console.log(currentEvent.value);
       border: 1px solid $blue-200;
       color: $blue-200;
       font-size: 18px;
+
+      @media (max-width: 768px) {
+        padding: 10px 80px;
+        font-weight: 600;
+        font-size: 16px;
+      }
 
       &:hover {
         background-color: $blue-200;
