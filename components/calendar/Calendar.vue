@@ -17,6 +17,7 @@ const selectedWeekIndex = ref(null);
 
 const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
+const concantinatedEventsArray = ref([]);
 
 onMounted(() => {
   fetchMainIronitPageData();
@@ -91,7 +92,7 @@ const eventsForSelectedDate = computed(() => {
 
   const formattedSelectedDate = dayjs(selectedDate.value).format("DD/MM/YYYY");
 
-  return ironitEventsCollection.value.filter((collection) => {
+  return concantinatedEventsArray.value.filter((collection) => {
     try {
       const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
 
@@ -158,11 +159,6 @@ const fetchMainIronitPageData = async () => {
   }
 };
 
-// Get mishkanAsdod data
-
-//Concatinate both data in one object
-//Update date function formater for dd.mm.yyyy format
-
 const fetchMishkanAsdodData = async () => {
   const options = {
     method: "GET",
@@ -192,6 +188,11 @@ const fetchMishkanAsdodData = async () => {
 
       return { ...event, eventDate: formattedEventDate };
     });
+    concantinatedEventsArray.value = [
+      ...mishkanAshdodEventsCollection.value,
+      ...ironitEventsCollection.value,
+    ];
+    console.log(concantinatedEventsArray.value);
   } catch (error) {
     console.error("Error fetching data:", error);
     mishkanAshdodEventsCollection.value = "Error fetching data";
