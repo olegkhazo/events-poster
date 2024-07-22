@@ -16,9 +16,11 @@ const selectedDate = ref({});
 const selectedWeekIndex = ref(null);
 
 const ironitEventsCollection = ref([]);
+const mishkanAshdodEventsCollection = ref([]);
 
 onMounted(() => {
   fetchMainIronitPageData();
+  fetchMishkanAsdodData();
 });
 
 const selectDate = (date, weekIndex) => {
@@ -66,10 +68,16 @@ function updateFormatOfEventDate(eventData) {
   const splitDate = eventData.split(" ");
   const datePart = splitDate.slice(-1)[0];
 
-  // Check the string format
-  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-  if (dateRegex.test(datePart)) {
+  // Check the string format for DD/MM/YYYY
+  const slashDateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+  // Check the string format for DD.MM.YYYY
+  const dotDateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
+
+  if (slashDateRegex.test(datePart)) {
     return datePart;
+  } else if (dotDateRegex.test(datePart)) {
+    // Convert DD.MM.YYYY to DD/MM/YYYY
+    return datePart.replace(/\./g, "/");
   } else {
     console.error("Invalid date format in eventData: " + eventData);
     throw new Error("Invalid date format in eventData: " + eventData);
@@ -150,6 +158,45 @@ const fetchMainIronitPageData = async () => {
   }
 };
 
+// Get mishkanAsdod data
+
+//Concatinate both data in one object
+//Update date function formater for dd.mm.yyyy format
+
+const fetchMishkanAsdodData = async () => {
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${BOT_API_URLS.mishkanAshdod.API_KEY}`,
+    },
+  };
+
+  try {
+    const res = await fetch(
+      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.mishkanAshdod.MAIN_PAGE_SCRAPER_ID}/tasks/${BOT_API_URLS.mishkanAshdod.MAIN_PAGE_SCRAPER_TASK_KEY}`,
+      options
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    mishkanAshdodEventsCollection.value = data.result.capturedLists.Events;
+
+    mishkanAshdodEventsCollection.value.shift();
+
+    mishkanAshdodEventsCollection.value.map((event) => {
+      const formattedEventDate = updateFormatOfEventDate(event.eventDate);
+
+      return { ...event, eventDate: formattedEventDate };
+    });
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    mishkanAshdodEventsCollection.value = "Error fetching data";
+  }
+};
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 </script>
 
