@@ -60,7 +60,6 @@ const fetchEventAdditionalData = async () => {
     allItems,
     currentEventOriginalUrl
   );
-  console.log(additionalSingleEventData.value);
 };
 </script>
 
