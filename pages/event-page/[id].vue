@@ -94,13 +94,15 @@ const fetchEventAdditionalData = async () => {
           </div>
         </li>
 
-        <li>
+        <li v-if="additionalSingleEventData.length > 0">
           <div class="additional-info-img">
             <NuxtImg src="/images/walet.png" />
           </div>
           <div class="additional-info-text">
             <span class="additional-info-title">עֲלוּת </span>
-            <span class="additional-info-description">120</span>
+            <span class="additional-info-description">{{
+              additionalSingleEventData[0].capturedTexts.eventPrice
+            }}</span>
           </div>
         </li>
 
@@ -128,12 +130,23 @@ const fetchEventAdditionalData = async () => {
           src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
           alt="event image"
         />
+
+        <div v-if="additionalSingleEventData.length > 0" class="btn-wrapper">
+          <NuxtLink
+            class="action-btn"
+            target="_blank"
+            :to="additionalSingleEventData[0].inputParameters.originUrl"
+            >לקנות כרטיסים</NuxtLink
+          >
+        </div>
       </div>
       <div class="event-main-info">
         <span class="main-info-title">{{ currentEvent.eventTitle }}</span>
         <span class="location">{{ currentEvent.location }}</span>
-        <div class="description">
-          <span>Event description</span>
+        <div v-if="additionalSingleEventData.length > 0" class="description">
+          <div
+            v-html="additionalSingleEventData[0].capturedTexts.eventDescription"
+          ></div>
         </div>
       </div>
     </div>
@@ -248,6 +261,30 @@ const fetchEventAdditionalData = async () => {
       img {
         width: 100%;
         height: auto;
+      }
+    }
+
+    .btn-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 40px;
+
+      .action-btn {
+        padding: 10px 100px;
+        background-color: $blue-200;
+        color: $white;
+        font-size: 18px;
+
+        @media (max-width: 768px) {
+          padding: 10px 80px;
+          font-weight: 600;
+          font-size: 16px;
+        }
+
+        &:hover {
+          color: $gray-300;
+        }
       }
     }
 
