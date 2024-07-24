@@ -244,9 +244,6 @@ const fetchEventAdditionalData = async () => {
 
     @media (max-width: 768px) {
       padding: 10px;
-    }
-
-    @media (max-width: 425px) {
       flex-direction: column;
     }
 
