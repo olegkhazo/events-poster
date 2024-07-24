@@ -1,44 +1,67 @@
 <script setup>
 import { useCurrentEventStore } from "~/stores/currentEventStore";
-// import { BOT_API_URLS } from "~/utils/bot-api-urls";
+import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
 
-// const additionalEventsData = ref([]);
+const additionalSingleEventData = ref({});
 
 onMounted(() => {
-  // fetchEventAdditionalData();
+  fetchEventAdditionalData();
 });
 
+const currentEventOriginalUrl = currentEvent.value.eventPage;
+
+function filterByEventPage(dataArray, url) {
+  return dataArray.filter((item) => item.inputParameters.originUrl === url);
+}
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 
-// const fetchEventAdditionalData = async () => {
-//   const options = {
-//     method: "GET",
-//     headers: {
-//       Authorization: `Bearer ${BOT_API_URLS.ironit.BEARER}`,
-//     },
-//   };
+const fetchEventAdditionalData = async () => {
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${BOT_API_URLS.ironit.API_KEY}`,
+    },
+  };
 
-//   try {
-//     const res = await fetch(
-//       `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ADDITIONAL_DATA_SCRAPER_ID}/tasks`,
-//       options
-//     );
+  let allItems = [];
+  let currentPage = 1;
+  let hasMoreData = true;
 
-//     if (!res.ok) {
-//       throw new Error(`HTTP error! Status: ${res.status}`);
-//     }
+  while (hasMoreData) {
+    try {
+      const res = await fetch(
+        `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ADDITIONAL_DATA_SCRAPER_ID}/tasks?page=${currentPage}&pageSize=10`,
+        options
+      );
 
-//     const data = await res.json();
-//     additionalEventsData.value = data.result.robotTasks.items;
-//   } catch (error) {
-//     console.error("Error fetching data:", error);
-//     additionalEventsData.value = "Error fetching data";
-//   }
-// };
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
 
-console.log(currentEvent.value);
+      const data = await res.json();
+      const items = data.result.robotTasks.items;
+
+      allItems = allItems.concat(items);
+
+      if (items.length < 10) {
+        hasMoreData = false;
+      } else {
+        currentPage++;
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      hasMoreData = false;
+    }
+  }
+
+  additionalSingleEventData.value = filterByEventPage(
+    allItems,
+    currentEventOriginalUrl
+  );
+  console.log(additionalSingleEventData.value);
+};
 </script>
 
 <template>
