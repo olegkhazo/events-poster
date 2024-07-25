@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from "vue";
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
-import { daysOfWeek } from "~/utils/collections";
+import { daysOfWeek, monthsInHebrew } from "~/utils/collections";
 import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 dayjs.extend(weekday);
@@ -110,19 +110,27 @@ const eventsForSelectedDate = computed(() => {
 
 // Get data about current months and years for CalendarMonthSwitcher.vue
 const calendarMonthSwitcherData = {
-  currentMonthAndYear: computed(() =>
-    dayjs(new Date(currentYear.value, currentMonth.value)).format("MMMM YYYY")
-  ),
-  previousMonth: computed(() =>
-    dayjs(new Date(currentYear.value, currentMonth.value))
+  currentMonthAndYear: computed(() => {
+    const month = dayjs(new Date(currentYear.value, currentMonth.value)).format(
+      "MMMM"
+    );
+    const year = dayjs(new Date(currentYear.value, currentMonth.value)).format(
+      "YYYY"
+    );
+    return `${monthsInHebrew[month]} ${year}`;
+  }),
+  previousMonth: computed(() => {
+    const month = dayjs(new Date(currentYear.value, currentMonth.value))
       .subtract(1, "month")
-      .format("MMMM")
-  ),
-  nextMonth: computed(() =>
-    dayjs(new Date(currentYear.value, currentMonth.value))
+      .format("MMMM");
+    return monthsInHebrew[month];
+  }),
+  nextMonth: computed(() => {
+    const month = dayjs(new Date(currentYear.value, currentMonth.value))
       .add(1, "month")
-      .format("MMMM")
-  ),
+      .format("MMMM");
+    return monthsInHebrew[month];
+  }),
 };
 
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
