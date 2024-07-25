@@ -1,27 +1,31 @@
 <script setup>
 import { useCurrentEventStore } from "~/stores/currentEventStore";
 import { BOT_API_URLS } from "~/utils/bot-api-urls";
+import { onMounted, ref, watch } from "vue";
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
 
 const additionalSingleEventData = ref({});
-const currentEventOriginalUrl = currentEvent.value.eventPage;
-const relatedSite = ref("");
+const currentEventOriginalUrl = ref("");
 const dataIsLoaded = ref(false);
 
 onMounted(() => {
-  getRelatedSite();
+  // if (currentEvent.value && currentEvent.value.eventPage) {
+  //   currentEventOriginalUrl.value = currentEvent.value.eventPage;
+  fetchEventAdditionalData();
+  // }
 });
 
-function getRelatedSite() {
-  if (currentEventOriginalUrl.includes("ironit")) {
-    relatedSite.value = "ironit";
-  } else if (currentEventOriginalUrl.includes("mishkan-ashdod")) {
-    relatedSite.value = "mishkanAshdod";
+watch(currentEvent, (newVal) => {
+  if (newVal && newVal.eventPage) {
+    currentEventOriginalUrl.value = newVal.eventPage;
+    fetchEventAdditionalData();
   }
+});
 
-  fetchEventAdditionalData();
-}
+onBeforeUnmount(() => {
+  currentEvent.value = {};
+});
 
 function filterByEventPage(dataArray, url) {
   return dataArray.filter((item) => item.inputParameters.originUrl === url);
@@ -30,10 +34,17 @@ function filterByEventPage(dataArray, url) {
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 
 const fetchEventAdditionalData = async () => {
+  if (!currentEvent.value.siteDonor) {
+    console.error("siteDonor is not defined in currentEvent");
+    return;
+  }
+
   const options = {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${BOT_API_URLS[relatedSite.value].API_KEY}`,
+      Authorization: `Bearer ${
+        BOT_API_URLS[currentEvent.value.siteDonor].API_KEY
+      }`,
     },
   };
 
@@ -44,8 +55,8 @@ const fetchEventAdditionalData = async () => {
   while (hasMoreData) {
     try {
       const res = await fetch(
-        `${BOT_API_URLS[relatedSite.value].URL}/${
-          BOT_API_URLS[relatedSite.value].ADDITIONAL_DATA_SCRAPER_ID
+        `${BOT_API_URLS[currentEvent.value.siteDonor].URL}/${
+          BOT_API_URLS[currentEvent.value.siteDonor].ADDITIONAL_DATA_SCRAPER_ID
         }/tasks?page=${currentPage}&pageSize=10`,
         options
       );
@@ -72,7 +83,7 @@ const fetchEventAdditionalData = async () => {
 
   additionalSingleEventData.value = filterByEventPage(
     allItems.value,
-    currentEventOriginalUrl
+    currentEventOriginalUrl.value
   );
   dataIsLoaded.value = true;
 };

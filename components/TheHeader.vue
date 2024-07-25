@@ -42,7 +42,7 @@ function hideMobileMenu() {
         :class="{ 'mobile-menu': mobileMenuVisibility }"
       >
         <ul @click="hideMobileMenu">
-          <li><NuxtLink to="#">עלינו</NuxtLink></li>
+          <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
           <li><NuxtLink to="#">רשימת אירועים</NuxtLink></li>
         </ul>
       </div>
