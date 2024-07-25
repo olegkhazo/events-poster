@@ -10,10 +10,10 @@ const currentEventOriginalUrl = ref("");
 const dataIsLoaded = ref(false);
 
 onMounted(() => {
-  // if (currentEvent.value && currentEvent.value.eventPage) {
-  //   currentEventOriginalUrl.value = currentEvent.value.eventPage;
-  fetchEventAdditionalData();
-  // }
+  if (currentEvent.value && currentEvent.value.eventPage) {
+    currentEventOriginalUrl.value = currentEvent.value.eventPage;
+    fetchEventAdditionalData();
+  }
 });
 
 watch(currentEvent, (newVal) => {
