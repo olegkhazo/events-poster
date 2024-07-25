@@ -18,7 +18,7 @@ function hideMobileMenu() {
           <NuxtLink to="/"> האירועים הטובים ביותר </NuxtLink>
         </div>
         <ul class="desktop-nav">
-          <li><NuxtLink to="/about-us" target="_blank">עלינו</NuxtLink></li>
+          <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
           <li><NuxtLink to="#">רשימת אירועים</NuxtLink></li>
         </ul>
 
