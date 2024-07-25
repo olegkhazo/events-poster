@@ -11,7 +11,7 @@ export const BOT_API_URLS = {
       API_KEY: "ce288a74-7afa-494c-9581-ac1d4f70c511:ac2fd873-2837-469b-bebb-8ddc20f0c63a",
       MAIN_PAGE_SCRAPER_ID: "2e161947-200c-408a-8fe2-7ecadcaa5a4e",
       MAIN_PAGE_SCRAPER_TASK_KEY: "87175429-69a1-45e9-a253-c7c4468ecbf6", 
-      ADDITIONAL_DATA_SCRAPER_ID: "",
+      ADDITIONAL_DATA_SCRAPER_ID: "de2bcb2a-248a-42c8-939d-5633a336ee92",
     }
   };
   

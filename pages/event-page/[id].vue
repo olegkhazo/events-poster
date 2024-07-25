@@ -5,34 +5,48 @@ import { BOT_API_URLS } from "~/utils/bot-api-urls";
 const { currentEvent } = storeToRefs(useCurrentEventStore());
 
 const additionalSingleEventData = ref({});
+const currentEventOriginalUrl = currentEvent.value.eventPage;
+const relatedSite = ref("");
+const dataIsLoaded = ref(false);
 
 onMounted(() => {
-  fetchEventAdditionalData();
+  getRelatedSite();
 });
 
-const currentEventOriginalUrl = currentEvent.value.eventPage;
+function getRelatedSite() {
+  if (currentEventOriginalUrl.includes("ironit")) {
+    relatedSite.value = "ironit";
+  } else if (currentEventOriginalUrl.includes("mishkan-ashdod")) {
+    relatedSite.value = "mishkanAshdod";
+  }
+
+  fetchEventAdditionalData();
+}
 
 function filterByEventPage(dataArray, url) {
   return dataArray.filter((item) => item.inputParameters.originUrl === url);
 }
+
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 
 const fetchEventAdditionalData = async () => {
   const options = {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${BOT_API_URLS.ironit.API_KEY}`,
+      Authorization: `Bearer ${BOT_API_URLS[relatedSite.value].API_KEY}`,
     },
   };
 
-  let allItems = [];
+  const allItems = ref([]);
   let currentPage = 1;
   let hasMoreData = true;
 
   while (hasMoreData) {
     try {
       const res = await fetch(
-        `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ADDITIONAL_DATA_SCRAPER_ID}/tasks?page=${currentPage}&pageSize=10`,
+        `${BOT_API_URLS[relatedSite.value].URL}/${
+          BOT_API_URLS[relatedSite.value].ADDITIONAL_DATA_SCRAPER_ID
+        }/tasks?page=${currentPage}&pageSize=10`,
         options
       );
 
@@ -43,7 +57,7 @@ const fetchEventAdditionalData = async () => {
       const data = await res.json();
       const items = data.result.robotTasks.items;
 
-      allItems = allItems.concat(items);
+      allItems.value = allItems.value.concat(items);
 
       if (items.length < 10) {
         hasMoreData = false;
@@ -57,14 +71,15 @@ const fetchEventAdditionalData = async () => {
   }
 
   additionalSingleEventData.value = filterByEventPage(
-    allItems,
+    allItems.value,
     currentEventOriginalUrl
   );
+  dataIsLoaded.value = true;
 };
 </script>
 
 <template>
-  <div class="single-event-wrapper">
+  <div v-if="dataIsLoaded" class="single-event-wrapper">
     <h1 v-if="currentEvent.eventTitle" class="title">
       {{ currentEvent.eventTitle }}
     </h1>
@@ -93,7 +108,12 @@ const fetchEventAdditionalData = async () => {
           </div>
         </li>
 
-        <li v-if="additionalSingleEventData.length > 0">
+        <li
+          v-if="
+            additionalSingleEventData.length > 0 &&
+            additionalSingleEventData[0].capturedTexts.eventPrice
+          "
+        >
           <div class="additional-info-img">
             <NuxtImg src="/images/walet.png" />
           </div>
@@ -120,7 +140,15 @@ const fetchEventAdditionalData = async () => {
     <div class="img-and-description">
       <div class="event-img">
         <NuxtImg
-          v-if="currentEvent.image"
+          v-if="
+            additionalSingleEventData.length > 0 &&
+            additionalSingleEventData[0].capturedTexts.eventImage
+          "
+          :src="additionalSingleEventData[0].capturedTexts.eventImage"
+          alt="event image"
+        />
+        <NuxtImg
+          v-else-if="currentEvent.image"
           :src="currentEvent.image"
           alt="event image"
         />
@@ -154,10 +182,22 @@ const fetchEventAdditionalData = async () => {
       <NuxtLink class="back-btn" to="/">חזרה לאירועים</NuxtLink>
     </div>
   </div>
+  <div v-else class="preloader">
+    <NuxtImg src="/animation-cat.gif" alt="event image" />
+    <span>קבלת המידע...</span>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
+
+.preloader {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
 .single-event-wrapper {
   margin: 20px auto 100px auto;
