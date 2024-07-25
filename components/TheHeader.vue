@@ -15,16 +15,11 @@ function hideMobileMenu() {
     <nav>
       <div class="content-wrapper">
         <div class="logo">
-          <NuxtLink to="/">
-            האירועים הטובים ביותר
-            <!-- <NuxtImg src=""></NuxtImg> -->
-          </NuxtLink>
+          <NuxtLink to="/"> האירועים הטובים ביותר </NuxtLink>
         </div>
         <ul class="desktop-nav">
-          <li><NuxtLink to="#">בית</NuxtLink></li>
           <li><NuxtLink to="#">עלינו</NuxtLink></li>
-          <li><NuxtLink to="#">חֶברָה</NuxtLink></li>
-          <li><NuxtLink to="#">בלוג</NuxtLink></li>
+          <li><NuxtLink to="#">רשימת אירועים</NuxtLink></li>
         </ul>
 
         <NuxtImg
@@ -47,10 +42,8 @@ function hideMobileMenu() {
         :class="{ 'mobile-menu': mobileMenuVisibility }"
       >
         <ul @click="hideMobileMenu">
-          <li><NuxtLink to="#">בית</NuxtLink></li>
           <li><NuxtLink to="#">עלינו</NuxtLink></li>
-          <li><NuxtLink to="#">חֶברָה</NuxtLink></li>
-          <li><NuxtLink to="#">בלוג</NuxtLink></li>
+          <li><NuxtLink to="#">רשימת אירועים</NuxtLink></li>
         </ul>
       </div>
     </nav>
@@ -126,7 +119,7 @@ header {
 
       .desktop-nav {
         display: flex;
-        width: 25%;
+        width: 15%;
         justify-content: space-between;
 
         @media (max-width: 990px) {
