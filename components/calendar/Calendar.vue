@@ -16,9 +16,12 @@ const selectedDate = ref({});
 const selectedWeekIndex = ref(null);
 
 const ironitEventsCollection = ref([]);
+const mishkanAshdodEventsCollection = ref([]);
+const concantinatedEventsArray = ref([]);
 
 onMounted(() => {
   fetchMainIronitPageData();
+  fetchMishkanAsdodData();
 });
 
 const selectDate = (date, weekIndex) => {
@@ -35,8 +38,8 @@ const endOfMonth = computed(() =>
 );
 
 const daysMatrix = computed(() => {
-  const startOfFirstWeek = startOfMonth.value.startOf("isoWeek");
-  const endOfLastWeek = endOfMonth.value.endOf("isoWeek");
+  const startOfFirstWeek = startOfMonth.value.startOf("week"); // Начало недели - воскресенье
+  const endOfLastWeek = endOfMonth.value.endOf("week"); // Конец недели - суббота
   const days = [];
   let day = startOfFirstWeek;
 
@@ -45,7 +48,9 @@ const daysMatrix = computed(() => {
     day = day.add(1, "day");
   }
 
-  return Array.from({ length: 5 }, (_, i) => days.slice(i * 7, (i + 1) * 7));
+  return Array.from({ length: Math.ceil(days.length / 7) }, (_, i) =>
+    days.slice(i * 7, (i + 1) * 7)
+  );
 });
 
 function changeMonth(step) {
@@ -66,10 +71,16 @@ function updateFormatOfEventDate(eventData) {
   const splitDate = eventData.split(" ");
   const datePart = splitDate.slice(-1)[0];
 
-  // Check the string format
-  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-  if (dateRegex.test(datePart)) {
+  // Check the string format for DD/MM/YYYY
+  const slashDateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+  // Check the string format for DD.MM.YYYY
+  const dotDateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
+
+  if (slashDateRegex.test(datePart)) {
     return datePart;
+  } else if (dotDateRegex.test(datePart)) {
+    // Convert DD.MM.YYYY to DD/MM/YYYY
+    return datePart.replace(/\./g, "/");
   } else {
     console.error("Invalid date format in eventData: " + eventData);
     throw new Error("Invalid date format in eventData: " + eventData);
@@ -83,7 +94,7 @@ const eventsForSelectedDate = computed(() => {
 
   const formattedSelectedDate = dayjs(selectedDate.value).format("DD/MM/YYYY");
 
-  return ironitEventsCollection.value.filter((collection) => {
+  return concantinatedEventsArray.value.filter((collection) => {
     try {
       const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
 
@@ -150,6 +161,44 @@ const fetchMainIronitPageData = async () => {
   }
 };
 
+const fetchMishkanAsdodData = async () => {
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${BOT_API_URLS.mishkanAshdod.API_KEY}`,
+    },
+  };
+
+  try {
+    const res = await fetch(
+      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.mishkanAshdod.MAIN_PAGE_SCRAPER_ID}/tasks/${BOT_API_URLS.mishkanAshdod.MAIN_PAGE_SCRAPER_TASK_KEY}`,
+      options
+    );
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! Status: ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    mishkanAshdodEventsCollection.value = data.result.capturedLists.Events;
+
+    mishkanAshdodEventsCollection.value.shift();
+
+    mishkanAshdodEventsCollection.value.map((event) => {
+      const formattedEventDate = updateFormatOfEventDate(event.eventDate);
+
+      return { ...event, eventDate: formattedEventDate };
+    });
+    concantinatedEventsArray.value = [
+      ...mishkanAshdodEventsCollection.value,
+      ...ironitEventsCollection.value,
+    ];
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    mishkanAshdodEventsCollection.value = "Error fetching data";
+  }
+};
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 </script>
 

@@ -4,15 +4,28 @@ import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
 
-const additionalEventsData = ref([]);
+const additionalSingleEventData = ref({});
+const currentEventOriginalUrl = currentEvent.value.eventPage;
+const relatedSite = ref("");
+const dataIsLoaded = ref(false);
 
 onMounted(() => {
-  fetchEventAdditionalData();
+  getRelatedSite();
 });
 
-//Get data from robot "Event description"
-//Find necessary entry in data by link
-//Parse data from this entry
+function getRelatedSite() {
+  if (currentEventOriginalUrl.includes("ironit")) {
+    relatedSite.value = "ironit";
+  } else if (currentEventOriginalUrl.includes("mishkan-ashdod")) {
+    relatedSite.value = "mishkanAshdod";
+  }
+
+  fetchEventAdditionalData();
+}
+
+function filterByEventPage(dataArray, url) {
+  return dataArray.filter((item) => item.inputParameters.originUrl === url);
+}
 
 // BrowseAI ========================== BrowseAI ========================= BrowseAI
 
@@ -20,64 +33,98 @@ const fetchEventAdditionalData = async () => {
   const options = {
     method: "GET",
     headers: {
-      Authorization: `Bearer ${BOT_API_URLS.ironit.BEARER}`,
+      Authorization: `Bearer ${BOT_API_URLS[relatedSite.value].API_KEY}`,
     },
   };
 
-  try {
-    const res = await fetch(
-      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.ADDITIONAL_DATA_SCRAPER_ID}/tasks`,
-      options
-    );
+  const allItems = ref([]);
+  let currentPage = 1;
+  let hasMoreData = true;
 
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
+  while (hasMoreData) {
+    try {
+      const res = await fetch(
+        `${BOT_API_URLS[relatedSite.value].URL}/${
+          BOT_API_URLS[relatedSite.value].ADDITIONAL_DATA_SCRAPER_ID
+        }/tasks?page=${currentPage}&pageSize=10`,
+        options
+      );
+
+      if (!res.ok) {
+        throw new Error(`HTTP error! Status: ${res.status}`);
+      }
+
+      const data = await res.json();
+      const items = data.result.robotTasks.items;
+
+      allItems.value = allItems.value.concat(items);
+
+      if (items.length < 10) {
+        hasMoreData = false;
+      } else {
+        currentPage++;
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      hasMoreData = false;
     }
-
-    const data = await res.json();
-    additionalEventsData.value = data.result.robotTasks.items;
-    // console.log(additionalEventsData.value);
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    additionalEventsData.value = "Error fetching data";
   }
-};
 
-console.log(currentEvent.value);
+  additionalSingleEventData.value = filterByEventPage(
+    allItems.value,
+    currentEventOriginalUrl
+  );
+  dataIsLoaded.value = true;
+};
 </script>
 
 <template>
-  <div class="single-event-wrapper">
-    <h1 class="title">{{ currentEvent.event }}</h1>
+  <div v-if="dataIsLoaded" class="single-event-wrapper">
+    <h1 v-if="currentEvent.eventTitle" class="title">
+      {{ currentEvent.eventTitle }}
+    </h1>
     <div class="additional-info">
       <ul>
-        <li>
+        <li v-if="currentEvent.eventDate">
           <div class="additional-info-img">
             <NuxtImg src="/images/calendar.png" />
           </div>
           <div class="additional-info-text">
             <span class="additional-info-title">תַאֲרִיך</span>
-            <span class="additional-info-description">19.08.24</span>
+            <span class="additional-info-description">{{
+              currentEvent.eventDate
+            }}</span>
           </div>
         </li>
-        <li>
+        <li v-if="currentEvent.eventTime">
           <div class="additional-info-img">
             <NuxtImg src="/images/clock.png" />
           </div>
           <div class="additional-info-text">
             <span class="additional-info-title">זְמַן</span>
-            <span class="additional-info-description">10:00</span>
+            <span class="additional-info-description">{{
+              currentEvent.eventTime
+            }}</span>
           </div>
         </li>
-        <li>
+
+        <li
+          v-if="
+            additionalSingleEventData.length > 0 &&
+            additionalSingleEventData[0].capturedTexts.eventPrice
+          "
+        >
           <div class="additional-info-img">
             <NuxtImg src="/images/walet.png" />
           </div>
           <div class="additional-info-text">
             <span class="additional-info-title">עֲלוּת </span>
-            <span class="additional-info-description">120</span>
+            <span class="additional-info-description">{{
+              additionalSingleEventData[0].capturedTexts.eventPrice
+            }}</span>
           </div>
         </li>
+
         <li>
           <div class="additional-info-img">
             <NuxtImg src="/images/label.png" />
@@ -92,11 +139,42 @@ console.log(currentEvent.value);
 
     <div class="img-and-description">
       <div class="event-img">
-        <NuxtImg src="/images/celebration.jpg" alt="event img" />
+        <NuxtImg
+          v-if="
+            additionalSingleEventData.length > 0 &&
+            additionalSingleEventData[0].capturedTexts.eventImage
+          "
+          :src="additionalSingleEventData[0].capturedTexts.eventImage"
+          alt="event image"
+        />
+        <NuxtImg
+          v-else-if="currentEvent.image"
+          :src="currentEvent.image"
+          alt="event image"
+        />
+        <NuxtImg
+          v-else
+          src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
+          alt="event image"
+        />
+
+        <div v-if="additionalSingleEventData.length > 0" class="btn-wrapper">
+          <NuxtLink
+            class="action-btn"
+            target="_blank"
+            :to="additionalSingleEventData[0].inputParameters.originUrl"
+            >לקנות כרטיסים</NuxtLink
+          >
+        </div>
       </div>
       <div class="event-main-info">
-        <span class="main-info-title">{{ currentEvent.event }}</span>
-        <span class="description">{{ currentEvent.description }}</span>
+        <span class="main-info-title">{{ currentEvent.eventTitle }}</span>
+        <span class="location">{{ currentEvent.location }}</span>
+        <div v-if="additionalSingleEventData.length > 0" class="description">
+          <div
+            v-html="additionalSingleEventData[0].capturedTexts.eventDescription"
+          ></div>
+        </div>
       </div>
     </div>
 
@@ -104,10 +182,22 @@ console.log(currentEvent.value);
       <NuxtLink class="back-btn" to="/">חזרה לאירועים</NuxtLink>
     </div>
   </div>
+  <div v-else class="preloader">
+    <NuxtImg src="/animation-cat.gif" alt="event image" />
+    <span>קבלת המידע...</span>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
+
+.preloader {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
 .single-event-wrapper {
   margin: 20px auto 100px auto;
@@ -185,16 +275,15 @@ console.log(currentEvent.value);
   }
 
   .img-and-description {
+    width: 100%;
     margin: 10px auto 0 auto;
     padding: 40px;
     border: 1px solid $gray-300;
     display: flex;
+    justify-content: space-evenly;
 
     @media (max-width: 768px) {
       padding: 10px;
-    }
-
-    @media (max-width: 425px) {
       flex-direction: column;
     }
 
@@ -202,11 +291,7 @@ console.log(currentEvent.value);
       max-width: 350px;
 
       @media (max-width: 768px) {
-        max-width: 220px;
-      }
-
-      @media (max-width: 425px) {
-        max-width: 100%;
+        width: 100%;
       }
 
       img {
@@ -215,10 +300,40 @@ console.log(currentEvent.value);
       }
     }
 
+    .btn-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 40px;
+
+      .action-btn {
+        padding: 10px 100px;
+        background-color: $blue-200;
+        color: $white;
+        font-size: 18px;
+
+        @media (max-width: 768px) {
+          padding: 10px 80px;
+          font-weight: 600;
+          font-size: 16px;
+        }
+
+        &:hover {
+          color: $gray-300;
+        }
+      }
+    }
+
     .event-main-info {
       display: flex;
       flex-direction: column;
       margin-right: 20px;
+      width: 50%;
+
+      @media (max-width: 768px) {
+        width: 90%;
+        margin: 30px 0 20px 0;
+      }
 
       .main-info-title {
         font-size: 18px;
@@ -243,6 +358,12 @@ console.log(currentEvent.value);
       border: 1px solid $blue-200;
       color: $blue-200;
       font-size: 18px;
+
+      @media (max-width: 768px) {
+        padding: 10px 80px;
+        font-weight: 600;
+        font-size: 16px;
+      }
 
       &:hover {
         background-color: $blue-200;
