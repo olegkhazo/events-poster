@@ -19,7 +19,7 @@ function hideMobileMenu() {
         </div>
         <ul class="desktop-nav">
           <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
-          <li><NuxtLink to="#">רשימת אירועים</NuxtLink></li>
+          <li><NuxtLink to="/all-events">רשימת אירועים</NuxtLink></li>
         </ul>
 
         <NuxtImg
@@ -43,7 +43,7 @@ function hideMobileMenu() {
       >
         <ul @click="hideMobileMenu">
           <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
-          <li><NuxtLink to="#">רשימת אירועים</NuxtLink></li>
+          <li><NuxtLink to="/all-events">רשימת אירועים</NuxtLink></li>
         </ul>
       </div>
     </nav>
