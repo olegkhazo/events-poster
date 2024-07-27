@@ -1,11 +1,14 @@
 <script setup></script>
 
 <template>
-  <div class="all-event-wrapper"></div>
+  <div class="all-events-wrapper">
+    <TheFilter />
+  </div>
 </template>
 
 <style lang="scss" scoped>
-.all-event-wrapper {
+.all-events-wrapper {
+  min-height: 60vh;
   margin: 20px auto 100px auto;
   display: flex;
   flex-direction: column;
