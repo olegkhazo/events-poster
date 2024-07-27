@@ -250,7 +250,8 @@ const fetchMishkanAsdodData = async () => {
             <h3>
               אירועים עבור
               <span class="date-of-list">
-                {{ selectedDate.format("MMMM D") }}
+                {{ selectedDate.format("D") }}
+                {{ calendarMonthSwitcherData.currentMonthAndYear }}
               </span>
             </h3>
             <hr />
