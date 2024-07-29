@@ -24,63 +24,6 @@ const props = defineProps({
       </div>
     </NuxtLink>
   </div>
-  <div class="single-event">
-    <NuxtLink :to="'/event-page/'" class="single-event-link">
-      <div class="event-img">
-        <NuxtImg
-          src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-          alt="event image"
-        />
-      </div>
-      <div class="event-description">
-        <span class="date"> Event Date </span>
-        <span class="time">
-          <NuxtImg src="/images/clock.png" alt="clock" />
-          Event Time
-        </span>
-        <span class="location">Event location</span>
-        <span class="title"> Event Title </span>
-      </div>
-    </NuxtLink>
-  </div>
-  <div class="single-event">
-    <NuxtLink :to="'/event-page/'" class="single-event-link">
-      <div class="event-img">
-        <NuxtImg
-          src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-          alt="event image"
-        />
-      </div>
-      <div class="event-description">
-        <span class="date"> Event Date </span>
-        <span class="time">
-          <NuxtImg src="/images/clock.png" alt="clock" />
-          Event Time
-        </span>
-        <span class="location">Event location</span>
-        <span class="title"> Event Title </span>
-      </div>
-    </NuxtLink>
-  </div>
-  <div class="single-event">
-    <NuxtLink :to="'/event-page/'" class="single-event-link">
-      <div class="event-img">
-        <NuxtImg
-          src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-          alt="event image"
-        />
-      </div>
-      <div class="event-description">
-        <span class="date"> Event Date </span>
-        <span class="time">
-          <NuxtImg src="/images/clock.png" alt="clock" />
-          Event Time
-        </span>
-        <span class="location">Event location</span>
-        <span class="title"> Event Title </span>
-      </div>
-    </NuxtLink>
-  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -121,7 +64,8 @@ const props = defineProps({
       max-width: 100%;
 
       @media (max-width: 768px) {
-        max-width: 120px;
+        max-width: 150px;
+        margin-right: 20px;
       }
 
       img {

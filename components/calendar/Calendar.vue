@@ -21,7 +21,7 @@ const concantinatedEventsArray = ref([]);
 
 onMounted(() => {
   fetchMainIronitPageData();
-  fetchMishkanAsdodData();
+  fetchMishkanAshdodData();
 });
 
 const selectDate = (date, weekIndex) => {
@@ -169,7 +169,7 @@ const fetchMainIronitPageData = async () => {
   }
 };
 
-const fetchMishkanAsdodData = async () => {
+const fetchMishkanAshdodData = async () => {
   const options = {
     method: "GET",
     headers: {

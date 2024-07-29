@@ -136,7 +136,7 @@ const fetchEventAdditionalData = async () => {
           </div>
         </li>
 
-        <li>
+        <!-- <li>
           <div class="additional-info-img">
             <NuxtImg src="/images/label.png" />
           </div>
@@ -144,7 +144,7 @@ const fetchEventAdditionalData = async () => {
             <span class="additional-info-title">תוויות</span>
             <span class="additional-info-description">בזמן</span>
           </div>
-        </li>
+        </li> -->
       </ul>
     </div>
 
