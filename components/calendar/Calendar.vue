@@ -2,9 +2,10 @@
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
+
 import { daysOfWeek, monthsInHebrew } from "~/utils/collections";
-import { BOT_API_URLS } from "~/utils/bot-api-urls";
 import { updateFormatOfEventDate } from "~/utils/";
+import { fetchPageData } from "~/utils/data-acquisition";
 
 dayjs.extend(weekday);
 dayjs.extend(isoWeek);
@@ -19,9 +20,23 @@ const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
 const concantinatedEventsArray = ref([]);
 
-onMounted(() => {
-  fetchMainIronitPageData();
-  fetchMishkanAshdodData();
+onMounted(async () => {
+  try {
+    ironitEventsCollection.value = await fetchPageData("ironit");
+    mishkanAshdodEventsCollection.value = await fetchPageData("mishkanAshdod");
+
+    if (
+      ironitEventsCollection.value.length > 0 &&
+      mishkanAshdodEventsCollection.value.length > 0
+    ) {
+      concantinatedEventsArray.value = [
+        ...mishkanAshdodEventsCollection.value,
+        ...ironitEventsCollection.value,
+      ];
+    }
+  } catch (error) {
+    console.error("Error during onMounted:", error);
+  }
 });
 
 const selectDate = (date, weekIndex) => {
@@ -38,8 +53,8 @@ const endOfMonth = computed(() =>
 );
 
 const daysMatrix = computed(() => {
-  const startOfFirstWeek = startOfMonth.value.startOf("week"); // Начало недели - воскресенье
-  const endOfLastWeek = endOfMonth.value.endOf("week"); // Конец недели - суббота
+  const startOfFirstWeek = startOfMonth.value.startOf("week");
+  const endOfLastWeek = endOfMonth.value.endOf("week");
   const days = [];
   let day = startOfFirstWeek;
 
@@ -112,82 +127,6 @@ const calendarMonthSwitcherData = {
     return monthsInHebrew[month];
   }),
 };
-
-// BrowseAI ========================== BrowseAI ========================= BrowseAI
-
-// Get Ironit data from the main page
-const fetchMainIronitPageData = async () => {
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${BOT_API_URLS.ironit.API_KEY}`,
-    },
-  };
-
-  try {
-    const res = await fetch(
-      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.MAIN_PAGE_SCRAPER_ID}/tasks/${BOT_API_URLS.ironit.MAIN_PAGE_SCRAPER_TASK_KEY}`,
-      options
-    );
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    ironitEventsCollection.value = data.result.capturedLists.Events.map(
-      (event) => {
-        const formattedEventDate = updateFormatOfEventDate(event.eventDate);
-
-        return { ...event, eventDate: formattedEventDate };
-      }
-    );
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    ironitEventsCollection.value = "Error fetching data";
-  }
-};
-
-const fetchMishkanAshdodData = async () => {
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${BOT_API_URLS.mishkanAshdod.API_KEY}`,
-    },
-  };
-
-  try {
-    const res = await fetch(
-      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.mishkanAshdod.MAIN_PAGE_SCRAPER_ID}/tasks/${BOT_API_URLS.mishkanAshdod.MAIN_PAGE_SCRAPER_TASK_KEY}`,
-      options
-    );
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    mishkanAshdodEventsCollection.value = data.result.capturedLists.Events;
-
-    mishkanAshdodEventsCollection.value.shift();
-
-    mishkanAshdodEventsCollection.value.map((event) => {
-      const formattedEventDate = updateFormatOfEventDate(event.eventDate);
-
-      return { ...event, eventDate: formattedEventDate };
-    });
-    concantinatedEventsArray.value = [
-      ...mishkanAshdodEventsCollection.value,
-      ...ironitEventsCollection.value,
-    ];
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    mishkanAshdodEventsCollection.value = "Error fetching data";
-  }
-};
-// BrowseAI ========================== BrowseAI ========================= BrowseAI
 </script>
 
 <template>

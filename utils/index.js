@@ -13,7 +13,6 @@ export function updateFormatOfEventDate(eventData) {
       // Convert DD.MM.YYYY to DD/MM/YYYY
       return datePart.replace(/\./g, "/");
     } else {
-      console.error("Invalid date format in eventData: " + eventData);
-      throw new Error("Invalid date format in eventData: " + eventData);
+     return("");
     }
   }
