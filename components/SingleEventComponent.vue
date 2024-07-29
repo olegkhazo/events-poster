@@ -115,7 +115,6 @@ const props = defineProps({
 
     @media (max-width: 768px) {
       flex-direction: row;
-      max-width: 120px;
     }
 
     .event-img {
