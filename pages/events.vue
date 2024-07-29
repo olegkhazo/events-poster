@@ -1,10 +1,12 @@
 <script setup>
 import { fetchPageData } from "~/utils/data-acquisition";
 import { sortByDate } from "~/utils";
+import { ref, computed } from "vue";
 
 const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
 const concantinatedEventsArray = ref([]);
+const eventsAmount = ref(20);
 
 onMounted(async () => {
   try {
@@ -28,24 +30,36 @@ onMounted(async () => {
     console.error("Error during onMounted:", error);
   }
 });
+
+const displayedEvents = computed(() => {
+  return concantinatedEventsArray.value.slice(0, eventsAmount.value);
+});
+
+function showNextEvents() {
+  eventsAmount.value += 20;
+  console.log(eventsAmount.value);
+}
 </script>
 
 <template>
   <div class="all-events-wrapper">
     <TheFilter />
     <div class="events-wrapper">
-      <div
-        class="event"
-        v-for="event in concantinatedEventsArray"
-        :key="event.Position"
-      >
+      <div class="event" v-for="event in displayedEvents" :key="event.Position">
         <SingleEventComponent :single-event-data="event" />
       </div>
+    </div>
+    <div class="btn-wrapper">
+      <button @click="showNextEvents" class="events-show-btn">
+        Show Next Events
+      </button>
     </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import "@/assets/styles/_variables.scss";
+
 .all-events-wrapper {
   min-height: 60vh;
   margin: 20px auto 100px auto;
@@ -72,6 +86,21 @@ onMounted(async () => {
       @media (max-width: 768px) {
         flex-direction: column;
       }
+    }
+  }
+
+  .btn-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+
+    .events-show-btn {
+      padding: 10px 100px;
+      border: 1px solid $blue-200;
+      color: $blue-200;
+      background-color: $white;
+      font-size: 18px;
     }
   }
 }
