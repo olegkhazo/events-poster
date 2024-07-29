@@ -20,9 +20,7 @@ export const fetchPageData = async (source) => {
     }
 
     const data = await res.json();
-    console.log(data)
     return data.result.capturedLists.Events.map((event) => {
-      console.log(event.eventDate);
       const formattedEventDate = updateFormatOfEventDate(event.eventDate);
       return { ...event, eventDate: formattedEventDate };
     });

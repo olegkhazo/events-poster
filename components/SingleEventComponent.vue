@@ -2,25 +2,42 @@
 const props = defineProps({
   singleEventData: Object,
 });
+
+console.log(props.singleEventData.Position);
 </script>
 
 <template>
   <div class="single-event">
-    <NuxtLink :to="'/event-page/'" class="single-event-link">
+    <NuxtLink
+      :to="'/event-page/' + props.singleEventData.Position"
+      class="single-event-link"
+    >
       <div class="event-img">
         <NuxtImg
+          v-if="props.singleEventData.image"
+          :src="props.singleEventData.image"
+          :alt="props.singleEventData.eventAltText"
+        />
+        <NuxtImg
+          v-else
           src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-          alt="event image"
+          alt="image"
         />
       </div>
       <div class="event-description">
-        <span class="date"> Event Date </span>
-        <span class="time">
+        <span v-if="props.singleEventData.eventDate" class="date">{{
+          props.singleEventData.eventDate
+        }}</span>
+        <span v-if="props.singleEventData.eventTime" class="time">
           <NuxtImg src="/images/clock.png" alt="clock" />
-          Event Time
+          {{ props.singleEventData.eventTime }}
         </span>
-        <span class="location">Event location</span>
-        <span class="title"> Event Title </span>
+        <span v-if="props.singleEventData.location" class="location">{{
+          props.singleEventData.location
+        }}</span>
+        <span v-if="props.singleEventData.eventTitle" class="title">
+          {{ props.singleEventData.eventTitle }}
+        </span>
       </div>
     </NuxtLink>
   </div>

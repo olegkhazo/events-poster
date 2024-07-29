@@ -16,3 +16,11 @@ export function updateFormatOfEventDate(eventData) {
      return("");
     }
   }
+
+export function sortByDate(events) {
+  return events.sort((a, b) => {
+    const dateA = new Date(a.eventDate.split("/").reverse().join("-"));
+    const dateB = new Date(b.eventDate.split("/").reverse().join("-"));
+    return dateA - dateB;
+  });
+}

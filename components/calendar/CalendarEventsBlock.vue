@@ -36,10 +36,10 @@ function recordEventToStore(event) {
           <NuxtImg
             v-else
             src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-            :alt="event.eventAltText"
+            alt="image"
           />
         </div>
-        <div class="event-description">
+        <div class="event-date">
           <span v-if="event.eventDate" class="date">
             {{ event.eventDate }}</span
           >
@@ -91,7 +91,7 @@ function recordEventToStore(event) {
         }
       }
 
-      .event-description {
+      .event-date {
         margin-right: 20px;
 
         span {
