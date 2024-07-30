@@ -1,12 +1,12 @@
 <script setup>
 import { fetchPageData } from "~/utils/data-acquisition";
 import { sortByDate } from "~/utils";
-import { ref, computed } from "vue";
 
 const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
 const concantinatedEventsArray = ref([]);
 const eventsAmount = ref(20);
+const dataIsLoaded = ref(false);
 
 onMounted(async () => {
   try {
@@ -26,6 +26,8 @@ onMounted(async () => {
         concantinatedEventsArray.value
       );
     }
+
+    dataIsLoaded.value = true;
   } catch (error) {
     console.error("Error during onMounted:", error);
   }
@@ -42,7 +44,7 @@ function showNextEvents() {
 </script>
 
 <template>
-  <div class="all-events-wrapper">
+  <div v-if="dataIsLoaded" class="all-events-wrapper">
     <TheFilter />
     <div class="events-wrapper">
       <div class="event" v-for="event in displayedEvents" :key="event.Position">
@@ -54,6 +56,10 @@ function showNextEvents() {
         Show Next Events
       </button>
     </div>
+  </div>
+  <div v-else class="preloader">
+    <NuxtImg src="/animation-cat.gif" alt="event image" />
+    <span>קבלת המידע...</span>
   </div>
 </template>
 
@@ -103,5 +109,13 @@ function showNextEvents() {
       font-size: 18px;
     }
   }
+}
+
+.preloader {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 </style>
