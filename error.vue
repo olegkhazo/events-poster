@@ -3,7 +3,10 @@
   <div class="content-wrapper">
     <div class="error-page-content">
       <h1>Whoops</h1>
-      <p>We seemed to have misplaced that page. You can navigate our site using the links below.</p>
+      <p>
+        We seemed to have misplaced that page. You can navigate our site using
+        the links below.
+      </p>
       <div class="links-nav">
         <NuxtLink to="/">Home</NuxtLink>
       </div>
@@ -24,6 +27,7 @@
   font-size: 16px;
   display: flex;
   justify-content: space-between;
+  min-height: 80vh;
 
   @media (max-width: 1070px) {
     flex-direction: column;

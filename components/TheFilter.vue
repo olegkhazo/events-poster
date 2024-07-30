@@ -21,6 +21,7 @@ function updateCurrentFilter(newFilter) {
         >{{ filter }}</span
       >
     </div>
+    <input class="input-filter" type="search" placeholder="חפש לפי שם" />
   </div>
 </template>
 
@@ -30,6 +31,7 @@ function updateCurrentFilter(newFilter) {
 .filter-wrapper {
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   margin: 30px 0;
@@ -55,6 +57,11 @@ function updateCurrentFilter(newFilter) {
       color: $blue-200;
     }
   }
+
+  .input-filter {
+    margin-top: 15px;
+    width: 280px;
+    padding: 5px;
+  }
 }
 </style>
-~/stores/filtersStore

@@ -1,10 +1,11 @@
 <script setup>
-import { ref, onMounted, computed } from "vue";
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
-import { daysOfWeek } from "~/utils/collections";
-import { BOT_API_URLS } from "~/utils/bot-api-urls";
+
+import { daysOfWeek, monthsInHebrew } from "~/utils/collections";
+import { updateFormatOfEventDate } from "~/utils/";
+import { fetchPageData } from "~/utils/data-acquisition";
 
 dayjs.extend(weekday);
 dayjs.extend(isoWeek);
@@ -19,9 +20,23 @@ const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
 const concantinatedEventsArray = ref([]);
 
-onMounted(() => {
-  fetchMainIronitPageData();
-  fetchMishkanAsdodData();
+onMounted(async () => {
+  try {
+    ironitEventsCollection.value = await fetchPageData("ironit");
+    mishkanAshdodEventsCollection.value = await fetchPageData("mishkanAshdod");
+
+    if (
+      ironitEventsCollection.value.length > 0 &&
+      mishkanAshdodEventsCollection.value.length > 0
+    ) {
+      concantinatedEventsArray.value = [
+        ...mishkanAshdodEventsCollection.value,
+        ...ironitEventsCollection.value,
+      ];
+    }
+  } catch (error) {
+    console.error("Error during onMounted:", error);
+  }
 });
 
 const selectDate = (date, weekIndex) => {
@@ -38,8 +53,8 @@ const endOfMonth = computed(() =>
 );
 
 const daysMatrix = computed(() => {
-  const startOfFirstWeek = startOfMonth.value.startOf("week"); // Начало недели - воскресенье
-  const endOfLastWeek = endOfMonth.value.endOf("week"); // Конец недели - суббота
+  const startOfFirstWeek = startOfMonth.value.startOf("week");
+  const endOfLastWeek = endOfMonth.value.endOf("week");
   const days = [];
   let day = startOfFirstWeek;
 
@@ -67,26 +82,7 @@ function changeMonth(step) {
   }
 }
 
-function updateFormatOfEventDate(eventData) {
-  const splitDate = eventData.split(" ");
-  const datePart = splitDate.slice(-1)[0];
-
-  // Check the string format for DD/MM/YYYY
-  const slashDateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-  // Check the string format for DD.MM.YYYY
-  const dotDateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
-
-  if (slashDateRegex.test(datePart)) {
-    return datePart;
-  } else if (dotDateRegex.test(datePart)) {
-    // Convert DD.MM.YYYY to DD/MM/YYYY
-    return datePart.replace(/\./g, "/");
-  } else {
-    console.error("Invalid date format in eventData: " + eventData);
-    throw new Error("Invalid date format in eventData: " + eventData);
-  }
-}
-
+// Events for single date
 const eventsForSelectedDate = computed(() => {
   if (!selectedDate.value) {
     return [];
@@ -108,98 +104,48 @@ const eventsForSelectedDate = computed(() => {
   });
 });
 
+// Get object events for every day
+const eventsForDay = computed(() => {
+  const events = {};
+
+  concantinatedEventsArray.value.forEach((collection) => {
+    try {
+      const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
+      if (!events[formattedEventDate]) {
+        events[formattedEventDate] = [];
+      }
+      events[formattedEventDate].push(collection);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+    }
+  });
+  return events;
+});
+
 // Get data about current months and years for CalendarMonthSwitcher.vue
 const calendarMonthSwitcherData = {
-  currentMonthAndYear: computed(() =>
-    dayjs(new Date(currentYear.value, currentMonth.value)).format("MMMM YYYY")
-  ),
-  previousMonth: computed(() =>
-    dayjs(new Date(currentYear.value, currentMonth.value))
+  currentMonthAndYear: computed(() => {
+    const month = dayjs(new Date(currentYear.value, currentMonth.value)).format(
+      "MMMM"
+    );
+    const year = dayjs(new Date(currentYear.value, currentMonth.value)).format(
+      "YYYY"
+    );
+    return `${monthsInHebrew[month]} ${year}`;
+  }),
+  previousMonth: computed(() => {
+    const month = dayjs(new Date(currentYear.value, currentMonth.value))
       .subtract(1, "month")
-      .format("MMMM")
-  ),
-  nextMonth: computed(() =>
-    dayjs(new Date(currentYear.value, currentMonth.value))
+      .format("MMMM");
+    return monthsInHebrew[month];
+  }),
+  nextMonth: computed(() => {
+    const month = dayjs(new Date(currentYear.value, currentMonth.value))
       .add(1, "month")
-      .format("MMMM")
-  ),
+      .format("MMMM");
+    return monthsInHebrew[month];
+  }),
 };
-
-// BrowseAI ========================== BrowseAI ========================= BrowseAI
-
-// Get Ironit data from the main page
-const fetchMainIronitPageData = async () => {
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${BOT_API_URLS.ironit.API_KEY}`,
-    },
-  };
-
-  try {
-    const res = await fetch(
-      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.ironit.MAIN_PAGE_SCRAPER_ID}/tasks/${BOT_API_URLS.ironit.MAIN_PAGE_SCRAPER_TASK_KEY}`,
-      options
-    );
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    ironitEventsCollection.value = data.result.capturedLists.Events.map(
-      (event) => {
-        const formattedEventDate = updateFormatOfEventDate(event.eventDate);
-
-        return { ...event, eventDate: formattedEventDate };
-      }
-    );
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    ironitEventsCollection.value = "Error fetching data";
-  }
-};
-
-const fetchMishkanAsdodData = async () => {
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${BOT_API_URLS.mishkanAshdod.API_KEY}`,
-    },
-  };
-
-  try {
-    const res = await fetch(
-      `${BOT_API_URLS.ironit.URL}/${BOT_API_URLS.mishkanAshdod.MAIN_PAGE_SCRAPER_ID}/tasks/${BOT_API_URLS.mishkanAshdod.MAIN_PAGE_SCRAPER_TASK_KEY}`,
-      options
-    );
-
-    if (!res.ok) {
-      throw new Error(`HTTP error! Status: ${res.status}`);
-    }
-
-    const data = await res.json();
-
-    mishkanAshdodEventsCollection.value = data.result.capturedLists.Events;
-
-    mishkanAshdodEventsCollection.value.shift();
-
-    mishkanAshdodEventsCollection.value.map((event) => {
-      const formattedEventDate = updateFormatOfEventDate(event.eventDate);
-
-      return { ...event, eventDate: formattedEventDate };
-    });
-    concantinatedEventsArray.value = [
-      ...mishkanAshdodEventsCollection.value,
-      ...ironitEventsCollection.value,
-    ];
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    mishkanAshdodEventsCollection.value = "Error fetching data";
-  }
-};
-// BrowseAI ========================== BrowseAI ========================= BrowseAI
 </script>
 
 <template>
@@ -230,7 +176,13 @@ const fetchMishkanAsdodData = async () => {
             @click="selectDate(day, weekIndex)"
           >
             <span class="day-date">{{ day.date() }}</span>
-            <span class="day-date-indicator"></span>
+            <span
+              v-if="
+                eventsForDay[day.format('DD/MM/YYYY')] &&
+                eventsForDay[day.format('DD/MM/YYYY')].length > 0
+              "
+              class="day-date-indicator"
+            ></span>
           </div>
           <div
             v-if="
@@ -242,7 +194,8 @@ const fetchMishkanAsdodData = async () => {
             <h3>
               אירועים עבור
               <span class="date-of-list">
-                {{ selectedDate.format("MMMM D") }}
+                {{ selectedDate.format("D") }}
+                {{ calendarMonthSwitcherData.currentMonthAndYear }}
               </span>
             </h3>
             <hr />
