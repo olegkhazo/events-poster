@@ -82,6 +82,7 @@ function changeMonth(step) {
   }
 }
 
+// Events for single date
 const eventsForSelectedDate = computed(() => {
   if (!selectedDate.value) {
     return [];
@@ -101,6 +102,24 @@ const eventsForSelectedDate = computed(() => {
       return false;
     }
   });
+});
+
+// Get object events for every day
+const eventsForDay = computed(() => {
+  const events = {};
+
+  concantinatedEventsArray.value.forEach((collection) => {
+    try {
+      const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
+      if (!events[formattedEventDate]) {
+        events[formattedEventDate] = [];
+      }
+      events[formattedEventDate].push(collection);
+    } catch (error) {
+      console.error("Error formatting date:", error);
+    }
+  });
+  return events;
 });
 
 // Get data about current months and years for CalendarMonthSwitcher.vue
@@ -157,7 +176,13 @@ const calendarMonthSwitcherData = {
             @click="selectDate(day, weekIndex)"
           >
             <span class="day-date">{{ day.date() }}</span>
-            <span class="day-date-indicator"></span>
+            <span
+              v-if="
+                eventsForDay[day.format('DD/MM/YYYY')] &&
+                eventsForDay[day.format('DD/MM/YYYY')].length > 0
+              "
+              class="day-date-indicator"
+            ></span>
           </div>
           <div
             v-if="
