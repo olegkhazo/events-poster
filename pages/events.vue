@@ -68,7 +68,7 @@ function showNextEvents() {
 
 .all-events-wrapper {
   min-height: 60vh;
-  margin: 20px auto 100px auto;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   width: 90%;
@@ -86,6 +86,7 @@ function showNextEvents() {
     .event {
       display: flex;
       margin-top: 20px;
+      background: white;
       flex-wrap: wrap;
       justify-content: space-between;
 
@@ -100,6 +101,7 @@ function showNextEvents() {
     align-items: center;
     justify-content: center;
     margin-top: 40px;
+    margin-bottom: 50px;
 
     .events-show-btn {
       padding: 10px 100px;
@@ -107,6 +109,7 @@ function showNextEvents() {
       color: $blue-200;
       background-color: $white;
       font-size: 18px;
+      cursor: pointer;
     }
   }
 }

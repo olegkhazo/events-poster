@@ -37,6 +37,7 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
     display: flex;
     align-items: center;
     border: 1px solid $black;
+    background: $white;
     padding: 5px 10px;
     cursor: pointer;
     color: $black;

@@ -228,6 +228,7 @@ const fetchEventAdditionalData = async () => {
 
   .additional-info {
     padding: 10px;
+    background: $white;
     border: 1px solid $gray-300;
 
     @media (max-width: 768px) {
@@ -291,6 +292,7 @@ const fetchEventAdditionalData = async () => {
     padding: 40px;
     border: 1px solid $gray-300;
     display: flex;
+    background: white;
     justify-content: space-evenly;
 
     @media (max-width: 768px) {
@@ -364,11 +366,13 @@ const fetchEventAdditionalData = async () => {
     align-items: center;
     justify-content: center;
     margin-top: 40px;
+
     .back-btn {
       padding: 10px 100px;
       border: 1px solid $blue-200;
       color: $blue-200;
       font-size: 18px;
+      background-color: $white;
 
       @media (max-width: 768px) {
         padding: 10px 80px;

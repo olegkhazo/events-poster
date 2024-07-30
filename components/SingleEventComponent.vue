@@ -50,7 +50,6 @@ console.log(props.singleEventData.Position);
   width: 250px;
   border: 1px solid $gray-100;
   padding-bottom: 25px;
-  margin-bottom: 40px;
   cursor: pointer;
 
   &:hover {
