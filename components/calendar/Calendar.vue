@@ -2,7 +2,9 @@
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
+import { useAllEventsStore } from "~/stores/allEventsStore";
 
+const { allEvents } = storeToRefs(useAllEventsStore());
 import { daysOfWeek, monthsInHebrew } from "~/utils/collections";
 import { updateFormatOfEventDate } from "~/utils/";
 import { fetchPageData } from "~/utils/data-acquisition";
@@ -18,7 +20,6 @@ const selectedWeekIndex = ref(null);
 
 const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
-const concantinatedEventsArray = ref([]);
 
 onMounted(async () => {
   try {
@@ -29,7 +30,7 @@ onMounted(async () => {
       ironitEventsCollection.value.length > 0 &&
       mishkanAshdodEventsCollection.value.length > 0
     ) {
-      concantinatedEventsArray.value = [
+      allEvents.value = [
         ...mishkanAshdodEventsCollection.value,
         ...ironitEventsCollection.value,
       ];
@@ -90,7 +91,7 @@ const eventsForSelectedDate = computed(() => {
 
   const formattedSelectedDate = dayjs(selectedDate.value).format("DD/MM/YYYY");
 
-  return concantinatedEventsArray.value.filter((collection) => {
+  return allEvents.value.filter((collection) => {
     try {
       const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
 
@@ -108,7 +109,7 @@ const eventsForSelectedDate = computed(() => {
 const eventsForDay = computed(() => {
   const events = {};
 
-  concantinatedEventsArray.value.forEach((collection) => {
+  allEvents.value.forEach((collection) => {
     try {
       const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
       if (!events[formattedEventDate]) {

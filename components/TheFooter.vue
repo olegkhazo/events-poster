@@ -1,6 +1,25 @@
 <template>
   <footer>
     <div class="content-wrapper">
+      <span class="social-wrapper">
+        <ul>
+          <li>
+            <NuxtLink to="#">
+              <NuxtImg src="/images/instagram.png" />
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="#">
+              <NuxtImg src="/images/whatsapp.png" />
+            </NuxtLink>
+          </li>
+          <li>
+            <NuxtLink to="#">
+              <NuxtImg src="/images/facebook.png" />
+            </NuxtLink>
+          </li>
+        </ul>
+      </span>
       <span>© 2024 "אירועי ישראל" כל הזכויות שמורות.</span>
     </div>
   </footer>
@@ -18,6 +37,15 @@ footer {
   .content-wrapper {
     display: flex;
     padding: 20px 0 20px 0;
+
+    .social-wrapper {
+      ul {
+        width: 120px;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
   }
 }
 </style>

@@ -1,50 +1,27 @@
 <script setup>
-import { fetchPageData } from "~/utils/data-acquisition";
-import { sortByDate } from "~/utils";
+import { useAllEventsStore } from "~/stores/allEventsStore";
+import { useFilterDataStore } from "~/stores/filtersStore";
 
-const ironitEventsCollection = ref([]);
-const mishkanAshdodEventsCollection = ref([]);
-const concantinatedEventsArray = ref([]);
+const { filterSubString } = storeToRefs(useFilterDataStore());
+
+const { sortedByDateEventsCollection, currentFilteredEventCollection } =
+  storeToRefs(useAllEventsStore());
 const eventsAmount = ref(20);
-const dataIsLoaded = ref(false);
-
-onMounted(async () => {
-  try {
-    ironitEventsCollection.value = await fetchPageData("ironit");
-    mishkanAshdodEventsCollection.value = await fetchPageData("mishkanAshdod");
-
-    if (
-      ironitEventsCollection.value.length > 0 &&
-      mishkanAshdodEventsCollection.value.length > 0
-    ) {
-      concantinatedEventsArray.value = [
-        ...mishkanAshdodEventsCollection.value,
-        ...ironitEventsCollection.value,
-      ];
-
-      concantinatedEventsArray.value = sortByDate(
-        concantinatedEventsArray.value
-      );
-    }
-
-    dataIsLoaded.value = true;
-  } catch (error) {
-    console.error("Error during onMounted:", error);
-  }
-});
 
 const displayedEvents = computed(() => {
-  return concantinatedEventsArray.value.slice(0, eventsAmount.value);
+  if (filterSubString !== "") {
+    return currentFilteredEventCollection.value.slice(0, eventsAmount.value);
+  }
+  return sortedByDateEventsCollection.value.slice(0, eventsAmount.value);
 });
 
 function showNextEvents() {
   eventsAmount.value += 20;
-  console.log(eventsAmount.value);
 }
 </script>
 
 <template>
-  <div v-if="dataIsLoaded" class="all-events-wrapper">
+  <div class="all-events-wrapper">
     <TheFilter />
     <div class="events-wrapper">
       <div class="event" v-for="event in displayedEvents" :key="event.Position">
@@ -57,10 +34,10 @@ function showNextEvents() {
       </button>
     </div>
   </div>
-  <div v-else class="preloader">
+  <!-- <div v-else class="preloader">
     <NuxtImg src="/animation-cat.gif" alt="event image" />
     <span>קבלת המידע...</span>
-  </div>
+  </div> -->
 </template>
 
 <style lang="scss" scoped>
@@ -114,11 +91,11 @@ function showNextEvents() {
   }
 }
 
-.preloader {
-  height: 80vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-}
+// .preloader {
+//   height: 80vh;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: column;
+// }
 </style>
