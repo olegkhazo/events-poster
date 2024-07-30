@@ -1,12 +1,42 @@
 <script setup>
 import { filtersData } from "~/utils/filters-data";
+import { useAllEventsStore } from "~/stores/allEventsStore";
 import { useFilterDataStore } from "~/stores/filtersStore";
+import { storeToRefs } from "pinia";
+import { watch } from "vue";
 
-const { currentFilter } = storeToRefs(useFilterDataStore());
+const { filterSubString } = storeToRefs(useFilterDataStore());
+const { sortedByDateEventsCollection, currentFilteredEventCollection } =
+  storeToRefs(useAllEventsStore());
 
-function updateCurrentFilter(newFilter) {
-  currentFilter.value = newFilter;
-}
+const filterEvents = () => {
+  if (filterSubString.value.length <= 2) {
+    currentFilteredEventCollection.value = sortedByDateEventsCollection.value;
+  } else {
+    const filterText = filterSubString.value.toLowerCase();
+
+    currentFilteredEventCollection.value =
+      sortedByDateEventsCollection.value.filter((event) => {
+        const eventDate = event.eventDate ? event.eventDate.toLowerCase() : "";
+        const location = event.location ? event.location.toLowerCase() : "";
+        const eventTitle = event.eventTitle
+          ? event.eventTitle.toLowerCase()
+          : "";
+
+        return (
+          eventDate.includes(filterText) ||
+          location.includes(filterText) ||
+          eventTitle.includes(filterText)
+        );
+      });
+  }
+};
+
+watch(filterSubString, filterEvents, { immediate: true });
+
+const updateCurrentFilter = (filter) => {
+  // Implementation of updateCurrentFilter
+};
 </script>
 
 <template>
@@ -17,11 +47,15 @@ function updateCurrentFilter(newFilter) {
         :key="filter"
         class="single-filter"
         @click="updateCurrentFilter(filter)"
-        :class="{ active: filter === currentFilter }"
         >{{ filter }}</span
       >
     </div>
-    <input class="input-filter" type="search" placeholder="חפש לפי שם" />
+    <input
+      v-model="filterSubString"
+      class="input-filter"
+      type="search"
+      placeholder="חפש לפי שם"
+    />
   </div>
 </template>
 

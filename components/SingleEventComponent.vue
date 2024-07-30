@@ -2,8 +2,6 @@
 const props = defineProps({
   singleEventData: Object,
 });
-
-console.log(props.singleEventData.Position);
 </script>
 
 <template>
