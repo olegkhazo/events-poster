@@ -1,3 +1,5 @@
+<script setup></script>
+
 <template>
   <footer>
     <div class="content-wrapper">
@@ -26,8 +28,6 @@
     </div>
   </footer>
 </template>
-
-<script setup></script>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
