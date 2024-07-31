@@ -2,8 +2,6 @@
 import { filtersData } from "~/utils/filters-data";
 import { useAllEventsStore } from "~/stores/allEventsStore";
 import { useFilterDataStore } from "~/stores/filtersStore";
-import { storeToRefs } from "pinia";
-import { watch } from "vue";
 
 const { filterSubString } = storeToRefs(useFilterDataStore());
 const { sortedByDateEventsCollection, currentFilteredEventCollection } =
