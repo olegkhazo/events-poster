@@ -20,7 +20,9 @@
           </li>
         </ul>
       </span>
-      <span>© 2024 "אירועי ישראל" כל הזכויות שמורות.</span>
+      <span class="copyright-info"
+        >© 2024 "אירועי ישראל" כל הזכויות שמורות.</span
+      >
     </div>
   </footer>
 </template>
@@ -38,12 +40,22 @@ footer {
     display: flex;
     padding: 20px 0 20px 0;
 
+    @media (max-width: 425px) {
+      flex-direction: column;
+    }
+
     .social-wrapper {
       ul {
         width: 120px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+      }
+    }
+
+    .copyright-info {
+      @media (max-width: 425px) {
+        margin-top: 10px;
       }
     }
   }
