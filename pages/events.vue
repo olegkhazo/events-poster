@@ -1,18 +1,20 @@
 <script setup>
 import { useAllEventsStore } from "~/stores/allEventsStore";
-import { useFilterDataStore } from "~/stores/filtersStore";
-
-const { filterSubString } = storeToRefs(useFilterDataStore());
 
 const { sortedByDateEventsCollection, currentFilteredEventCollection } =
   storeToRefs(useAllEventsStore());
+
 const eventsAmount = ref(20);
 
+// Get actual event collection for the view according to sortedByDateEventsCollection
+const actualityCollection = computed(() => {
+  return currentFilteredEventCollection.value.length > 0
+    ? currentFilteredEventCollection.value
+    : sortedByDateEventsCollection.value;
+});
+
 const displayedEvents = computed(() => {
-  if (filterSubString !== "") {
-    return currentFilteredEventCollection.value.slice(0, eventsAmount.value);
-  }
-  return sortedByDateEventsCollection.value.slice(0, eventsAmount.value);
+  return actualityCollection.value.slice(0, eventsAmount.value);
 });
 
 function showNextEvents() {
