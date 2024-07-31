@@ -38,6 +38,7 @@ footer {
 
   .content-wrapper {
     display: flex;
+    align-items: center;
     padding: 20px 0 20px 0;
 
     @media (max-width: 425px) {

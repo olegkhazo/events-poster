@@ -2,9 +2,14 @@
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
+
 import { useAllEventsStore } from "~/stores/allEventsStore";
 
-const { allEvents } = storeToRefs(useAllEventsStore());
+const {
+  allEvents,
+  sortedByDateEventsCollection,
+  currentFilteredEventCollection,
+} = storeToRefs(useAllEventsStore());
 import { daysOfWeek, monthsInHebrew } from "~/utils/collections";
 import { updateFormatOfEventDate } from "~/utils/";
 import { fetchPageData } from "~/utils/data-acquisition";
@@ -41,6 +46,13 @@ onMounted(async () => {
   } catch (error) {
     console.error("Error during onMounted:", error);
   }
+});
+
+// Get actual event collection for the view according to sortedByDateEventsCollection
+const actualityCollection = computed(() => {
+  return currentFilteredEventCollection.value.length > 0
+    ? currentFilteredEventCollection.value
+    : sortedByDateEventsCollection.value;
 });
 
 const selectDate = (date, weekIndex) => {
@@ -94,7 +106,7 @@ const eventsForSelectedDate = computed(() => {
 
   const formattedSelectedDate = dayjs(selectedDate.value).format("DD/MM/YYYY");
 
-  return allEvents.value.filter((collection) => {
+  return actualityCollection.value.filter((collection) => {
     try {
       const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
 
@@ -112,7 +124,7 @@ const eventsForSelectedDate = computed(() => {
 const eventsForDay = computed(() => {
   const events = {};
 
-  allEvents.value.forEach((collection) => {
+  actualityCollection.value.forEach((collection) => {
     try {
       const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
       if (!events[formattedEventDate]) {
@@ -126,7 +138,7 @@ const eventsForDay = computed(() => {
   return events;
 });
 
-// Get data about current months and years for CalendarMonthSwitcher.vue
+// Get data about current months and years for calendarMonthSwitcher.vue
 const calendarMonthSwitcherData = {
   currentMonthAndYear: computed(() => {
     const month = dayjs(new Date(currentYear.value, currentMonth.value)).format(
