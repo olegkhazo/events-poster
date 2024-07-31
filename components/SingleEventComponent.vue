@@ -1,11 +1,25 @@
 <script setup>
+import { useCurrentEventStore } from "~/stores/currentEventStore";
 const props = defineProps({
   singleEventData: Object,
 });
+
+const { currentEvent } = storeToRefs(useCurrentEventStore());
+
+function recordEventToStore(event) {
+  currentEvent.value = event;
+
+  // Get the site from which we will get data for the event additional page
+  if (currentEvent.value.eventPage.includes("ironit")) {
+    currentEvent.value.siteDonor = "ironit";
+  } else if (currentEvent.value.eventPage.includes("mishkan-ashdod")) {
+    currentEvent.value.siteDonor = "mishkanAshdod";
+  }
+}
 </script>
 
 <template>
-  <div class="single-event">
+  <div class="single-event" @click="recordEventToStore(props.singleEventData)">
     <NuxtLink
       :to="'/event-page/' + props.singleEventData.Position"
       class="single-event-link"

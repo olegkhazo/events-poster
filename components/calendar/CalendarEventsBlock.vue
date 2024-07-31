@@ -9,7 +9,7 @@ const { currentEvent } = storeToRefs(useCurrentEventStore());
 function recordEventToStore(event) {
   currentEvent.value = event;
 
-  //get the site from which we will get data for the event additional page
+  // Get the site from which we will get data for the event additional page
   if (currentEvent.value.eventPage.includes("ironit")) {
     currentEvent.value.siteDonor = "ironit";
   } else if (currentEvent.value.eventPage.includes("mishkan-ashdod")) {
