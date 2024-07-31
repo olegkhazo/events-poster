@@ -21,6 +21,8 @@ const selectedWeekIndex = ref(null);
 const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
 
+const dataIsLoaded = ref(false);
+
 onMounted(async () => {
   try {
     ironitEventsCollection.value = await fetchPageData("ironit");
@@ -35,6 +37,7 @@ onMounted(async () => {
         ...ironitEventsCollection.value,
       ];
     }
+    dataIsLoaded.value = true;
   } catch (error) {
     console.error("Error during onMounted:", error);
   }
@@ -150,7 +153,7 @@ const calendarMonthSwitcherData = {
 </script>
 
 <template>
-  <div class="calendar-wrapper">
+  <div v-if="dataIsLoaded" class="calendar-wrapper">
     <CalendarMonthSwitcher
       :months="calendarMonthSwitcherData"
       @switch-to-another-month="changeMonth"
@@ -206,10 +209,22 @@ const calendarMonthSwitcherData = {
       </div>
     </div>
   </div>
+  <div v-else class="preloader">
+    <NuxtImg src="/animation-cat.gif" alt="event image" />
+    <span>קבלת המידע...</span>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
+
+.preloader {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
 .calendar-wrapper {
   margin: 70px 0 100px 0;

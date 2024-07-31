@@ -34,10 +34,6 @@ function showNextEvents() {
       </button>
     </div>
   </div>
-  <!-- <div v-else class="preloader">
-    <NuxtImg src="/animation-cat.gif" alt="event image" />
-    <span>קבלת המידע...</span>
-  </div> -->
 </template>
 
 <style lang="scss" scoped>
@@ -90,12 +86,4 @@ function showNextEvents() {
     }
   }
 }
-
-// .preloader {
-//   height: 80vh;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   flex-direction: column;
-// }
 </style>
