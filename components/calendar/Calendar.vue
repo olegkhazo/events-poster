@@ -2,9 +2,14 @@
 import dayjs from "dayjs";
 import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
+
 import { useAllEventsStore } from "~/stores/allEventsStore";
 
-const { allEvents } = storeToRefs(useAllEventsStore());
+const {
+  allEvents,
+  sortedByDateEventsCollection,
+  currentFilteredEventCollection,
+} = storeToRefs(useAllEventsStore());
 import { daysOfWeek, monthsInHebrew } from "~/utils/collections";
 import { updateFormatOfEventDate } from "~/utils/";
 import { fetchPageData } from "~/utils/data-acquisition";
@@ -21,6 +26,8 @@ const selectedWeekIndex = ref(null);
 const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
 
+const dataIsLoaded = ref(false);
+
 onMounted(async () => {
   try {
     ironitEventsCollection.value = await fetchPageData("ironit");
@@ -35,9 +42,17 @@ onMounted(async () => {
         ...ironitEventsCollection.value,
       ];
     }
+    dataIsLoaded.value = true;
   } catch (error) {
     console.error("Error during onMounted:", error);
   }
+});
+
+// Get actual event collection for the view according to sortedByDateEventsCollection
+const actualityCollection = computed(() => {
+  return currentFilteredEventCollection.value.length > 0
+    ? currentFilteredEventCollection.value
+    : sortedByDateEventsCollection.value;
 });
 
 const selectDate = (date, weekIndex) => {
@@ -91,7 +106,7 @@ const eventsForSelectedDate = computed(() => {
 
   const formattedSelectedDate = dayjs(selectedDate.value).format("DD/MM/YYYY");
 
-  return allEvents.value.filter((collection) => {
+  return actualityCollection.value.filter((collection) => {
     try {
       const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
 
@@ -109,7 +124,7 @@ const eventsForSelectedDate = computed(() => {
 const eventsForDay = computed(() => {
   const events = {};
 
-  allEvents.value.forEach((collection) => {
+  actualityCollection.value.forEach((collection) => {
     try {
       const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
       if (!events[formattedEventDate]) {
@@ -123,7 +138,7 @@ const eventsForDay = computed(() => {
   return events;
 });
 
-// Get data about current months and years for CalendarMonthSwitcher.vue
+// Get data about current months and years for calendarMonthSwitcher.vue
 const calendarMonthSwitcherData = {
   currentMonthAndYear: computed(() => {
     const month = dayjs(new Date(currentYear.value, currentMonth.value)).format(
@@ -150,7 +165,7 @@ const calendarMonthSwitcherData = {
 </script>
 
 <template>
-  <div class="calendar-wrapper">
+  <div v-if="dataIsLoaded" class="calendar-wrapper">
     <CalendarMonthSwitcher
       :months="calendarMonthSwitcherData"
       @switch-to-another-month="changeMonth"
@@ -206,10 +221,22 @@ const calendarMonthSwitcherData = {
       </div>
     </div>
   </div>
+  <div v-else class="preloader">
+    <NuxtImg src="/animation-cat.gif" alt="event image" />
+    <span>קבלת המידע...</span>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
+
+.preloader {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
 .calendar-wrapper {
   margin: 70px 0 100px 0;

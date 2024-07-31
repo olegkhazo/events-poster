@@ -1,7 +1,6 @@
 <script setup>
 import { useCurrentEventStore } from "~/stores/currentEventStore";
 import { BOT_API_URLS } from "~/utils/bot-api-urls";
-import { onMounted, ref, watch } from "vue";
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
 

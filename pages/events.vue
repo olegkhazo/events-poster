@@ -1,18 +1,20 @@
 <script setup>
 import { useAllEventsStore } from "~/stores/allEventsStore";
-import { useFilterDataStore } from "~/stores/filtersStore";
-
-const { filterSubString } = storeToRefs(useFilterDataStore());
 
 const { sortedByDateEventsCollection, currentFilteredEventCollection } =
   storeToRefs(useAllEventsStore());
+
 const eventsAmount = ref(20);
 
+// Get actual event collection for the view according to sortedByDateEventsCollection
+const actualityCollection = computed(() => {
+  return currentFilteredEventCollection.value.length > 0
+    ? currentFilteredEventCollection.value
+    : sortedByDateEventsCollection.value;
+});
+
 const displayedEvents = computed(() => {
-  if (filterSubString !== "") {
-    return currentFilteredEventCollection.value.slice(0, eventsAmount.value);
-  }
-  return sortedByDateEventsCollection.value.slice(0, eventsAmount.value);
+  return actualityCollection.value.slice(0, eventsAmount.value);
 });
 
 function showNextEvents() {
@@ -30,14 +32,10 @@ function showNextEvents() {
     </div>
     <div class="btn-wrapper">
       <button @click="showNextEvents" class="events-show-btn">
-        Show Next Events
+        הצג את האירועים הבאים
       </button>
     </div>
   </div>
-  <!-- <div v-else class="preloader">
-    <NuxtImg src="/animation-cat.gif" alt="event image" />
-    <span>קבלת המידע...</span>
-  </div> -->
 </template>
 
 <style lang="scss" scoped>
@@ -90,12 +88,4 @@ function showNextEvents() {
     }
   }
 }
-
-// .preloader {
-//   height: 80vh;
-//   display: flex;
-//   align-items: center;
-//   justify-content: center;
-//   flex-direction: column;
-// }
 </style>

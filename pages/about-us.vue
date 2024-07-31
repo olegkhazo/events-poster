@@ -1,14 +1,3 @@
-<template>
-  <div class="content-wrapper">
-    <div class="about-us-wrapper">
-      <h1>עלינו</h1>
-      <div>
-        <p><b>בחר אירוע</b> - שירות האירועים הטוב ביותר</p>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup>
 // useHead({
 //   title: "MyNextParts - About Us",
@@ -21,6 +10,17 @@
 //   ],
 // });
 </script>
+
+<template>
+  <div class="content-wrapper">
+    <div class="about-us-wrapper">
+      <h1>עלינו</h1>
+      <div>
+        <p><b>בחר אירוע</b> - שירות האירועים הטוב ביותר</p>
+      </div>
+    </div>
+  </div>
+</template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";

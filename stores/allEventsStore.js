@@ -7,6 +7,7 @@ export const useAllEventsStore = defineStore('all-events-store', () => {
   const sortedByDateEventsCollection = ref([]);
   const currentFilteredEventCollection = ref([]);
 
+  // Sorting events collection from diferent sites by date
   watch(allEvents, (newVal) => {
     if(newVal.length > 0) {
         sortedByDateEventsCollection.value = sortByDate(newVal)

@@ -1,3 +1,5 @@
+<script setup></script>
+
 <template>
   <footer>
     <div class="content-wrapper">
@@ -20,12 +22,12 @@
           </li>
         </ul>
       </span>
-      <span>© 2024 "אירועי ישראל" כל הזכויות שמורות.</span>
+      <span class="copyright-info"
+        >© 2024 "אירועי ישראל" כל הזכויות שמורות.</span
+      >
     </div>
   </footer>
 </template>
-
-<script setup></script>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
@@ -36,7 +38,12 @@ footer {
 
   .content-wrapper {
     display: flex;
+    align-items: center;
     padding: 20px 0 20px 0;
+
+    @media (max-width: 425px) {
+      flex-direction: column;
+    }
 
     .social-wrapper {
       ul {
@@ -44,6 +51,12 @@ footer {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+      }
+    }
+
+    .copyright-info {
+      @media (max-width: 425px) {
+        margin-top: 10px;
       }
     }
   }
