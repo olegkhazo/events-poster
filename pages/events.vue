@@ -30,7 +30,7 @@ function showNextEvents() {
     </div>
     <div class="btn-wrapper">
       <button @click="showNextEvents" class="events-show-btn">
-        Show Next Events
+        הצג את האירועים הבאים
       </button>
     </div>
   </div>
