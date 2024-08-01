@@ -25,7 +25,7 @@
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
-    "@nuxt/image": "^1.1.0",
+    "@nuxt/image": "^1.7.0",
     "@nuxtjs/style-resources": "^2.0.0",
     "eslint": "^8.37.0"
   },
