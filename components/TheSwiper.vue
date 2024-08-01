@@ -57,6 +57,7 @@ onMounted(() => {
   margin-top: 40px;
   border: 1px solid $gray-100;
   padding: 20px 0;
+  background-color: $white;
 
   @media (max-width: 767px) {
     padding: 0;
