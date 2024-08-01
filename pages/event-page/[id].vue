@@ -156,16 +156,19 @@ const fetchEventAdditionalData = async () => {
           "
           :src="additionalSingleEventData[0].capturedTexts.eventImage"
           alt="event image"
+          native
         />
         <NuxtImg
           v-else-if="currentEvent.image"
           :src="currentEvent.image"
           alt="event image"
+          native
         />
         <NuxtImg
           v-else
           src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
           alt="event image"
+          native
         />
 
         <div v-if="additionalSingleEventData.length > 0" class="btn-wrapper">

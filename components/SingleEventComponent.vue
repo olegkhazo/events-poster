@@ -29,11 +29,13 @@ function recordEventToStore(event) {
           v-if="props.singleEventData.image"
           :src="props.singleEventData.image"
           :alt="props.singleEventData.eventAltText"
+          native
         />
         <NuxtImg
           v-else
           src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
           alt="image"
+          native
         />
       </div>
       <div class="event-description">

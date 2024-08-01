@@ -38,7 +38,7 @@ onMounted(() => {
           <p>{{ slide.content }}</p>
         </div>
         <div class="slide-image" v-if="!isMobile">
-          <NuxtPicture :src="slide.img" alt="Slide image" />
+          <NuxtImg :src="slide.img" alt="Slide image" native />
         </div>
       </div>
     </div>
@@ -57,7 +57,6 @@ onMounted(() => {
   margin-top: 40px;
   border: 1px solid $gray-100;
   padding: 20px 0;
-  background: $white;
 
   @media (max-width: 767px) {
     padding: 0;
