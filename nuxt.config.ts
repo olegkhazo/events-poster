@@ -23,5 +23,8 @@ export default defineNuxtConfig({
   ],
   gtag: {
     id: "G-EMTQYKKSEY"
+  },
+  typescript: {
+    strict: false
   }
 })
