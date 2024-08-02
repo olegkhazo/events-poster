@@ -1,14 +1,13 @@
 <script setup>
-// useHead({
-//   title: "MyNextParts - About Us",
-//   meta: [
-//     {
-//       name: "description",
-//       content:
-//         "About Us",
-//     },
-//   ],
-// });
+useHead({
+  title: "Pickevent - עלינו",
+  meta: [
+    {
+      name: "description",
+      content: "אתר עם כל אירועי התרבות בישראל",
+    },
+  ],
+});
 </script>
 
 <template>

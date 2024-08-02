@@ -1,4 +1,14 @@
 <script setup>
+useHead({
+  title: "Pickevent - כל האירועים הישראלים במקום אחד",
+  meta: [
+    {
+      name: "description",
+      content: "אתר עם כל אירועי התרבות בישראל",
+    },
+  ],
+});
+
 import { useCurrentEventStore } from "~/stores/currentEventStore";
 import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
