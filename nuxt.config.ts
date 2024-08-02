@@ -1,3 +1,5 @@
+import { defineNuxtConfig } from 'nuxt/config';
+
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {},
@@ -14,8 +16,12 @@ export default defineNuxtConfig({
     "@/assets/styles/main.scss",
   ],
   modules: [
-    "@pinia/nuxt",
-    "@nuxtjs/style-resources",
-    "@nuxt/image",
+    "@pinia/nuxt", 
+    "@nuxtjs/style-resources", 
+    "@nuxt/image", 
+    "nuxt-gtag"
   ],
+  gtag: {
+    id: "G-EMTQYKKSEY"
+  }
 })
