@@ -24,9 +24,8 @@ function recordEventToStore(event) {
       v-for="event in props.singleDataEvents"
       :key="event"
       class="single-event"
-      @click="recordEventToStore(event)"
     >
-      <NuxtLink :to="'/event-page/' + event.Position" class="single-event-link">
+      <div class="single-event-wrapper">
         <div class="event-img">
           <img
             v-if="event.image"
@@ -54,7 +53,18 @@ function recordEventToStore(event) {
             event.eventTitle
           }}</span>
         </div>
-      </NuxtLink>
+      </div>
+      <div class="btn-wrapper">
+        <NuxtLink
+          @click="recordEventToStore(event)"
+          :to="'/event-page/' + event.Position"
+          class="additional-info-link"
+          >Addtiyional info</NuxtLink
+        >
+        <NuxtLink :to="event.eventPage" class="buy-ticckets-link"
+          >Buy tickets</NuxtLink
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -75,7 +85,7 @@ function recordEventToStore(event) {
     @media (max-width: 768px) {
       padding: 20px 0;
     }
-    .single-event-link {
+    .single-event-wrapper {
       display: flex;
 
       .event-img {
@@ -143,6 +153,25 @@ function recordEventToStore(event) {
             font-weight: 300;
           }
         }
+      }
+    }
+    .btn-wrapper {
+      display: flex;
+
+      a {
+        width: 200px;
+        margin-left: 10px;
+        margin-top: 10px;
+        font-size: 18px;
+        line-height: 3;
+        text-align: center;
+        border: 1px solid $blue-200;
+      }
+
+      .additional-info-link {
+      }
+
+      .buy-ticckets-link {
       }
     }
   }
