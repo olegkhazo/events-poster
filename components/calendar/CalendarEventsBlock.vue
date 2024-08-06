@@ -56,13 +56,17 @@ function recordEventToStore(event) {
       </div>
       <div class="btn-wrapper">
         <NuxtLink
+          :to="event.eventPage"
+          class="buy-ticckets-link"
+          target="_blank"
+          >לִקְנוֹת</NuxtLink
+        >
+
+        <NuxtLink
           @click="recordEventToStore(event)"
           :to="'/event-page/' + event.Position"
           class="additional-info-link"
-          >Addtiyional info</NuxtLink
-        >
-        <NuxtLink :to="event.eventPage" class="buy-ticckets-link"
-          >Buy tickets</NuxtLink
+          >מידע נוסף</NuxtLink
         >
       </div>
     </div>
@@ -74,7 +78,6 @@ function recordEventToStore(event) {
 
 .event-list {
   .single-event {
-    cursor: pointer;
     border-bottom: 1px solid $gray-150;
     padding: 20px;
 
@@ -155,23 +158,50 @@ function recordEventToStore(event) {
         }
       }
     }
+
     .btn-wrapper {
       display: flex;
 
+      @media (max-width: 768px) {
+        flex-direction: column;
+        width: 240px;
+      }
+
       a {
-        width: 200px;
+        padding: 10px 80px;
         margin-left: 10px;
         margin-top: 10px;
         font-size: 18px;
-        line-height: 3;
         text-align: center;
-        border: 1px solid $blue-200;
+
+        @media (max-width: 768px) {
+          font-weight: 600;
+          font-size: 16px;
+        }
+
+        @media (max-width: 425px) {
+          font-size: 14px;
+          padding: 10px 30px;
+        }
       }
 
       .additional-info-link {
+        border: 1px solid $blue-200;
+        color: $blue-200;
+        background-color: $white;
+
+        &:hover {
+          color: $gray-700;
+        }
       }
 
       .buy-ticckets-link {
+        background-color: $blue-200;
+        color: $white;
+
+        &:hover {
+          color: $gray-300;
+        }
       }
     }
   }
