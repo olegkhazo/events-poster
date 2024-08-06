@@ -69,11 +69,9 @@ function showNextEvents() {
     }
 
     .event {
-      display: flex;
       margin-top: 20px;
       background: white;
-      flex-wrap: wrap;
-      justify-content: space-between;
+      border: 1px solid $gray-100;
 
       @media (max-width: 768px) {
         flex-direction: column;
