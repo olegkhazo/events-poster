@@ -33,7 +33,11 @@ const filterEvents = () => {
 watch(filterSubString, filterEvents, { immediate: true });
 
 const updateCurrentFilter = (filter) => {
-  // Implementation of updateCurrentFilter
+  console.log(filter);
+  if (filter === "הכל") {
+    currentFilteredEventCollection.value = [];
+    filterSubString.value = "";
+  }
 };
 </script>
 

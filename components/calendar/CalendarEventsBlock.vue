@@ -24,9 +24,8 @@ function recordEventToStore(event) {
       v-for="event in props.singleDataEvents"
       :key="event"
       class="single-event"
-      @click="recordEventToStore(event)"
     >
-      <NuxtLink :to="'/event-page/' + event.Position" class="single-event-link">
+      <div class="single-event-wrapper">
         <div class="event-img">
           <img
             v-if="event.image"
@@ -54,7 +53,22 @@ function recordEventToStore(event) {
             event.eventTitle
           }}</span>
         </div>
-      </NuxtLink>
+      </div>
+      <div class="btn-wrapper">
+        <NuxtLink
+          :to="event.eventPage"
+          class="buy-ticckets-link"
+          target="_blank"
+          >לִקְנוֹת</NuxtLink
+        >
+
+        <NuxtLink
+          @click="recordEventToStore(event)"
+          :to="'/event-page/' + event.Position"
+          class="additional-info-link"
+          >מידע נוסף</NuxtLink
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -64,7 +78,6 @@ function recordEventToStore(event) {
 
 .event-list {
   .single-event {
-    cursor: pointer;
     border-bottom: 1px solid $gray-150;
     padding: 20px;
 
@@ -75,7 +88,7 @@ function recordEventToStore(event) {
     @media (max-width: 768px) {
       padding: 20px 0;
     }
-    .single-event-link {
+    .single-event-wrapper {
       display: flex;
 
       .event-img {
@@ -142,6 +155,52 @@ function recordEventToStore(event) {
             font-size: 10px;
             font-weight: 300;
           }
+        }
+      }
+    }
+
+    .btn-wrapper {
+      display: flex;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+        width: 240px;
+      }
+
+      a {
+        padding: 10px 80px;
+        margin-left: 10px;
+        margin-top: 10px;
+        font-size: 18px;
+        text-align: center;
+
+        @media (max-width: 768px) {
+          font-weight: 600;
+          font-size: 16px;
+        }
+
+        @media (max-width: 425px) {
+          font-size: 14px;
+          padding: 10px 30px;
+        }
+      }
+
+      .additional-info-link {
+        border: 1px solid $blue-200;
+        color: $blue-200;
+        background-color: $white;
+
+        &:hover {
+          color: $gray-700;
+        }
+      }
+
+      .buy-ticckets-link {
+        background-color: $blue-200;
+        color: $white;
+
+        &:hover {
+          color: $gray-300;
         }
       }
     }
