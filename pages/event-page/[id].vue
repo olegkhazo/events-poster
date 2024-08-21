@@ -183,7 +183,7 @@ const fetchEventAdditionalData = async () => {
             class="action-btn"
             target="_blank"
             :to="additionalSingleEventData[0].inputParameters.originUrl"
-            >לקנות כרטיסים</NuxtLink
+            >לרכישת כרטיסים</NuxtLink
           >
         </div>
       </div>
@@ -199,7 +199,7 @@ const fetchEventAdditionalData = async () => {
     </div>
 
     <div class="btn-wrapper">
-      <NuxtLink class="back-btn" to="/">חזרה לאירועים</NuxtLink>
+      <NuxtLink class="back-btn" to="/events">חזרה לאירועים</NuxtLink>
     </div>
   </div>
   <div v-else class="preloader">

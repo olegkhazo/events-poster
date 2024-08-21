@@ -7,17 +7,23 @@
         <ul>
           <li>
             <NuxtLink to="#">
-              <NuxtImg src="/images/instagram.png" />
+              <div class="social-img-wrapper">
+                <NuxtImg src="/images/instagram.png" />
+              </div>
             </NuxtLink>
           </li>
           <li>
             <NuxtLink to="#">
-              <NuxtImg src="/images/whatsapp.png" />
+              <div class="social-img-wrapper">
+                <NuxtImg src="/images/whatsapp.png" />
+              </div>
             </NuxtLink>
           </li>
           <li>
             <NuxtLink to="#">
-              <NuxtImg src="/images/facebook.png" />
+              <div class="social-img-wrapper">
+                <NuxtImg src="/images/facebook.png" />
+              </div>
             </NuxtLink>
           </li>
         </ul>
@@ -47,10 +53,20 @@ footer {
 
     .social-wrapper {
       ul {
-        width: 120px;
+        width: 140px;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+
+        li {
+          .social-img-wrapper {
+            width: 40px;
+
+            img {
+              width: 100%;
+            }
+          }
+        }
       }
     }
 

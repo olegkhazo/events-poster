@@ -56,8 +56,17 @@ const actualityCollection = computed(() => {
 });
 
 const selectDate = (date, weekIndex) => {
-  selectedDate.value = date;
-  selectedWeekIndex.value = weekIndex;
+  if (
+    selectedDate.value &&
+    dayjs.isDayjs(selectedDate.value) &&
+    selectedDate.value.isSame(date, "day")
+  ) {
+    selectedDate.value = {};
+    selectedWeekIndex.value = null;
+  } else {
+    selectedDate.value = date;
+    selectedWeekIndex.value = weekIndex;
+  }
 };
 
 const startOfMonth = computed(() =>
@@ -97,6 +106,12 @@ function changeMonth(step) {
     }
   }
 }
+
+const isPreviousMonthAvailable = computed(() => {
+  const currentDate = dayjs();
+  const selectedDate = dayjs(new Date(currentYear.value, currentMonth.value));
+  return selectedDate.isAfter(currentDate, "month");
+});
 
 // Events for single date
 const eventsForSelectedDate = computed(() => {
@@ -168,6 +183,7 @@ const calendarMonthSwitcherData = {
   <div v-if="dataIsLoaded" class="calendar-wrapper">
     <CalendarMonthSwitcher
       :months="calendarMonthSwitcherData"
+      :is-previous-month-available="isPreviousMonthAvailable"
       @switch-to-another-month="changeMonth"
     />
     <div class="calendar">

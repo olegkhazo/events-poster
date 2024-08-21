@@ -27,6 +27,10 @@ const displayedEvents = computed(() => {
   return actualityCollection.value.slice(0, eventsAmount.value);
 });
 
+const hasMoreEvents = computed(() => {
+  return eventsAmount.value < actualityCollection.value.length;
+});
+
 function showNextEvents() {
   eventsAmount.value += 20;
 }
@@ -40,7 +44,7 @@ function showNextEvents() {
         <SingleEventComponent :single-event-data="event" />
       </div>
     </div>
-    <div class="btn-wrapper">
+    <div class="btn-wrapper" v-if="hasMoreEvents">
       <button @click="showNextEvents" class="events-show-btn">
         הצג את האירועים הבאים
       </button>
@@ -54,6 +58,7 @@ function showNextEvents() {
 .all-events-wrapper {
   min-height: 60vh;
   margin: 0 auto;
+  margin-bottom: 30px;
   display: flex;
   flex-direction: column;
   width: 90%;
