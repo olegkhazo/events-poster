@@ -4,12 +4,16 @@ import weekday from "dayjs/plugin/weekday";
 import isoWeek from "dayjs/plugin/isoWeek";
 
 import { useAllEventsStore } from "~/stores/allEventsStore";
+import { useSelectedDate } from "~/stores/calendarStore";
 
 const {
   allEvents,
   sortedByDateEventsCollection,
   currentFilteredEventCollection,
 } = storeToRefs(useAllEventsStore());
+
+const { selectedDate } = storeToRefs(useSelectedDate());
+
 import { daysOfWeek, monthsInHebrew } from "~/utils/collections";
 import { updateFormatOfEventDate } from "~/utils/";
 import { fetchPageData } from "~/utils/data-acquisition";
@@ -20,8 +24,10 @@ dayjs.extend(isoWeek);
 const currentMonth = ref(dayjs().month());
 const currentYear = ref(dayjs().year());
 
-const selectedDate = ref({});
 const selectedWeekIndex = ref(null);
+
+// Рефы для авто-прокрутки
+const weekRefs = ref([]);
 
 const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
@@ -43,8 +49,41 @@ onMounted(async () => {
       ];
     }
     dataIsLoaded.value = true;
+
+    // Восстанавливаем selectedDate из sessionStorage при монтировании компонента
+    const savedDate = sessionStorage.getItem("selectedDate");
+    if (savedDate) {
+      selectedDate.value = dayjs(savedDate);
+      const savedWeekIndex = sessionStorage.getItem("selectedWeekIndex");
+      selectedWeekIndex.value =
+        savedWeekIndex !== null ? parseInt(savedWeekIndex) : null;
+
+      // Автоскролл до выбранной недели
+      if (selectedWeekIndex.value !== null) {
+        nextTick(() => {
+          const weekElement = weekRefs.value[selectedWeekIndex.value];
+          if (weekElement) {
+            weekElement.scrollIntoView({ behavior: "smooth" });
+          }
+        });
+      }
+    }
   } catch (error) {
     console.error("Error during onMounted:", error);
+  }
+});
+
+// Следим за изменениями selectedDate и сохраняем в sessionStorage
+watch([selectedDate, selectedWeekIndex], ([newDate, newWeekIndex]) => {
+  if (newDate) {
+    sessionStorage.setItem("selectedDate", newDate.format());
+    sessionStorage.setItem(
+      "selectedWeekIndex",
+      newWeekIndex !== null ? newWeekIndex.toString() : ""
+    );
+  } else {
+    sessionStorage.removeItem("selectedDate");
+    sessionStorage.removeItem("selectedWeekIndex");
   }
 });
 
@@ -204,6 +243,7 @@ const calendarMonthSwitcherData = {
         <div
           v-for="(week, weekIndex) in daysMatrix"
           :key="weekIndex"
+          ref="weekRefs"
           class="calendar-week"
         >
           <div
