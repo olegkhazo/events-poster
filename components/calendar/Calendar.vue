@@ -56,8 +56,17 @@ const actualityCollection = computed(() => {
 });
 
 const selectDate = (date, weekIndex) => {
-  selectedDate.value = date;
-  selectedWeekIndex.value = weekIndex;
+  if (
+    selectedDate.value &&
+    dayjs.isDayjs(selectedDate.value) &&
+    selectedDate.value.isSame(date, "day")
+  ) {
+    selectedDate.value = {};
+    selectedWeekIndex.value = null;
+  } else {
+    selectedDate.value = date;
+    selectedWeekIndex.value = weekIndex;
+  }
 };
 
 const startOfMonth = computed(() =>
