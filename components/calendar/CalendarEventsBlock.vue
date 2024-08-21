@@ -28,8 +28,8 @@ function recordEventToStore(event) {
       <div class="single-event-wrapper">
         <div class="event-img">
           <img
-            v-if="event.image"
-            :src="event.image"
+            v-if="event.eventAltText"
+            :src="event.eventAltText"
             :alt="event.eventAltText"
           />
           <img
