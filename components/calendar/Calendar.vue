@@ -103,9 +103,11 @@ const selectDate = (date, weekIndex) => {
   if (
     selectedDate.value &&
     dayjs.isDayjs(selectedDate.value) &&
-    selectedDate.value.isSame(date, "day")
+    selectedDate.value.isSame(date, "day") &&
+    selectedWeekIndex.value === weekIndex
   ) {
-    selectedDate.value = {};
+    // Сброс выбранной даты и индекса недели
+    selectedDate.value = null;
     selectedWeekIndex.value = null;
   } else {
     selectedDate.value = date;
