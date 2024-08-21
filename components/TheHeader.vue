@@ -15,7 +15,12 @@ function hideMobileMenu() {
     <nav>
       <div class="content-wrapper">
         <div class="logo">
-          <NuxtLink to="/"> האירועים הטובים ביותר </NuxtLink>
+          <!-- <NuxtLink to="/"> האירועים הטובים ביותר </NuxtLink> -->
+          <div class="logo-wrapper">
+            <NuxtLink to="/">
+              <NuxtImg src="/images/logo.png" />
+            </NuxtLink>
+          </div>
         </div>
         <ul class="desktop-nav">
           <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
@@ -104,7 +109,7 @@ header {
       }
 
       .logo {
-        width: 20%;
+        width: 10%;
         font-size: 16px;
         font-weight: 600;
 
@@ -115,12 +120,22 @@ header {
         @media (max-width: 768px) {
           width: 70%;
         }
+
+        .logo-wrapper {
+          position: relative;
+          width: 75px;
+
+          img {
+            width: 100%;
+          }
+        }
       }
 
       .desktop-nav {
         display: flex;
         width: 15%;
         justify-content: space-between;
+        align-items: center;
 
         @media (max-width: 990px) {
           width: 25%;
