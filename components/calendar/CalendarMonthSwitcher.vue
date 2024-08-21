@@ -4,6 +4,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  isPreviousMonthAvailable: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const emit = defineEmits(["switchToAnotherMonth"]);
@@ -11,13 +15,21 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
 </script>
 
 <template>
-  <div class="calendar-monthes">
-    <div @click="switchToAnotherMonth(-1)" class="next-month">
-      <NuxtImg src="/images/next.png" />
-      <span>{{ props.months.previousMonth }}</span>
+  <div class="calendar-months">
+    <div>
+      <div
+        v-if="isPreviousMonthAvailable"
+        @click="switchToAnotherMonth(-1)"
+        class="prev-month"
+      >
+        <NuxtImg src="/images/next.png" />
+        <span>{{ months.previousMonth }}</span>
+      </div>
     </div>
+
     <h2 class="curent-month">{{ props.months.currentMonthAndYear }}</h2>
-    <div @click="switchToAnotherMonth(1)" class="prev-month">
+
+    <div @click="switchToAnotherMonth(1)" class="next-month">
       <span>{{ props.months.nextMonth }}</span>
       <NuxtImg src="/images/next.png" />
     </div>
@@ -27,7 +39,7 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
-.calendar-monthes {
+.calendar-months {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -49,7 +61,7 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
     }
   }
 
-  .prev-month img {
+  .next-month img {
     transform: rotate(180deg);
   }
 }

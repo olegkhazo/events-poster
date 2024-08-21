@@ -98,6 +98,12 @@ function changeMonth(step) {
   }
 }
 
+const isPreviousMonthAvailable = computed(() => {
+  const currentDate = dayjs();
+  const selectedDate = dayjs(new Date(currentYear.value, currentMonth.value));
+  return selectedDate.isAfter(currentDate, "month");
+});
+
 // Events for single date
 const eventsForSelectedDate = computed(() => {
   if (!selectedDate.value) {
@@ -168,6 +174,7 @@ const calendarMonthSwitcherData = {
   <div v-if="dataIsLoaded" class="calendar-wrapper">
     <CalendarMonthSwitcher
       :months="calendarMonthSwitcherData"
+      :is-previous-month-available="isPreviousMonthAvailable"
       @switch-to-another-month="changeMonth"
     />
     <div class="calendar">
