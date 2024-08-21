@@ -48,6 +48,11 @@ onMounted(async () => {
   }
 });
 
+// Past date
+const isPastDate = (date) => {
+  return dayjs(date).isBefore(dayjs(), "day");
+};
+
 // Get actual event collection for the view according to sortedByDateEventsCollection
 const actualityCollection = computed(() => {
   return currentFilteredEventCollection.value.length > 0
@@ -84,7 +89,10 @@ const daysMatrix = computed(() => {
   let day = startOfFirstWeek;
 
   while (day <= endOfLastWeek) {
-    days.push(day);
+    days.push({
+      date: day,
+      isPast: isPastDate(day),
+    });
     day = day.add(1, "day");
   }
 
@@ -199,19 +207,20 @@ const calendarMonthSwitcherData = {
           class="calendar-week"
         >
           <div
-            v-for="day in week"
-            :key="day.format('DD/MM/YYYY')"
+            v-for="dayObj in week"
+            :key="dayObj.date.format('DD/MM/YYYY')"
             :class="[
               'calendar-day',
-              { 'selected-day': day.isSame(selectedDate, 'day') },
+              { 'selected-day': dayObj.date.isSame(selectedDate, 'day') },
+              { 'past-day': dayObj.isPast },
             ]"
-            @click="selectDate(day, weekIndex)"
+            @click="!dayObj.isPast && selectDate(dayObj.date, weekIndex)"
           >
-            <span class="day-date">{{ day.date() }}</span>
+            <span class="day-date">{{ dayObj.date.date() }}</span>
             <span
               v-if="
-                eventsForDay[day.format('DD/MM/YYYY')] &&
-                eventsForDay[day.format('DD/MM/YYYY')].length > 0
+                eventsForDay[dayObj.date.format('DD/MM/YYYY')] &&
+                eventsForDay[dayObj.date.format('DD/MM/YYYY')].length > 0
               "
               class="day-date-indicator"
             ></span>
@@ -329,6 +338,22 @@ const calendarMonthSwitcherData = {
               width: 5px;
               height: 5px;
             }
+          }
+        }
+
+        .past-day {
+          background: $gray-300;
+          color: $gray-700;
+          border: 1px solid $gray-400;
+          cursor: not-allowed;
+
+          .day-date-indicator {
+            display: none;
+          }
+
+          &:hover {
+            background: $gray-300;
+            color: $gray-700;
           }
         }
 
