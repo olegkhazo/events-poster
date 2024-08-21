@@ -53,7 +53,7 @@ function recordEventToStore(event) {
         :to="props.singleEventData.eventPage"
         class="buy-ticckets-link"
         target="_blank"
-        >לִקְנוֹת</NuxtLink
+        >לרכישה</NuxtLink
       >
 
       <NuxtLink
