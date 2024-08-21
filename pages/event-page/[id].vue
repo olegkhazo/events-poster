@@ -183,7 +183,7 @@ const fetchEventAdditionalData = async () => {
             class="action-btn"
             target="_blank"
             :to="additionalSingleEventData[0].inputParameters.originUrl"
-            >לקנות כרטיסים</NuxtLink
+            >לרכישת כרטיסים</NuxtLink
           >
         </div>
       </div>
