@@ -172,11 +172,7 @@ const fetchEventAdditionalData = async () => {
           :src="currentEvent.image"
           alt="event image"
         />
-        <img
-          v-else
-          src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-          alt="event image"
-        />
+        <NuxtImg v-else src="/images/logo.png" alt="event image" />
 
         <div v-if="additionalSingleEventData.length > 0" class="btn-wrapper">
           <NuxtLink
@@ -199,7 +195,7 @@ const fetchEventAdditionalData = async () => {
     </div>
 
     <div class="btn-wrapper">
-      <NuxtLink class="back-btn" to="/events">חזרה לאירועים</NuxtLink>
+      <a class="back-btn" @click="$router.go(-1)">חזרה לאירועים</a>
     </div>
   </div>
   <div v-else class="preloader">
@@ -382,6 +378,7 @@ const fetchEventAdditionalData = async () => {
       color: $blue-200;
       font-size: 18px;
       background-color: $white;
+      cursor: pointer;
 
       @media (max-width: 768px) {
         padding: 10px 80px;

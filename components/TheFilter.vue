@@ -52,12 +52,7 @@ const updateCurrentFilter = (filter) => {
         >{{ filter }}</span
       >
     </div>
-    <input
-      v-model="filterSubString"
-      class="input-filter"
-      type="search"
-      placeholder="חפש לפי שם"
-    />
+    <input v-model="filterSubString" class="input-filter" type="search" />
   </div>
 </template>
 

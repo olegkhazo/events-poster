@@ -26,7 +26,6 @@ const currentYear = ref(dayjs().year());
 
 const selectedWeekIndex = ref(null);
 
-// Рефы для авто-прокрутки
 const weekRefs = ref([]);
 
 const ironitEventsCollection = ref([]);
@@ -50,7 +49,6 @@ onMounted(async () => {
     }
     dataIsLoaded.value = true;
 
-    // Восстанавливаем selectedDate из sessionStorage при монтировании компонента
     const savedDate = sessionStorage.getItem("selectedDate");
     if (savedDate) {
       selectedDate.value = dayjs(savedDate);
@@ -58,7 +56,6 @@ onMounted(async () => {
       selectedWeekIndex.value =
         savedWeekIndex !== null ? parseInt(savedWeekIndex) : null;
 
-      // Автоскролл до выбранной недели
       if (selectedWeekIndex.value !== null) {
         nextTick(() => {
           const weekElement = weekRefs.value[selectedWeekIndex.value];
@@ -73,7 +70,6 @@ onMounted(async () => {
   }
 });
 
-// Следим за изменениями selectedDate и сохраняем в sessionStorage
 watch([selectedDate, selectedWeekIndex], ([newDate, newWeekIndex]) => {
   if (newDate) {
     sessionStorage.setItem("selectedDate", newDate.format());
@@ -106,7 +102,6 @@ const selectDate = (date, weekIndex) => {
     selectedDate.value.isSame(date, "day") &&
     selectedWeekIndex.value === weekIndex
   ) {
-    // Сброс выбранной даты и индекса недели
     selectedDate.value = null;
     selectedWeekIndex.value = null;
   } else {
