@@ -199,7 +199,7 @@ const fetchEventAdditionalData = async () => {
     </div>
 
     <div class="btn-wrapper">
-      <NuxtLink class="back-btn" to="/events">חזרה לאירועים</NuxtLink>
+      <a class="back-btn" @click="$router.go(-1)">חזרה לאירועים</a>
     </div>
   </div>
   <div v-else class="preloader">
@@ -382,6 +382,7 @@ const fetchEventAdditionalData = async () => {
       color: $blue-200;
       font-size: 18px;
       background-color: $white;
+      cursor: pointer;
 
       @media (max-width: 768px) {
         padding: 10px 80px;
