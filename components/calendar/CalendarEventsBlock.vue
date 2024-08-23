@@ -32,11 +32,7 @@ function recordEventToStore(event) {
             :src="event.image"
             :alt="event.eventAltText"
           />
-          <img
-            v-else
-            src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-            alt="image"
-          />
+          <NuxtImg v-else src="/images/logo.png" alt="image" />
         </div>
         <div class="event-date">
           <span v-if="event.eventDate" class="date">

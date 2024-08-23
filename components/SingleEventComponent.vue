@@ -26,11 +26,7 @@ function recordEventToStore(event) {
         :src="props.singleEventData.image"
         :alt="props.singleEventData.eventAltText"
       />
-      <img
-        v-else
-        src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-        alt="image"
-      />
+      <NuxtImg v-else src="/images/logo.png" alt="image" />
     </div>
     <div class="event-description">
       <span v-if="props.singleEventData.eventDate" class="date">{{

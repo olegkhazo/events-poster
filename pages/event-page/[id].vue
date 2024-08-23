@@ -172,11 +172,7 @@ const fetchEventAdditionalData = async () => {
           :src="currentEvent.image"
           alt="event image"
         />
-        <img
-          v-else
-          src="https://www.jsconsulting.kz/assets/img/noImg.jpg"
-          alt="event image"
-        />
+        <NuxtImg v-else src="/images/logo.png" alt="event image" />
 
         <div v-if="additionalSingleEventData.length > 0" class="btn-wrapper">
           <NuxtLink
