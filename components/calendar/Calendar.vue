@@ -49,6 +49,14 @@ onMounted(async () => {
     }
     dataIsLoaded.value = true;
 
+    const savedMonth = sessionStorage.getItem("selectedMonth");
+    const savedYear = sessionStorage.getItem("selectedYear");
+
+    if (savedMonth !== null && savedYear !== null) {
+      currentMonth.value = parseInt(savedMonth);
+      currentYear.value = parseInt(savedYear);
+    }
+
     const savedDate = sessionStorage.getItem("selectedDate");
     if (savedDate) {
       selectedDate.value = dayjs(savedDate);
@@ -70,6 +78,11 @@ onMounted(async () => {
   }
 });
 
+watch([currentMonth, currentYear], ([newMonth, newYear]) => {
+  sessionStorage.setItem("selectedMonth", newMonth);
+  sessionStorage.setItem("selectedYear", newYear);
+});
+
 watch([selectedDate, selectedWeekIndex], ([newDate, newWeekIndex]) => {
   if (newDate) {
     sessionStorage.setItem("selectedDate", newDate.format());
@@ -80,6 +93,8 @@ watch([selectedDate, selectedWeekIndex], ([newDate, newWeekIndex]) => {
   } else {
     sessionStorage.removeItem("selectedDate");
     sessionStorage.removeItem("selectedWeekIndex");
+    sessionStorage.removeItem("selectedMonth");
+    sessionStorage.removeItem("selectedYear");
   }
 });
 
