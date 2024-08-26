@@ -30,6 +30,7 @@ const weekRefs = ref([]);
 
 const ironitEventsCollection = ref([]);
 const mishkanAshdodEventsCollection = ref([]);
+const mevalimEventsCollection = ref([]);
 
 const dataIsLoaded = ref(false);
 
@@ -37,14 +38,17 @@ onMounted(async () => {
   try {
     ironitEventsCollection.value = await fetchPageData("ironit");
     mishkanAshdodEventsCollection.value = await fetchPageData("mishkanAshdod");
+    mevalimEventsCollection.value = await fetchPageData("mevalim");
 
     if (
       ironitEventsCollection.value.length > 0 &&
-      mishkanAshdodEventsCollection.value.length > 0
+      mishkanAshdodEventsCollection.value.length > 0 &&
+      mevalimEventsCollection.value.length > 0
     ) {
       allEvents.value = [
         ...mishkanAshdodEventsCollection.value,
         ...ironitEventsCollection.value,
+        ...mevalimEventsCollection.value,
       ];
     }
     dataIsLoaded.value = true;

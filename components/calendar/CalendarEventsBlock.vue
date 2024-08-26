@@ -14,6 +14,8 @@ function recordEventToStore(event) {
     currentEvent.value.siteDonor = "ironit";
   } else if (currentEvent.value.eventPage.includes("mishkan-ashdod")) {
     currentEvent.value.siteDonor = "mishkanAshdod";
+  } else if (currentEvent.value.eventPage.includes("mevalim")) {
+    currentEvent.value.siteDonor = "mevalim";
   }
 }
 </script>
