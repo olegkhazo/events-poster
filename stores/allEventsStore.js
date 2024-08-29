@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { sortByDate } from "~/utils";
 
 export const useAllEventsStore = defineStore('all-events-store', () => {
@@ -7,13 +7,23 @@ export const useAllEventsStore = defineStore('all-events-store', () => {
   const sortedByDateEventsCollection = ref([]);
   const currentFilteredEventCollection = ref([]);
 
-  // Sorting events collection from diferent sites by date
   watch(allEvents, (newVal) => {
-    if(newVal.length > 0) {
-        sortedByDateEventsCollection.value = sortByDate(newVal)
-    }
-  })
+    if (newVal.length > 0) {
+      
+      const uniqueEventsMap = new Map();
 
+      newVal.forEach(event => {
+        const key = `${event.eventDate}-${event.eventTitle}`;
+        if (!uniqueEventsMap.has(key)) {
+          uniqueEventsMap.set(key, event);
+        }
+      });
+
+      const uniqueEvents = Array.from(uniqueEventsMap.values());
+      
+      sortedByDateEventsCollection.value = sortByDate(uniqueEvents);
+    }
+  });
 
   return { allEvents, currentFilteredEventCollection, sortedByDateEventsCollection };
 });
