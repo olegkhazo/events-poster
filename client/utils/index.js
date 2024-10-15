@@ -1,11 +1,15 @@
+import { FORM_VALIDATION_PATTERNS } from "@/utils/constants";
+
 export function updateFormatOfEventDate(eventData) {
   const splitDate = eventData.split(" ");
   const datePart = splitDate.slice(-1)[0];
 
   // Check the string format for DD/MM/YYYY
   const slashDateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+
   // Check the string format for DD.MM (без года)
   const dotDateRegexWithoutYear = /^\d{2}\.\d{2}$/;
+
   // Check the string format for DD.MM.YYYY
   const dotDateRegex = /^\d{2}\.\d{2}\.\d{4}$/;
 
@@ -29,4 +33,12 @@ export function sortByDate(events) {
       const dateB = new Date(b.eventDate.split("/").reverse().join("-"));
       return dateA - dateB;
     });
+}
+
+// Form fields validator function. Used inside computed property
+export function validateFormField(fieldData, validator) {
+  const data = fieldData;
+  const regExp = FORM_VALIDATION_PATTERNS[validator]; 
+
+  return data !== "" && regExp.test(data); 
 }
