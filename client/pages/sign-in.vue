@@ -42,8 +42,7 @@ async function signIn() {
     const loginResponse = await authManager.login(signInCreds.value);
 
     if (loginResponse && loginResponse.success) {
-      console.log("Log in successfull, creds:" + signInCreds.value);
-      navigateTo("/");
+      navigateTo("/admin-panel");
     } else {
       backendErrors.value.general = "הכניסה נכשלה. אנא בדוק את האישורים שלך.";
       console.error("Login error:", loginResponse.error);

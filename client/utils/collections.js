@@ -15,3 +15,10 @@ export const monthsInHebrew = {
     December: "דצמבר",
   };
   
+//Colors
+export const infoTabColors = {
+  trueInfoTab: "#017042",
+  trueBgInfoTab: "#E4F0EB",
+  falseInfoTab: "#FA8282",
+  falseBgInfoTab: "#FFE4E4",
+};

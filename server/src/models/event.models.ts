@@ -22,6 +22,8 @@ class eventRequest {
   @prop()
   event_page: string;
 
+  @prop({ default: false })
+  approved: boolean;
  
 }
 

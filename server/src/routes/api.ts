@@ -19,7 +19,7 @@ router.get('/all-events', getAllEvents);
 router.get('/single-event/:id', getSingleEvent);
 
 // Route for event deleting
-router.delete('/delete-part-request/:id', deleteEvent);
+router.delete('/delete-single-event/:id', deleteEvent);
 
 
 // ***
