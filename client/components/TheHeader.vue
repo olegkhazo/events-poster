@@ -1,4 +1,7 @@
 <script setup>
+import { useAuthStore } from "@/stores/useAuthStore";
+const authManager = useAuthStore();
+
 const mobileMenuVisibility = ref(false);
 
 function showHideMobileMenu() {
@@ -23,9 +26,14 @@ function hideMobileMenu() {
           </div>
         </div>
         <ul class="desktop-nav">
+          <li>
+            <NuxtLink v-if="authManager.loggedIn" to="/admin-panel"
+              >פאנל ניהול</NuxtLink
+            >
+          </li>
           <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
           <li><NuxtLink to="/events">רשימת אירועים</NuxtLink></li>
-          <li><NuxtLink to="/create-event">Create event</NuxtLink></li>
+          <li><NuxtLink to="/create-event">צור אירוע</NuxtLink></li>
         </ul>
 
         <NuxtImg

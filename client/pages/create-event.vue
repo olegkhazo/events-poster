@@ -10,6 +10,14 @@ useHead({
 });
 
 import { FORM_VALIDATION_PATTERNS } from "@/utils/constants";
+import SuccessRequestWindow from "@/components/modals/SuccessWindow";
+
+const successData = {
+  header:
+    "Your event was sent successfully! We will check and approve your event soon.",
+};
+
+const showSuccessWindow = ref(false);
 
 function getErrorMessage(field) {
   const errorMessages = {
@@ -92,19 +100,24 @@ async function createEvent() {
     );
 
     if (newEventrequest.value) {
-      console.log("Part request created successfully");
       eventData.value = {};
+      formButtonClicked.value = false;
+      showSuccessWindow.value = true;
     } else if (error.value) {
       // should to think how better to show errors
       console.log("something wrong:" + error.value);
     }
   }
 }
+
+function hideSuccessWindow() {
+  showSuccessWindow.value = false;
+}
 </script>
 
 <template>
   <div class="content-wrapper">
-    <div class="event-form">
+    <div class="event-form" v-if="!showSuccessWindow">
       <h1>Create event</h1>
 
       <div class="event-form-content">
@@ -150,6 +163,12 @@ async function createEvent() {
         </button>
       </div>
     </div>
+
+    <SuccessRequestWindow
+      v-else
+      @hide-success-window="hideSuccessWindow"
+      :data="successData"
+    />
   </div>
 </template>
 
