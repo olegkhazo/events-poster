@@ -42,3 +42,4 @@ export function validateFormField(fieldData, validator) {
 
   return data !== "" && regExp.test(data); 
 }
+

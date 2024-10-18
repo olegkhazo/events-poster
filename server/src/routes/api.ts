@@ -1,6 +1,6 @@
 import express from 'express';
 import { registerUser, authoriseUser, logOut } from '../controllers/userController';
-import { createEvent, getAllEvents, getSingleEvent, deleteEvent } from '../controllers/eventsController';
+import { createEvent, getAllEvents, getSingleEvent, deleteEvent, approveEvent } from '../controllers/eventsController';
 
 const router = express.Router();
 
@@ -20,6 +20,9 @@ router.get('/single-event/:id', getSingleEvent);
 
 // Route for event deleting
 router.delete('/delete-single-event/:id', deleteEvent);
+
+// Route for event approval
+router.put('/approve-event/:id', approveEvent);
 
 
 // ***

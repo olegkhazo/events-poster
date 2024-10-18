@@ -1,12 +1,6 @@
 import { prop, getModelForClass } from '@typegoose/typegoose';
 
 class eventRequest {
-  @prop({ default: "" })
-  user_id: string;
-
-  @prop()
-  url: string;
-
   @prop()
   event_date: string;
 
@@ -17,10 +11,16 @@ class eventRequest {
   event_title: string;
 
   @prop()
+  event_description: string
+
+  @prop()
   location: string;
 
   @prop()
   event_page: string;
+
+  @prop()
+  event_image_url: string; 
 
   @prop({ default: false })
   approved: boolean;

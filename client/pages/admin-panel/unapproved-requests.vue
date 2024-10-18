@@ -7,15 +7,12 @@ import { useAuthStore } from "@/stores/useAuthStore";
 const authManager = useAuthStore();
 const { userInfo } = storeToRefs(authManager);
 
-import { infoTabColors } from "@/utils/collections";
-import ColorfulInfoTab from "@/components/UI/ColorfulInfoTab.vue";
-
 const dataGeted = ref(false);
 const isLoading = ref(true);
 
 //fetching all requests
 const { data: unapprovedRequests, error } = await useFetch(
-  `${API_URL}unapproved-requests/`
+  `${API_URL}all-events`
 );
 
 onMounted(() => {
@@ -33,9 +30,9 @@ onMounted(() => {
   isLoading.value = false;
 });
 
-async function deleteUser(id) {
+async function deleteEvent(id) {
   const { data: deleteEvent, error } = await useFetch(
-    `${API_URL}delete-user/${id}`,
+    `${API_URL}delete-event/${id}`,
     {
       method: "DELETE",
     }
@@ -43,7 +40,26 @@ async function deleteUser(id) {
 
   if (!error.value) {
     unapprovedRequests.value = unapprovedRequests.value.filter(
-      (user) => user._id !== id
+      (event) => event._id !== id
+    );
+  } else {
+    console.log("Error deleting user:", error.value);
+  }
+}
+
+async function approveEvent(id) {
+  console.log(id);
+
+  const { data: approveEvent, error } = await useFetch(
+    `${API_URL}approve-event/${id}`,
+    {
+      method: "put",
+    }
+  );
+
+  if (!error.value) {
+    unapprovedRequests.value = unapprovedRequests.value.filter(
+      (event) => event._id !== id
     );
   } else {
     console.log("Error deleting user:", error.value);
@@ -65,6 +81,7 @@ async function deleteUser(id) {
           <tr>
             <th>Title</th>
             <th>Location</th>
+            <th>Description</th>
             <th>Event Page</th>
             <th>Date</th>
             <th>Time</th>
@@ -80,57 +97,25 @@ async function deleteUser(id) {
           >
             <td>{{ event.event_title }}</td>
             <td>{{ event.location }}</td>
+            <td>{{ event.event_description }}</td>
             <td>{{ event.event_page }}</td>
             <td>{{ event.event_date }}</td>
             <td>{{ event.event_time }}</td>
-            <td>delete | approve</td>
-            <!-- <td>
-              <ColorfulInfoTab
-                v-if="user.tips_agreement"
-                text="Yes"
-                :bg-color="infoTabColors.trueBgInfoTab"
-                :text-color="infoTabColors.trueInfoTab"
-              />
-              <ColorfulInfoTab
-                v-else
-                text="No"
-                :bg-color="infoTabColors.falseBgInfoTab"
-                :text-color="infoTabColors.falseInfoTab"
-              />
+            <td class="action">
+              <div class="action-buttons-wrapper">
+                <NuxtImg
+                  src="/images/validation.svg"
+                  @click="approveEvent(event._id)"
+                  alt="approve"
+                />
+
+                <NuxtImg
+                  src="/images/trash.svg"
+                  @click="deleteEvent(event._id)"
+                  alt="approve"
+                />
+              </div>
             </td>
-            <td>
-              <ColorfulInfoTab
-                v-if="user.terms_agreement"
-                text="Yes"
-                :bg-color="infoTabColors.trueBgInfoTab"
-                :text-color="infoTabColors.trueInfoTab"
-              />
-              <ColorfulInfoTab
-                v-else
-                text="No"
-                :bg-color="infoTabColors.falseBgInfoTab"
-                :text-color="infoTabColors.falseInfoTab"
-              />
-            </td>
-            <td>
-              <ColorfulInfoTab
-                v-if="user.isActive"
-                text="Active"
-                :bg-color="infoTabColors.trueBgInfoTab"
-                :text-color="infoTabColors.trueInfoTab"
-              />
-              <ColorfulInfoTab
-                v-else
-                text="No"
-                :bg-color="infoTabColors.falseBgInfoTab"
-                :text-color="infoTabColors.falseInfoTab"
-              />
-            </td>
-            <td>
-              <span class="sm-red-btn" @click="deleteUser(user._id)"
-                >DELETE</span
-              >
-            </td> -->
           </tr>
         </tbody>
       </table>
@@ -186,36 +171,50 @@ async function deleteUser(id) {
     table {
       width: 100%;
       border-collapse: collapse;
-    }
 
-    thead {
-      background-color: $gray-850;
-
-      tr:first-child th:first-child {
-        border-top-left-radius: 5px;
-      }
-
-      tr:first-child th:last-child {
-        border-top-right-radius: 5px;
-      }
-
-      th {
-        color: white;
-        padding: 10px;
+      thead {
         background-color: $gray-850;
-        text-align: left;
-      }
-    }
 
-    tbody {
-      tr {
-        td {
+        tr:first-child th:first-child {
+          border-top-right-radius: 5px;
+        }
+
+        tr:first-child th:last-child {
+          border-top-left-radius: 5px;
+        }
+
+        th {
+          color: white;
           padding: 10px;
-          border-bottom: 1px solid $gray-300;
+          background-color: $gray-850;
+          text-align: left;
+        }
+      }
 
-          a {
-            color: $blue-100;
-            font-weight: 500;
+      tbody {
+        tr {
+          td {
+            padding: 10px;
+            border: 1px solid $gray-850;
+
+            a {
+              color: $blue-100;
+              font-weight: 500;
+            }
+          }
+
+          .action {
+            padding: 8px;
+
+            .action-buttons-wrapper {
+              display: flex;
+              justify-content: space-between;
+
+              img {
+                width: 18px;
+                cursor: pointer;
+              }
+            }
           }
         }
       }

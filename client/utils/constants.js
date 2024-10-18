@@ -12,4 +12,6 @@ export const FORM_VALIDATION_PATTERNS = {
   PHONE_PATTERN: /^(?:\+1)?(?:\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/,
   ENGINE_VOLUME_PATTERN: /^(?:\d|1\d|20)(\.\d\d?)?$/,
   PRICE_PATTERN: /^\d{1,6}$/,
+  URL_PATTERN: /^(https?:\/\/)?([\w\-]+\.)+[\w\-]+(\/[\w\-.,@?^=%&:/~+#]*)?$/i,
+  TIME_PATTERN: /^([01]\d|2[0-3]):([0-5]\d)$/,
 };
