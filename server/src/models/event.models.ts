@@ -1,6 +1,6 @@
 import { prop, getModelForClass } from '@typegoose/typegoose';
 
-class eventRequest {
+class events {
   @prop()
   event_date: string;
 
@@ -27,4 +27,4 @@ class eventRequest {
  
 }
 
-export const EventModel = getModelForClass(eventRequest);
+export const EventModel = getModelForClass(events);

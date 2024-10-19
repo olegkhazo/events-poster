@@ -30,15 +30,15 @@ watchEffect(() => {
 
     <ul v-if="isUserInfoLoaded">
       <li v-if="userInfo.role === 'admin'">
+        <li v-if="userInfo.role === 'admin'">
+          <NuxtLink to="/admin-panel/all-events">All events</NuxtLink>
+        </li>
         <NuxtLink to="/admin-panel/unapproved-requests"
           >Unapproved requests</NuxtLink
         >
       </li>
-      <li v-if="userInfo.role === 'admin'">
-        <NuxtLink>My suggestions</NuxtLink>
-      </li>
       <li>
-        <NuxtLink>My profile</NuxtLink>
+        <NuxtLink to="/admin-panel/my-profile">My profile</NuxtLink>
       </li>
     </ul>
   </div>
@@ -46,6 +46,7 @@ watchEffect(() => {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
+
 .side-admin-navigation {
   width: 195px;
   background-color: $green-600;

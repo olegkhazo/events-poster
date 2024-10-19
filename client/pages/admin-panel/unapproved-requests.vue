@@ -69,7 +69,7 @@ async function approveEvent(id) {
 
 <template>
   <div class="all-users-wrapper">
-    <h1>All Users</h1>
+    <h1>Unapproved Events</h1>
 
     <div v-if="isLoading" class="loading-state">
       <p>Loading suggestions...</p>
@@ -192,6 +192,8 @@ async function approveEvent(id) {
       }
 
       tbody {
+        background-color: $white;
+
         tr {
           td {
             padding: 10px;
