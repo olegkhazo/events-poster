@@ -24,7 +24,8 @@ function redirectToMyAccountPage() {
     height: 35px;
     display: flex;
     width: 35px;
-    background-color: $gray-300;
+    background-color: $white;
+    border: 1px solid $gray-850;
     border-radius: 50%;
     cursor: pointer;
 
