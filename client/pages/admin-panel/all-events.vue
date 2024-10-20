@@ -10,6 +10,9 @@ const { userInfo } = storeToRefs(authManager);
 const dataGeted = ref(false);
 const isLoading = ref(true);
 
+const eventEditing = ref(false);
+const editingEventId = ref(null);
+
 //fetching all requests
 const { data: allEvents, error } = await useFetch(`${API_URL}all-events`);
 
@@ -43,10 +46,15 @@ async function deleteEvent(id) {
     console.log("Error deleting user:", error.value);
   }
 }
+
+function editEvent(eventId) {
+  editingEventId.value = eventId;
+  eventEditing.value = true;
+}
 </script>
 
 <template>
-  <div class="admin-content-wrapper">
+  <div v-if="!eventEditing" class="admin-content-wrapper">
     <h1>All Events</h1>
 
     <div v-if="isLoading" class="loading-state">
@@ -75,30 +83,33 @@ async function deleteEvent(id) {
         >
           <td>{{ event.event_title }}</td>
           <td>{{ event.location }}</td>
-          <td>{{ event.event_description }}</td>
-          <td>
+          <td class="limited-view-column">{{ event.event_description }}</td>
+          <td class="limited-view-column">
             <NuxtLink :to="event.event_page" target="blank">{{
               event.event_page
             }}</NuxtLink>
           </td>
           <td>{{ event.event_date }}</td>
           <td>{{ event.event_time }}</td>
-          <td>
-            <span v-if="event.approved" class="approved-status">Yes</span>
-            <span v-else class="unapproved-status">No</span>
+          <td class="status">
+            <span
+              :class="event.approved ? 'approved-status' : 'unapproved-status'"
+            >
+              {{ event.approved ? "Yes" : "No" }}
+            </span>
           </td>
           <td class="action">
             <div class="action-buttons-wrapper">
               <NuxtImg
                 src="/images/pencil.svg"
-                @click="approveEvent(event._id)"
-                alt="approve"
+                @click="editEvent(event._id)"
+                alt="edit"
               />
 
               <NuxtImg
                 src="/images/trash.svg"
                 @click="deleteEvent(event._id)"
-                alt="approve"
+                alt="delete"
               />
             </div>
           </td>
@@ -113,6 +124,7 @@ async function deleteEvent(id) {
       >
     </div>
   </div>
+  <CreateUpdateEventForm v-else :event-id="editingEventId" />
 </template>
 
 <style lang="scss" scoped>
@@ -120,7 +132,7 @@ async function deleteEvent(id) {
 
 .admin-content-wrapper {
   width: 100%;
-  padding: 0 10px;
+  padding: 0 10px 60px 0;
   display: flex;
   flex-direction: column;
 
@@ -181,9 +193,36 @@ async function deleteEvent(id) {
           padding: 5px;
           border: 1px solid $gray-850;
 
+          &.limited-view-column {
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
           a {
             color: $blue-100;
-            font-weight: 300;
+          }
+
+          &.status {
+            text-align: center;
+
+            .approved-status,
+            .unapproved-status {
+              padding: 2px 10px;
+              border-radius: 2px;
+              font-weight: 500;
+            }
+
+            .approved-status {
+              background-color: $blue-200;
+              color: $black;
+            }
+
+            .unapproved-status {
+              background-color: $coral;
+              color: $red-600;
+            }
           }
         }
 

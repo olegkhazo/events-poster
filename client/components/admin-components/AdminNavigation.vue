@@ -38,6 +38,9 @@ watchEffect(() => {
         >
       </li>
       <li>
+        <NuxtLink to="/admin-panel/create-event">Create event</NuxtLink>
+      </li>
+      <li>
         <NuxtLink to="/admin-panel/my-profile">My profile</NuxtLink>
       </li>
     </ul>

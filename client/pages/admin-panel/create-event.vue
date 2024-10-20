@@ -1,12 +1,6 @@
 <script setup>
-useHead({
-  title: "Pickevent - ליצור את האירוע שלך",
-  meta: [
-    {
-      name: "ליצור את האירוע שלך",
-      content: "ליצור את האירוע שלך",
-    },
-  ],
+definePageMeta({
+  layout: "admin-panel",
 });
 </script>
 

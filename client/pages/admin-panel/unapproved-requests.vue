@@ -48,8 +48,6 @@ async function deleteEvent(id) {
 }
 
 async function approveEvent(id) {
-  console.log(id);
-
   const { data: approveEvent, error } = await useFetch(
     `${API_URL}approve-event/${id}`,
     {
@@ -96,8 +94,12 @@ async function approveEvent(id) {
         >
           <td>{{ event.event_title }}</td>
           <td>{{ event.location }}</td>
-          <td>{{ event.event_description }}</td>
-          <td>{{ event.event_page }}</td>
+          <td class="limited-view-column">{{ event.event_description }}</td>
+          <td class="limited-view-column">
+            <NuxtLink :to="event.event_page" target="blank">{{
+              event.event_page
+            }}</NuxtLink>
+          </td>
           <td>{{ event.event_date }}</td>
           <td>{{ event.event_time }}</td>
           <td class="action">
@@ -133,7 +135,7 @@ async function approveEvent(id) {
 
 .admin-content-wrapper {
   width: 100%;
-  padding: 0 10px;
+  padding: 0 10px 60px 0;
   display: flex;
   flex-direction: column;
 
@@ -195,9 +197,15 @@ async function approveEvent(id) {
           padding: 5px;
           border: 1px solid $gray-850;
 
+          &.limited-view-column {
+            max-width: 150px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
           a {
             color: $blue-100;
-            font-weight: 500;
           }
         }
 

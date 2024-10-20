@@ -23,7 +23,7 @@ function closeWindow() {
     </div>
     <h3>{{ props.data.header }}</h3>
     <div class="success-buttons-wrapper">
-      <NuxtLink class="light-gray-btn" to="/">Home page</NuxtLink>
+      <NuxtLink class="light-gray-btn" to="/admin-panel">Home page</NuxtLink>
       <NuxtLink class="gray-btn" @click="closeWindow">
         Create new event
       </NuxtLink>
