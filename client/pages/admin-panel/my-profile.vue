@@ -83,11 +83,6 @@ onMounted(async () => {
               <span class="info-item-content">{{ userData.email }}</span>
             </div>
 
-            <div v-if="userData.email" class="single-info-point-block">
-              <span class="info-item">email</span>
-              <span class="info-item-content">{{ userData.email }}</span>
-            </div>
-
             <div v-if="userData.role" class="single-info-point-block">
               <span class="info-item">role</span>
               <span class="info-item-content">{{ userData.role }}</span>
