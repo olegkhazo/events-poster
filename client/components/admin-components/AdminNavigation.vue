@@ -29,12 +29,12 @@ watchEffect(() => {
     </div>
 
     <ul v-if="isUserInfoLoaded">
-      <li v-if="userInfo.role === 'admin'">
-        <li v-if="userInfo.role === 'admin'">
-          <NuxtLink to="/admin-panel/all-events">All events</NuxtLink>
-        </li>
+      <li>
+        <NuxtLink to="/admin-panel/all-events">All events</NuxtLink>
+      </li>
+      <li>
         <NuxtLink to="/admin-panel/unapproved-requests"
-          >Unapproved requests</NuxtLink
+          >Unapproved events</NuxtLink
         >
       </li>
       <li>
