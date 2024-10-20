@@ -14,13 +14,13 @@ onMounted(async () => {
 
 <template>
   <div class="admin-panel">
-    <AdminNavigation />
-    <div class="main-admin-content">
-      <div class="admin-panel-right-content">
-        <AdminHeader />
+    <div class="right-admin">
+      <AdminNavigation />
+    </div>
+    <div class="left-admin">
+      <AdminHeader />
 
-        <slot />
-      </div>
+      <slot />
     </div>
   </div>
 </template>
@@ -33,10 +33,35 @@ onMounted(async () => {
   width: 100%;
   min-height: 100vh;
 
-  .main-admin-content {
+  .left-admin {
+    width: 85%;
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
+
+    @media (max-width: 935px) {
+      width: 80%;
+    }
+
+    @media (max-width: 830px) {
+      width: 90%;
+    }
+  }
+
+  .right-admin {
+    width: 15%;
+    display: flex;
+    flex-direction: column;
+    background-color: $green-600;
+    display: flex;
+    flex-direction: column;
+
+    @media (max-width: 935px) {
+      width: 20%;
+    }
+
+    @media (max-width: 830px) {
+      width: 10%;
+    }
   }
 }
 </style>

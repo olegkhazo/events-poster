@@ -80,3 +80,16 @@ export const logOut = (req: Request, res: Response, next: NextFunction) => {
     res.status(500).json({ error: 'Server error during logout' });
   }
 };
+
+export const getUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const user = await UsersModel.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    console.log("User found:", user);
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+};

@@ -12,8 +12,8 @@ useHead({
 import { API_URL } from "@/utils/constants";
 import { validateFormField } from "@/utils/index";
 
-const formButtonClicked = ref(true);
-const userCredentialsSentSuccessful = ref(true);
+const formButtonClicked = ref(false);
+const userCredentialsSentSuccessful = ref(false);
 
 const userCreds = ref({
   first_name: "",
@@ -80,7 +80,7 @@ async function createRequestToRegistrationApi() {
         <span
           v-if="!isFirstNameValid && formButtonClicked"
           class="input-error-notification"
-          >Please enter a valid name.</span
+          >נא להזין שם חוקי.</span
         >
         <input
           id="first-name"
@@ -92,7 +92,7 @@ async function createRequestToRegistrationApi() {
         <span
           v-if="!isLastNameValid && formButtonClicked"
           class="input-error-notification"
-          >Please enter a valid last name.</span
+          >נא להזין שם משפחה חוקי.</span
         >
         <input
           id="last-name"
@@ -105,7 +105,7 @@ async function createRequestToRegistrationApi() {
           v-if="!isEmailValid && formButtonClicked"
           class="input-error-notification"
         >
-          Please enter a valid email address.
+          נא להזין כתובת אימייל חוקית.
         </span>
         <input
           id="email"
@@ -119,7 +119,7 @@ async function createRequestToRegistrationApi() {
           v-if="!isPasswordValid && formButtonClicked"
           class="input-error-notification"
         >
-          Please enter a valid password.
+          נא להזין סיסמה חוקית.
         </span>
         <input
           id="password"
@@ -150,13 +150,14 @@ async function createRequestToRegistrationApi() {
 @import "@/assets/styles/_variables.scss";
 
 .content-wrapper {
-  min-height: 70vh;
-  display: block;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .form-wrapper {
     background-color: $white;
     padding: 20px 40px 10px 40px;
-    margin: 80px auto;
     border: 2px solid $gray-100;
     border-radius: 15px;
     text-align: center;

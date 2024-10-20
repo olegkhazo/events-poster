@@ -48,3 +48,23 @@ export const deleteEvent = async (req: Request, res: Response, next: NextFunctio
     next(error);
   }
 };
+
+export const approveEvent = async (req: Request, res: Response, next: NextFunction) => {
+  const eventId = req.params.id;
+
+  try {
+    const updatedEvent = await EventModel.findByIdAndUpdate(
+      eventId,
+      { approved: true },
+      { new: true }
+    );
+
+    if (!updatedEvent) {
+      return res.status(404).json({ message: 'Event not found' });
+    }
+
+    res.status(200).json({ message: 'Event approved successfully', event: updatedEvent });
+  } catch (error) {
+    next(error);
+  }
+};
