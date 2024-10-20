@@ -121,7 +121,7 @@ watchEffect(() => {
         }
 
         &:hover {
-          background-color: $green-800;
+          color: $gray-100;
         }
 
         &.router-link-active {

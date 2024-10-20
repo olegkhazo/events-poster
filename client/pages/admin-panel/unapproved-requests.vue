@@ -9,8 +9,9 @@ const { userInfo } = storeToRefs(authManager);
 
 const dataGeted = ref(false);
 const isLoading = ref(true);
-
+const filteredUnaprovedEvents = ref({});
 //fetching all requests
+
 const { data: unapprovedRequests, error } = await useFetch(
   `${API_URL}all-events`
 );
@@ -21,6 +22,10 @@ onMounted(() => {
   }
 
   if (unapprovedRequests.value) {
+    filteredUnaprovedEvents.value = unapprovedRequests.value.filter(
+      (event) => event.approved === false
+    );
+
     dataGeted.value = true;
   } else if (error.value) {
     // should to think how better to show errors
@@ -39,7 +44,7 @@ async function deleteEvent(id) {
   );
 
   if (!error.value) {
-    unapprovedRequests.value = unapprovedRequests.value.filter(
+    filteredUnaprovedEvents.value = filteredUnaprovedEvents.value.filter(
       (event) => event._id !== id
     );
   } else {
@@ -56,7 +61,7 @@ async function approveEvent(id) {
   );
 
   if (!error.value) {
-    unapprovedRequests.value = unapprovedRequests.value.filter(
+    filteredUnaprovedEvents.value = filteredUnaprovedEvents.value.filter(
       (event) => event._id !== id
     );
   } else {
@@ -88,7 +93,7 @@ async function approveEvent(id) {
       <tbody>
         <tr
           class="single-request-row"
-          v-for="event in unapprovedRequests"
+          v-for="event in filteredUnaprovedEvents"
           id="tbody"
           :key="event._id"
         >
