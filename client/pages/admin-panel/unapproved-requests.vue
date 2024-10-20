@@ -135,7 +135,7 @@ async function approveEvent(id) {
 
 .admin-content-wrapper {
   width: 100%;
-  padding: 0 10px 60px 0;
+  padding: 0 8px 60px 8px;
   display: flex;
   flex-direction: column;
 

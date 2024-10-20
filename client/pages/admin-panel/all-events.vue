@@ -132,7 +132,7 @@ function editEvent(eventId) {
 
 .admin-content-wrapper {
   width: 100%;
-  padding: 0 10px 60px 0;
+  padding: 0 8px 60px 8px;
   display: flex;
   flex-direction: column;
 
@@ -216,12 +216,12 @@ function editEvent(eventId) {
 
             .approved-status {
               background-color: $blue-200;
-              color: $black;
+              color: $blue-800;
             }
 
             .unapproved-status {
-              background-color: $coral;
-              color: $red-600;
+              background-color: $red-600;
+              color: $coral;
             }
           }
         }

@@ -153,7 +153,7 @@ function hideSuccessWindow() {
 </script>
 
 <template>
-  <div class="content-wrapper">
+  <div class="event-form-wrapper">
     <div class="event-form" v-if="!showSuccessWindow">
       <div class="form-title">
         <h1 v-if="props.eventId">
@@ -217,20 +217,20 @@ function hideSuccessWindow() {
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
-.content-wrapper {
+.event-form-wrapper {
   min-height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
 
   .event-form {
-    margin: 60px 0;
+    margin: 30px auto 60px auto;
     background-color: $white;
     padding: 20px 40px 10px 40px;
     border: 2px solid $gray-100;
     border-radius: 15px;
     text-align: center;
-    width: 400px;
+    width: 50%;
 
     @media (max-width: 768px) {
       margin: 80px auto;
