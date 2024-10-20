@@ -48,15 +48,6 @@ watchEffect(() => {
 @import "@/assets/styles/_variables.scss";
 
 .side-admin-navigation {
-  width: 195px;
-  background-color: $green-600;
-  display: flex;
-  flex-direction: column;
-
-  @media (max-width: 768px) {
-    width: 130px;
-  }
-
   .admin-logo {
     margin: 20px auto;
     display: flex;
@@ -75,8 +66,8 @@ watchEffect(() => {
   .user-info {
     padding: 10px 20px 30px 0;
 
-    @media (max-width: 768px) {
-      padding: 10px 10px 30px 0;
+    @media (max-width: 830px) {
+      padding: 10px 5px 30px 0;
     }
 
     span {
@@ -87,7 +78,7 @@ watchEffect(() => {
       font-size: 18px;
       color: $white;
 
-      @media (max-width: 768px) {
+      @media (max-width: 830px) {
         font-size: 14px;
       }
 
@@ -100,11 +91,11 @@ watchEffect(() => {
       color: $gray-100;
       font-weight: 300;
 
-      @media (max-width: 768px) {
+      @media (max-width: 830px) {
         font-size: 12px;
       }
 
-      @media (max-width: 425px) {
+      @media (max-width: 725px) {
         font-size: 8px;
       }
     }
@@ -121,8 +112,9 @@ watchEffect(() => {
         letter-spacing: 1px;
         cursor: pointer;
 
-        @media (max-width: 768px) {
-          padding: 15px 10 15px 0;
+        @media (max-width: 830px) {
+          padding: 15px 5px 15px 0;
+          font-size: 10px;
         }
 
         &:hover {
@@ -131,14 +123,6 @@ watchEffect(() => {
 
         &.router-link-active {
           background-color: $green-800;
-        }
-
-        @media (max-width: 768px) {
-          font-size: 12px;
-        }
-
-        @media (max-width: 425px) {
-          font-size: 10px;
         }
       }
     }

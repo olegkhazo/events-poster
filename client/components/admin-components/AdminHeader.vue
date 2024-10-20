@@ -1,7 +1,6 @@
 <script setup>
 function redirectToMyAccountPage() {
-  console.log("ok");
-  navigateTo("/admin-panel");
+  navigateTo("/admin-panel/my-profile");
 }
 </script>
 

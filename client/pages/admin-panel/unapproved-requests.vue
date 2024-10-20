@@ -68,58 +68,56 @@ async function approveEvent(id) {
 </script>
 
 <template>
-  <div class="all-users-wrapper">
+  <div class="admin-content-wrapper">
     <h1>Unapproved Events</h1>
 
     <div v-if="isLoading" class="loading-state">
       <p>Loading suggestions...</p>
     </div>
 
-    <div v-else-if="dataGeted && !isLoading" class="table-wrapper">
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Location</th>
-            <th>Description</th>
-            <th>Event Page</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr
-            class="single-request-row"
-            v-for="event in unapprovedRequests"
-            id="tbody"
-            :key="event._id"
-          >
-            <td>{{ event.event_title }}</td>
-            <td>{{ event.location }}</td>
-            <td>{{ event.event_description }}</td>
-            <td>{{ event.event_page }}</td>
-            <td>{{ event.event_date }}</td>
-            <td>{{ event.event_time }}</td>
-            <td class="action">
-              <div class="action-buttons-wrapper">
-                <NuxtImg
-                  src="/images/validation.svg"
-                  @click="approveEvent(event._id)"
-                  alt="approve"
-                />
+    <table v-else-if="dataGeted && !isLoading">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Location</th>
+          <th>Description</th>
+          <th>Event Page</th>
+          <th>Date</th>
+          <th>Time</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          class="single-request-row"
+          v-for="event in unapprovedRequests"
+          id="tbody"
+          :key="event._id"
+        >
+          <td>{{ event.event_title }}</td>
+          <td>{{ event.location }}</td>
+          <td>{{ event.event_description }}</td>
+          <td>{{ event.event_page }}</td>
+          <td>{{ event.event_date }}</td>
+          <td>{{ event.event_time }}</td>
+          <td class="action">
+            <div class="action-buttons-wrapper">
+              <NuxtImg
+                src="/images/validation.svg"
+                @click="approveEvent(event._id)"
+                alt="approve"
+              />
 
-                <NuxtImg
-                  src="/images/trash.svg"
-                  @click="deleteEvent(event._id)"
-                  alt="approve"
-                />
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+              <NuxtImg
+                src="/images/trash.svg"
+                @click="deleteEvent(event._id)"
+                alt="approve"
+              />
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
     <div v-else class="no-db-entries-block">
       <p>It seems you haven't any unapproved events yet</p>
@@ -133,12 +131,14 @@ async function approveEvent(id) {
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
-.all-users-wrapper {
+.admin-content-wrapper {
+  width: 100%;
   padding: 0 10px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 
   @media (max-width: 834px) {
-    margin: 20px auto 150px auto;
+    margin: 20px 0 150px 0;
   }
 
   h1 {
@@ -164,58 +164,53 @@ async function approveEvent(id) {
     }
   }
 
-  .table-wrapper {
+  table {
     width: 100%;
-    padding-top: 11px;
+    border-collapse: collapse;
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
+    thead {
+      background-color: $gray-850;
 
-      thead {
-        background-color: $gray-850;
-
-        tr:first-child th:first-child {
-          border-top-right-radius: 5px;
-        }
-
-        tr:first-child th:last-child {
-          border-top-left-radius: 5px;
-        }
-
-        th {
-          color: white;
-          padding: 10px;
-          background-color: $gray-850;
-          text-align: left;
-        }
+      tr:first-child th:first-child {
+        border-top-right-radius: 5px;
       }
 
-      tbody {
-        background-color: $white;
+      tr:first-child th:last-child {
+        border-top-left-radius: 5px;
+      }
 
-        tr {
-          td {
-            padding: 10px;
-            border: 1px solid $gray-850;
+      th {
+        color: white;
+        padding: 5px;
+        background-color: $gray-850;
+        text-align: left;
+      }
+    }
 
-            a {
-              color: $blue-100;
-              font-weight: 500;
-            }
+    tbody {
+      background-color: $white;
+
+      tr {
+        td {
+          padding: 5px;
+          border: 1px solid $gray-850;
+
+          a {
+            color: $blue-100;
+            font-weight: 500;
           }
+        }
 
-          .action {
-            padding: 8px;
+        .action {
+          padding: 8px;
 
-            .action-buttons-wrapper {
-              display: flex;
-              justify-content: space-between;
+          .action-buttons-wrapper {
+            display: flex;
+            justify-content: space-between;
 
-              img {
-                width: 18px;
-                cursor: pointer;
-              }
+            img {
+              width: 18px;
+              cursor: pointer;
             }
           }
         }

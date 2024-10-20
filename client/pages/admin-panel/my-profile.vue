@@ -34,7 +34,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="profile-settings-wrapper">
+  <div class="admin-content-wrapper">
     <div class="profile-header">
       <div class="user-avatar">
         <NuxtImg src="/images/photo-camera.svg" alt="camera" />
@@ -102,9 +102,10 @@ onMounted(async () => {
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
-.profile-settings-wrapper {
-  padding: 0 20px;
-  margin: 0 auto 80px auto;
+.admin-content-wrapper {
+  width: 100%;
+  padding: 0 10px;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
 
@@ -113,6 +114,7 @@ onMounted(async () => {
   }
 
   .profile-header {
+    margin-top: 20px;
     background-color: $green-600;
     border-radius: 15px 15px 0 0;
     padding-top: 100px;
