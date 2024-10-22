@@ -58,6 +58,7 @@ function hideMobileMenu() {
         <ul @click="hideMobileMenu">
           <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
           <li><NuxtLink to="/events">רשימת אירועים</NuxtLink></li>
+          <li><NuxtLink to="/create-event">צור אירוע</NuxtLink></li>
         </ul>
       </div>
     </nav>

@@ -20,6 +20,12 @@ class events {
   event_page: string;
 
   @prop()
+  phone: string;
+
+  @prop()
+  email: string;
+
+  @prop()
   event_image_url: string; 
 
   @prop({ default: false })
