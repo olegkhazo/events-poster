@@ -70,6 +70,8 @@ function editEvent(eventId) {
           <th>Event Page</th>
           <th>Date</th>
           <th>Time</th>
+          <th>Email</th>
+          <th>Phone</th>
           <th>Approved</th>
           <th>Action</th>
         </tr>
@@ -91,6 +93,8 @@ function editEvent(eventId) {
           </td>
           <td>{{ event.event_date }}</td>
           <td>{{ event.event_time }}</td>
+          <td>{{ event.email }}</td>
+          <td>{{ event.phone }}</td>
           <td class="status">
             <span
               :class="event.approved ? 'approved-status' : 'unapproved-status'"

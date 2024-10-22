@@ -31,6 +31,11 @@ onMounted(async () => {
 
   isLoading.value = false;
 });
+
+async function logoutUser() {
+  await authManager.logout();
+  window.location.reload();
+}
 </script>
 
 <template>
@@ -86,6 +91,12 @@ onMounted(async () => {
             <div v-if="userData.role" class="single-info-point-block">
               <span class="info-item">role</span>
               <span class="info-item-content">{{ userData.role }}</span>
+            </div>
+
+            <div class="single-info-point-block logout-btn">
+              <NuxtLink class="gray-btn" @click="logoutUser" to="/"
+                >Log Out</NuxtLink
+              >
             </div>
           </div>
         </div>
@@ -206,6 +217,10 @@ onMounted(async () => {
             font-weight: 600;
             font-size: 18px;
           }
+        }
+
+        .logout-btn {
+          margin-top: 20px;
         }
       }
     }
