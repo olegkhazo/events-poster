@@ -24,13 +24,13 @@ export const getDataFromBrowserAi = async (req?: Request, res?: Response, next?:
 
     const combinedEvents = [...ironitEvents, ...mishkanEvents, ...mevalimEvents];
 
-    const serializedEnetsCollection = serializeEvents(combinedEvents);
+    const serializedEventsCollection = serializeEvents(combinedEvents);
 
-    for (const event of serializedEnetsCollection) {
+    for (const event of serializedEventsCollection) {
       const existingEvent = await EventModel.findOne({
-        event_title: event.title,
-        event_date: event.date,
-        event_time: event.time,
+        event_title: event.event_title,
+        event_date: event.event_date,
+        event_time: event.event_time,
       });
 
       if (!existingEvent) {
@@ -41,6 +41,7 @@ export const getDataFromBrowserAi = async (req?: Request, res?: Response, next?:
           event_page: event.event_page,
           location: event.location,
           event_type: event.event_type,
+          approved: true,
         });
 
         try {
@@ -52,7 +53,7 @@ export const getDataFromBrowserAi = async (req?: Request, res?: Response, next?:
     }
 
     if (res) {
-      res.status(200).json(serializedEnetsCollection);
+      res.status(200).json(serializedEventsCollection);
     }
 
   } catch (error) {
