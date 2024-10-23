@@ -11,7 +11,10 @@ class events {
   event_title: string;
 
   @prop()
-  event_description: string
+  event_description: string;
+
+  @prop()
+  event_type: string;
 
   @prop()
   location: string;
