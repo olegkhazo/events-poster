@@ -6,11 +6,9 @@ import isoWeek from "dayjs/plugin/isoWeek";
 import { useAllEventsStore } from "~/stores/allEventsStore";
 import { useSelectedDate } from "~/stores/calendarStore";
 
-const {
-  allEvents,
-  sortedByDateEventsCollection,
-  currentFilteredEventCollection,
-} = storeToRefs(useAllEventsStore());
+const { allEvents, currentFilteredEventCollection } = storeToRefs(
+  useAllEventsStore()
+);
 
 const { selectedDate } = storeToRefs(useSelectedDate());
 
@@ -34,8 +32,6 @@ onMounted(async () => {
   const backendEvents = events.value;
   allEvents.value = backendEvents;
 
-  console.log(allEvents.value);
-
   dataIsLoaded.value = true;
 
   const savedMonth = sessionStorage.getItem("selectedMonth");
@@ -48,7 +44,7 @@ onMounted(async () => {
 
   const savedDate = sessionStorage.getItem("selectedDate");
   if (savedDate) {
-    selectedDate.value = dayjs(savedDate); // Обернуть в dayjs объект
+    selectedDate.value = dayjs(savedDate);
     const savedWeekIndex = sessionStorage.getItem("selectedWeekIndex");
     selectedWeekIndex.value =
       savedWeekIndex !== null ? parseInt(savedWeekIndex) : null;
@@ -62,7 +58,7 @@ onMounted(async () => {
       });
     }
   } else {
-    selectedDate.value = null; // Явно установить null, если нет сохранённой даты
+    selectedDate.value = null;
   }
 });
 
@@ -73,7 +69,6 @@ watch([currentMonth, currentYear], ([newMonth, newYear]) => {
 
 watch([selectedDate, selectedWeekIndex], ([newDate, newWeekIndex]) => {
   if (newDate && dayjs.isDayjs(newDate)) {
-    // Проверка на объект dayjs
     sessionStorage.setItem("selectedDate", newDate.format());
     sessionStorage.setItem(
       "selectedWeekIndex",
@@ -87,24 +82,23 @@ watch([selectedDate, selectedWeekIndex], ([newDate, newWeekIndex]) => {
   }
 });
 
-// Функция проверки прошлых дат
+// Last date check
 const isPastDate = (date) => {
   return dayjs(date).isBefore(dayjs(), "day");
 };
 
-// Актуальная коллекция событий
+// Current event collection
 const actualityCollection = computed(() => {
   return currentFilteredEventCollection.value.length > 0
     ? currentFilteredEventCollection.value
-    : sortedByDateEventsCollection.value;
+    : allEvents.value;
 });
 
-// Логика выбора даты
+// Choose data logic
 const selectDate = (date, weekIndex) => {
   const newMonth = date.month();
   const newYear = date.year();
 
-  // Если месяц и год совпадают с текущими, выбираем дату
   if (currentMonth.value === newMonth && currentYear.value === newYear) {
     selectedDate.value =
       selectedDate.value && selectedDate.value.isSame(date, "day")
@@ -114,17 +108,17 @@ const selectDate = (date, weekIndex) => {
   }
 };
 
-// Начало месяца
+// Beginning of the month
 const startOfMonth = computed(() =>
   dayjs(new Date(currentYear.value, currentMonth.value, 1)).startOf("month")
 );
 
-// Конец месяца
+// End of the month
 const endOfMonth = computed(() =>
   dayjs(new Date(currentYear.value, currentMonth.value, 1)).endOf("month")
 );
 
-// Матрица дней месяца, разбитая по неделям
+// Month matrix broced be weeks
 const daysMatrix = computed(() => {
   const startOfFirstWeek = startOfMonth.value.startOf("week");
   const endOfLastWeek = endOfMonth.value.endOf("week");
@@ -156,14 +150,14 @@ function changeMonth(step) {
   }
 }
 
-// Проверка, доступен ли предыдущий месяц
+// Is currrent month фмфшдфиду
 const isPreviousMonthAvailable = computed(() => {
   const currentDate = dayjs();
   const selectedDate = dayjs(new Date(currentYear.value, currentMonth.value));
   return selectedDate.isAfter(currentDate, "month");
 });
 
-// События для выбранной даты
+// Events for current date
 const eventsForSelectedDate = computed(() => {
   if (!selectedDate.value) {
     return [];
@@ -177,7 +171,7 @@ const eventsForSelectedDate = computed(() => {
   });
 });
 
-// События по дням
+// Events by days
 const eventsForDay = computed(() => {
   const events = {};
 
@@ -192,7 +186,7 @@ const eventsForDay = computed(() => {
   return events;
 });
 
-// Данные для компонента переключателя месяца
+// Data for month switch component
 const calendarMonthSwitcherData = {
   currentMonthAndYear: computed(() => {
     const month = dayjs(new Date(currentYear.value, currentMonth.value)).format(
@@ -248,11 +242,10 @@ const calendarMonthSwitcherData = {
             ]"
             @click="!dayObj.isPast && selectDate(dayObj.date, weekIndex)"
           >
-            <span
-              v-if="dayObj.date.month() === currentMonth"
-              class="day-date"
-              >{{ dayObj.date.date() }}</span
-            >
+            <span v-if="dayObj.date.month() === currentMonth" class="day-date">
+              {{ dayObj.date.date() }}
+            </span>
+
             <span
               v-if="
                 eventsForDay[dayObj.date.format('YYYY-MM-DD')] &&
@@ -261,7 +254,19 @@ const calendarMonthSwitcherData = {
               "
               class="day-date-indicator"
             ></span>
+
+            <span
+              v-if="
+                eventsForDay[dayObj.date.format('YYYY-MM-DD')] &&
+                dayObj.date.month() === currentMonth
+              "
+              class="number-of-events"
+            >
+              אירועים:
+              {{ eventsForDay[dayObj.date.format("YYYY-MM-DD")].length }}
+            </span>
           </div>
+
           <div
             v-if="
               eventsForSelectedDate.length > 0 &&
@@ -382,6 +387,12 @@ const calendarMonthSwitcherData = {
               width: 5px;
               height: 5px;
             }
+          }
+
+          .number-of-events {
+            color: $green-600;
+            font-weight: 600;
+            font-size: 12px;
           }
         }
 
