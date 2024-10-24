@@ -1,7 +1,6 @@
 
 export const useAllEventsStore = defineStore('all-events-store', () => {
   const allEvents = ref([]);
-  const sortedByDateEventsCollection = ref([]);
   const currentFilteredEventCollection = ref([]);
 
   
@@ -10,9 +9,9 @@ export const useAllEventsStore = defineStore('all-events-store', () => {
     const eventsArray = newVal.value || newVal;
 
     if (eventsArray.length > 0) {
-      sortedByDateEventsCollection.value = newVal;
+      allEvents.value = newVal;
     }
   });
 
-  return { allEvents, currentFilteredEventCollection, sortedByDateEventsCollection };
+  return { allEvents, currentFilteredEventCollection };
 });
