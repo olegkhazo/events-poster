@@ -15,7 +15,6 @@ const {
 const { selectedDate } = storeToRefs(useSelectedDate());
 
 import { daysOfWeek, monthsInHebrew } from "~/utils/collections";
-import { updateFormatOfEventDate } from "~/utils/";
 import { fetchPageData } from "~/utils/data-acquisition";
 
 dayjs.extend(weekday);
@@ -28,29 +27,17 @@ const selectedWeekIndex = ref(null);
 
 const weekRefs = ref([]);
 
-const ironitEventsCollection = ref([]);
-const mishkanAshdodEventsCollection = ref([]);
-const mevalimEventsCollection = ref([]);
-
 const dataIsLoaded = ref(false);
 
-onMounted(async () => {
-  try {
-    ironitEventsCollection.value = await fetchPageData("ironit");
-    mishkanAshdodEventsCollection.value = await fetchPageData("mishkanAshdod");
-    mevalimEventsCollection.value = await fetchPageData("mevalim");
+const { data: events, error } = await useFetch(`${API_URL}all-events`);
 
-    if (
-      ironitEventsCollection.value.length > 0 &&
-      mishkanAshdodEventsCollection.value.length > 0 &&
-      mevalimEventsCollection.value.length > 0
-    ) {
-      allEvents.value = [
-        ...mishkanAshdodEventsCollection.value,
-        ...ironitEventsCollection.value,
-        ...mevalimEventsCollection.value,
-      ];
-    }
+onMounted(async () => {
+  const backendEvents = events.value;
+  console.log(backendEvents);
+
+  try {
+    allEvents.value = backendEvents;
+
     dataIsLoaded.value = true;
 
     const savedMonth = sessionStorage.getItem("selectedMonth");
@@ -176,43 +163,50 @@ const isPreviousMonthAvailable = computed(() => {
   return selectedDate.isAfter(currentDate, "month");
 });
 
-// Events for single date
 const eventsForSelectedDate = computed(() => {
   if (!selectedDate.value) {
     return [];
   }
 
-  const formattedSelectedDate = dayjs(selectedDate.value).format("DD/MM/YYYY");
+  // Преобразуем selectedDate.value в объект dayjs, если он им не является
+  const selectedDateObj = dayjs(selectedDate.value);
+  const selectedDateString = selectedDateObj.format("YYYY-MM-DD");
 
   return actualityCollection.value.filter((collection) => {
     try {
-      const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
+      // Преобразуем дату события в нужный формат
+      const eventDate = dayjs(collection.event_date).format("YYYY-MM-DD");
 
-      const isSameDay = formattedEventDate === formattedSelectedDate;
+      // Сравниваем даты как строки в формате "YYYY-MM-DD"
+      const isSameDay = eventDate === selectedDateString;
 
       return isSameDay;
     } catch (error) {
-      console.error("Error formatting date:", error);
+      console.error("Error comparing dates:", error);
       return false;
     }
   });
 });
 
-// Get object events for every day
 const eventsForDay = computed(() => {
   const events = {};
 
   actualityCollection.value.forEach((collection) => {
     try {
-      const formattedEventDate = updateFormatOfEventDate(collection.eventDate);
-      if (!events[formattedEventDate]) {
-        events[formattedEventDate] = [];
+      const eventDate = collection.event_date;
+
+      // Проверяем, есть ли уже массив событий для этой даты, и если нет, создаем его
+      if (!events[eventDate]) {
+        events[eventDate] = [];
       }
-      events[formattedEventDate].push(collection);
+
+      // Добавляем событие в массив для соответствующей даты
+      events[eventDate].push(collection);
     } catch (error) {
-      console.error("Error formatting date:", error);
+      console.error("Error processing event date:", error);
     }
   });
+
   return events;
 });
 
@@ -264,7 +258,7 @@ const calendarMonthSwitcherData = {
         >
           <div
             v-for="dayObj in week"
-            :key="dayObj.date.format('DD/MM/YYYY')"
+            :key="dayObj.date.format('YYYY-MM-DD')"
             :class="[
               'calendar-day',
               { 'selected-day': dayObj.date.isSame(selectedDate, 'day') },
@@ -275,8 +269,8 @@ const calendarMonthSwitcherData = {
             <span class="day-date">{{ dayObj.date.date() }}</span>
             <span
               v-if="
-                eventsForDay[dayObj.date.format('DD/MM/YYYY')] &&
-                eventsForDay[dayObj.date.format('DD/MM/YYYY')].length > 0
+                eventsForDay[dayObj.date.format('YYYY-MM-DD')] &&
+                eventsForDay[dayObj.date.format('YYYY-MM-DD')].length > 0
               "
               class="day-date-indicator"
             ></span>
@@ -284,7 +278,9 @@ const calendarMonthSwitcherData = {
           <div
             v-if="
               eventsForSelectedDate.length > 0 &&
-              selectedWeekIndex === weekIndex
+              selectedWeekIndex === weekIndex &&
+              selectedDate &&
+              selectedDate.month() === currentMonth
             "
             class="event-block"
           >
