@@ -37,17 +37,17 @@ function recordEventToStore(event) {
           <NuxtImg v-else src="/images/logo.png" alt="image" />
         </div>
         <div class="event-date">
-          <span v-if="event.eventDate" class="date">
-            {{ event.eventDate }}</span
+          <span v-if="event.event_date" class="date">
+            {{ event.event_date }}</span
           >
           <span class="time">
             <NuxtImg src="/images/clock.png" alt="clock" />
-            {{ event.eventTime }}
+            {{ event.event_time }}
           </span>
           <span v-if="event.location" class="location">{{
             event.location
           }}</span>
-          <span v-if="event.eventTitle" class="title">{{
+          <span v-if="event.event_title" class="title">{{
             event.eventTitle
           }}</span>
         </div>

@@ -15,7 +15,6 @@ const {
 const { selectedDate } = storeToRefs(useSelectedDate());
 
 import { daysOfWeek, monthsInHebrew } from "~/utils/collections";
-import { fetchPageData } from "~/utils/data-acquisition";
 
 dayjs.extend(weekday);
 dayjs.extend(isoWeek);
@@ -29,43 +28,41 @@ const weekRefs = ref([]);
 
 const dataIsLoaded = ref(false);
 
-const { data: events, error } = await useFetch(`${API_URL}all-events`);
+const { data: events } = await useFetch(`${API_URL}all-events`);
 
 onMounted(async () => {
   const backendEvents = events.value;
-  console.log(backendEvents);
+  allEvents.value = backendEvents;
 
-  try {
-    allEvents.value = backendEvents;
+  console.log(allEvents.value);
 
-    dataIsLoaded.value = true;
+  dataIsLoaded.value = true;
 
-    const savedMonth = sessionStorage.getItem("selectedMonth");
-    const savedYear = sessionStorage.getItem("selectedYear");
+  const savedMonth = sessionStorage.getItem("selectedMonth");
+  const savedYear = sessionStorage.getItem("selectedYear");
 
-    if (savedMonth !== null && savedYear !== null) {
-      currentMonth.value = parseInt(savedMonth);
-      currentYear.value = parseInt(savedYear);
+  if (savedMonth !== null && savedYear !== null) {
+    currentMonth.value = parseInt(savedMonth);
+    currentYear.value = parseInt(savedYear);
+  }
+
+  const savedDate = sessionStorage.getItem("selectedDate");
+  if (savedDate) {
+    selectedDate.value = dayjs(savedDate); // Обернуть в dayjs объект
+    const savedWeekIndex = sessionStorage.getItem("selectedWeekIndex");
+    selectedWeekIndex.value =
+      savedWeekIndex !== null ? parseInt(savedWeekIndex) : null;
+
+    if (selectedWeekIndex.value !== null) {
+      nextTick(() => {
+        const weekElement = weekRefs.value[selectedWeekIndex.value];
+        if (weekElement) {
+          weekElement.scrollIntoView({ behavior: "smooth" });
+        }
+      });
     }
-
-    const savedDate = sessionStorage.getItem("selectedDate");
-    if (savedDate) {
-      selectedDate.value = dayjs(savedDate);
-      const savedWeekIndex = sessionStorage.getItem("selectedWeekIndex");
-      selectedWeekIndex.value =
-        savedWeekIndex !== null ? parseInt(savedWeekIndex) : null;
-
-      if (selectedWeekIndex.value !== null) {
-        nextTick(() => {
-          const weekElement = weekRefs.value[selectedWeekIndex.value];
-          if (weekElement) {
-            weekElement.scrollIntoView({ behavior: "smooth" });
-          }
-        });
-      }
-    }
-  } catch (error) {
-    console.error("Error during onMounted:", error);
+  } else {
+    selectedDate.value = null; // Явно установить null, если нет сохранённой даты
   }
 });
 
@@ -75,7 +72,8 @@ watch([currentMonth, currentYear], ([newMonth, newYear]) => {
 });
 
 watch([selectedDate, selectedWeekIndex], ([newDate, newWeekIndex]) => {
-  if (newDate) {
+  if (newDate && dayjs.isDayjs(newDate)) {
+    // Проверка на объект dayjs
     sessionStorage.setItem("selectedDate", newDate.format());
     sessionStorage.setItem(
       "selectedWeekIndex",
@@ -89,41 +87,44 @@ watch([selectedDate, selectedWeekIndex], ([newDate, newWeekIndex]) => {
   }
 });
 
-// Past date
+// Функция проверки прошлых дат
 const isPastDate = (date) => {
   return dayjs(date).isBefore(dayjs(), "day");
 };
 
-// Get actual event collection for the view according to sortedByDateEventsCollection
+// Актуальная коллекция событий
 const actualityCollection = computed(() => {
   return currentFilteredEventCollection.value.length > 0
     ? currentFilteredEventCollection.value
     : sortedByDateEventsCollection.value;
 });
 
+// Логика выбора даты
 const selectDate = (date, weekIndex) => {
-  if (
-    selectedDate.value &&
-    dayjs.isDayjs(selectedDate.value) &&
-    selectedDate.value.isSame(date, "day") &&
-    selectedWeekIndex.value === weekIndex
-  ) {
-    selectedDate.value = null;
-    selectedWeekIndex.value = null;
-  } else {
-    selectedDate.value = date;
-    selectedWeekIndex.value = weekIndex;
+  const newMonth = date.month();
+  const newYear = date.year();
+
+  // Если месяц и год совпадают с текущими, выбираем дату
+  if (currentMonth.value === newMonth && currentYear.value === newYear) {
+    selectedDate.value =
+      selectedDate.value && selectedDate.value.isSame(date, "day")
+        ? null
+        : date;
+    selectedWeekIndex.value = selectedDate.value ? weekIndex : null;
   }
 };
 
+// Начало месяца
 const startOfMonth = computed(() =>
   dayjs(new Date(currentYear.value, currentMonth.value, 1)).startOf("month")
 );
 
+// Конец месяца
 const endOfMonth = computed(() =>
   dayjs(new Date(currentYear.value, currentMonth.value, 1)).endOf("month")
 );
 
+// Матрица дней месяца, разбитая по неделям
 const daysMatrix = computed(() => {
   const startOfFirstWeek = startOfMonth.value.startOf("week");
   const endOfLastWeek = endOfMonth.value.endOf("week");
@@ -144,73 +145,54 @@ const daysMatrix = computed(() => {
 });
 
 function changeMonth(step) {
-  if (currentMonth.value !== null && currentYear.value !== null) {
-    currentMonth.value += step;
+  currentMonth.value += step;
 
-    if (currentMonth.value < 0) {
-      currentMonth.value = 11;
-      currentYear.value -= 1;
-    } else if (currentMonth.value > 11) {
-      currentMonth.value = 0;
-      currentYear.value += 1;
-    }
+  if (currentMonth.value < 0) {
+    currentMonth.value = 11;
+    currentYear.value -= 1;
+  } else if (currentMonth.value > 11) {
+    currentMonth.value = 0;
+    currentYear.value += 1;
   }
 }
 
+// Проверка, доступен ли предыдущий месяц
 const isPreviousMonthAvailable = computed(() => {
   const currentDate = dayjs();
   const selectedDate = dayjs(new Date(currentYear.value, currentMonth.value));
   return selectedDate.isAfter(currentDate, "month");
 });
 
+// События для выбранной даты
 const eventsForSelectedDate = computed(() => {
   if (!selectedDate.value) {
     return [];
   }
 
-  // Преобразуем selectedDate.value в объект dayjs, если он им не является
-  const selectedDateObj = dayjs(selectedDate.value);
-  const selectedDateString = selectedDateObj.format("YYYY-MM-DD");
+  const selectedDateString = selectedDate.value.format("YYYY-MM-DD");
 
   return actualityCollection.value.filter((collection) => {
-    try {
-      // Преобразуем дату события в нужный формат
-      const eventDate = dayjs(collection.event_date).format("YYYY-MM-DD");
-
-      // Сравниваем даты как строки в формате "YYYY-MM-DD"
-      const isSameDay = eventDate === selectedDateString;
-
-      return isSameDay;
-    } catch (error) {
-      console.error("Error comparing dates:", error);
-      return false;
-    }
+    const eventDate = dayjs(collection.event_date).format("YYYY-MM-DD");
+    return eventDate === selectedDateString;
   });
 });
 
+// События по дням
 const eventsForDay = computed(() => {
   const events = {};
 
   actualityCollection.value.forEach((collection) => {
-    try {
-      const eventDate = collection.event_date;
-
-      // Проверяем, есть ли уже массив событий для этой даты, и если нет, создаем его
-      if (!events[eventDate]) {
-        events[eventDate] = [];
-      }
-
-      // Добавляем событие в массив для соответствующей даты
-      events[eventDate].push(collection);
-    } catch (error) {
-      console.error("Error processing event date:", error);
+    const eventDate = dayjs(collection.event_date).format("YYYY-MM-DD");
+    if (!events[eventDate]) {
+      events[eventDate] = [];
     }
+    events[eventDate].push(collection);
   });
 
   return events;
 });
 
-// Get data about current months and years for calendarMonthSwitcher.vue
+// Данные для компонента переключателя месяца
 const calendarMonthSwitcherData = {
   currentMonthAndYear: computed(() => {
     const month = dayjs(new Date(currentYear.value, currentMonth.value)).format(
@@ -266,11 +248,16 @@ const calendarMonthSwitcherData = {
             ]"
             @click="!dayObj.isPast && selectDate(dayObj.date, weekIndex)"
           >
-            <span class="day-date">{{ dayObj.date.date() }}</span>
+            <span
+              v-if="dayObj.date.month() === currentMonth"
+              class="day-date"
+              >{{ dayObj.date.date() }}</span
+            >
             <span
               v-if="
                 eventsForDay[dayObj.date.format('YYYY-MM-DD')] &&
-                eventsForDay[dayObj.date.format('YYYY-MM-DD')].length > 0
+                eventsForDay[dayObj.date.format('YYYY-MM-DD')].length > 0 &&
+                dayObj.date.month() === currentMonth
               "
               class="day-date-indicator"
             ></span>
@@ -280,14 +267,19 @@ const calendarMonthSwitcherData = {
               eventsForSelectedDate.length > 0 &&
               selectedWeekIndex === weekIndex &&
               selectedDate &&
-              selectedDate.month() === currentMonth
+              selectedDate.month() === currentMonth &&
+              selectedDate.year() === currentYear
             "
             class="event-block"
           >
             <h3>
               אירועים עבור
               <span class="date-of-list">
-                {{ selectedDate.format("D") }}
+                {{
+                  selectedDate && dayjs.isDayjs(selectedDate)
+                    ? selectedDate.format("D")
+                    : ""
+                }}
                 {{ calendarMonthSwitcherData.currentMonthAndYear }}
               </span>
             </h3>
