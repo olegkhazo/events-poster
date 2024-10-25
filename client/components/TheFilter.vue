@@ -15,9 +15,11 @@ const filterEvents = () => {
     const filterText = filterSubString.value.toLowerCase();
 
     currentFilteredEventCollection.value = allEvents.value.filter((event) => {
-      const eventDate = event.eventDate ? event.eventDate.toLowerCase() : "";
+      const eventDate = event.event_date ? event.event_date.toLowerCase() : "";
       const location = event.location ? event.location.toLowerCase() : "";
-      const eventTitle = event.eventTitle ? event.eventTitle.toLowerCase() : "";
+      const eventTitle = event.event_title
+        ? event.event_title.toLowerCase()
+        : "";
 
       return (
         eventDate.includes(filterText) ||

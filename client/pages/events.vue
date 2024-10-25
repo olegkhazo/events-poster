@@ -11,16 +11,27 @@ useHead({
 
 import { useAllEventsStore } from "~/stores/allEventsStore";
 
-const { sortedByDateEventsCollection, currentFilteredEventCollection } =
-  storeToRefs(useAllEventsStore());
+const { allEvents, currentFilteredEventCollection } = storeToRefs(
+  useAllEventsStore()
+);
+
+const dataIsLoaded = ref(false);
+
+const { data: events } = await useFetch(`${API_URL}all-events`);
+
+onMounted(() => {
+  allEvents.value = events.value;
+
+  dataIsLoaded.value = true;
+});
 
 const eventsAmount = ref(20);
 
-// Get actual event collection for the view according to sortedByDateEventsCollection
+// Get actual event collection for the view according to allEvents
 const actualityCollection = computed(() => {
   return currentFilteredEventCollection.value.length > 0
     ? currentFilteredEventCollection.value
-    : sortedByDateEventsCollection.value;
+    : allEvents.value;
 });
 
 const displayedEvents = computed(() => {
@@ -37,7 +48,7 @@ function showNextEvents() {
 </script>
 
 <template>
-  <div class="all-events-wrapper">
+  <div v-if="dataIsLoaded" class="all-events-wrapper">
     <TheFilter />
     <div class="events-wrapper">
       <div class="event" v-for="event in displayedEvents" :key="event.Position">
@@ -50,10 +61,22 @@ function showNextEvents() {
       </button>
     </div>
   </div>
+  <div v-else class="preloader">
+    <NuxtImg src="/animation-cat.gif" alt="event image" />
+    <span>קבלת המידע...</span>
+  </div>
 </template>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
+
+.preloader {
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
 .all-events-wrapper {
   min-height: 60vh;

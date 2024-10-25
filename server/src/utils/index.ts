@@ -38,3 +38,8 @@ export function updateFormatOfEventDate(eventData: string): string {
     return "";
   }
 }
+
+
+export const filterByEventPage = (items: any[], originalUrl: string) => {
+  return items.filter(item => item.originalUrl === originalUrl);
+};

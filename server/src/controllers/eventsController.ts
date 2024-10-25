@@ -2,7 +2,8 @@ import { Request, Response, NextFunction } from 'express';
 import { EventModel } from '../models/event.models';
 import { fetchEventsFromApi } from '../services/browserAiService';
 import { serializeEvents } from '../utils/serializeEvents';
-
+import { filterByEventPage } from '../utils';
+import { BOT_API_URLS, BotApiUrls } from '../constants/apiUrls';
 
 export const getAllEvents = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -79,6 +80,58 @@ export const getSingleEvent = async (req: Request, res: Response, next: NextFunc
     res.status(200).json(event);
   } catch (error) {
     next(error);
+  }
+};
+
+
+export const getAdditionalEventData = async (req: Request, res: Response, next: NextFunction) => {
+  const { site_donor, originalUrl } = req.body;
+
+  if (!site_donor || !(site_donor in BOT_API_URLS)) {
+    return res.status(400).json({ message: "Invalid siteDonor" });
+  }
+
+  const donorKey = site_donor as keyof BotApiUrls;
+
+  const options = {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${BOT_API_URLS[donorKey].API_KEY}`,
+    },
+  };
+
+  let allItems: any[] = [];
+  let currentPage = 1;
+  let hasMoreData = true;
+
+  try {
+    while (hasMoreData) {
+      const response = await fetch(
+        `${BOT_API_URLS[donorKey].URL}/${BOT_API_URLS[donorKey].ADDITIONAL_DATA_SCRAPER_ID}/tasks?page=${currentPage}&pageSize=10`,
+        options
+      );
+
+      if (!response.ok) {
+        return res.status(response.status).json({ message: `Error fetching data: ${response.status}` });
+      }
+
+      const data = await response.json();
+      const items = data.result.robotTasks.items;
+      allItems = allItems.concat(items);
+
+      if (items.length < 10) {
+        hasMoreData = false;
+      } else {
+        currentPage++;
+      }
+    }
+
+    const filteredItems = filterByEventPage(allItems, originalUrl);
+
+    return res.status(200).json({ data: filteredItems });
+  } catch (error) {
+    console.error("Error fetching additional event data:", error);
+    return res.status(500).json({ message: "Error fetching additional event data", error: (error as Error).message });
   }
 };
 

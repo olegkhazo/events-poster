@@ -10,7 +10,6 @@ useHead({
 });
 
 import { useCurrentEventStore } from "~/stores/currentEventStore";
-import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
 
@@ -19,15 +18,15 @@ const currentEventOriginalUrl = ref("");
 const dataIsLoaded = ref(false);
 
 onMounted(() => {
-  if (currentEvent.value && currentEvent.value.eventPage) {
-    currentEventOriginalUrl.value = currentEvent.value.eventPage;
+  if (currentEvent.value && currentEvent.value.event_page) {
+    currentEventOriginalUrl.value = currentEvent.value.event_page;
     fetchEventAdditionalData();
   }
 });
 
 watch(currentEvent, (newVal) => {
-  if (newVal && newVal.eventPage) {
-    currentEventOriginalUrl.value = newVal.eventPage;
+  if (newVal && newVal.event_page) {
+    currentEventOriginalUrl.value = newVal.event_page;
     fetchEventAdditionalData();
   }
 });
@@ -40,59 +39,28 @@ function filterByEventPage(dataArray, url) {
   return dataArray.filter((item) => item.inputParameters.originUrl === url);
 }
 
-// BrowseAI ========================== BrowseAI ========================= BrowseAI
-
 const fetchEventAdditionalData = async () => {
-  if (!currentEvent.value.siteDonor) {
+  if (!currentEvent.value.site_donor) {
     console.error("siteDonor is not defined in currentEvent");
     return;
   }
 
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${
-        BOT_API_URLS[currentEvent.value.siteDonor].API_KEY
-      }`,
+  const { data, error } = await useFetch(`${API_URL}additional-event-data`, {
+    method: "POST",
+    body: {
+      site_donor: currentEvent.value.site_donor,
+      originalUrl: currentEvent.value.event_page,
     },
-  };
+  });
 
-  const allItems = ref([]);
-  let currentPage = 1;
-  let hasMoreData = true;
-
-  while (hasMoreData) {
-    try {
-      const res = await fetch(
-        `${BOT_API_URLS[currentEvent.value.siteDonor].URL}/${
-          BOT_API_URLS[currentEvent.value.siteDonor].ADDITIONAL_DATA_SCRAPER_ID
-        }/tasks?page=${currentPage}&pageSize=10`,
-        options
-      );
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-
-      const data = await res.json();
-      const items = data.result.robotTasks.items;
-
-      allItems.value = allItems.value.concat(items);
-
-      if (items.length < 10) {
-        hasMoreData = false;
-      } else {
-        currentPage++;
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      hasMoreData = false;
-    }
+  if (error.value) {
+    console.error("Error fetching additional event data:", error.value);
+    return;
   }
 
   additionalSingleEventData.value = filterByEventPage(
-    allItems.value,
-    currentEventOriginalUrl.value
+    data.value?.data || [],
+    currentEvent.value.event_page
   );
   dataIsLoaded.value = true;
 };
