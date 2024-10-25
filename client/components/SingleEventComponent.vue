@@ -31,24 +31,24 @@ function recordEventToStore(event) {
       <NuxtImg v-else src="/images/logo.png" alt="image" />
     </div>
     <div class="event-description">
-      <span v-if="props.singleEventData.eventDate" class="date">{{
-        props.singleEventData.eventDate
+      <span v-if="props.singleEventData.event_date" class="date">{{
+        props.singleEventData.event_date
       }}</span>
-      <span v-if="props.singleEventData.eventTime" class="time">
+      <span v-if="props.singleEventData.event_time" class="time">
         <NuxtImg src="/images/clock.png" alt="clock" />
-        {{ props.singleEventData.eventTime }}
+        {{ props.singleEventData.event_time }}
       </span>
       <span v-if="props.singleEventData.location" class="location">{{
         props.singleEventData.location
       }}</span>
-      <span v-if="props.singleEventData.eventTitle" class="title">
-        {{ props.singleEventData.eventTitle }}
+      <span v-if="props.singleEventData.event_title" class="title">
+        {{ props.singleEventData.event_title }}
       </span>
     </div>
 
     <div class="btn-wrapper">
       <NuxtLink
-        :to="props.singleEventData.eventPage"
+        :to="props.singleEventData.event_page"
         class="buy-ticckets-link"
         target="_blank"
         >לרכישה</NuxtLink
@@ -74,7 +74,7 @@ function recordEventToStore(event) {
   padding-bottom: 15px;
   cursor: pointer;
   position: relative;
-  height: 100%; /* Устанавливаем высоту на 100%, чтобы flex-контейнер занимал всю доступную высоту */
+  height: 100%;
 
   &:hover {
     background-color: $blue-300;
