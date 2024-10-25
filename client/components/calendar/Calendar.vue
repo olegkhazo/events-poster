@@ -29,8 +29,7 @@ const dataIsLoaded = ref(false);
 const { data: events } = await useFetch(`${API_URL}all-events`);
 
 onMounted(async () => {
-  const backendEvents = events.value;
-  allEvents.value = backendEvents;
+  allEvents.value = events.value;
 
   dataIsLoaded.value = true;
 
