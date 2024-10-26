@@ -85,8 +85,9 @@ export const getSingleEvent = async (req: Request, res: Response, next: NextFunc
 
 
 export const getAdditionalEventData = async (req: Request, res: Response, next: NextFunction) => {
-  const { site_donor, originalUrl } = req.body;
-
+  const { site_donor, event_page } = req.body;
+  
+  
   if (!site_donor || !(site_donor in BOT_API_URLS)) {
     return res.status(400).json({ message: "Invalid siteDonor" });
   }
@@ -103,31 +104,30 @@ export const getAdditionalEventData = async (req: Request, res: Response, next: 
   let allItems: any[] = [];
   let currentPage = 1;
   let hasMoreData = true;
-
+  
   try {
     while (hasMoreData) {
       const response = await fetch(
         `${BOT_API_URLS[donorKey].URL}/${BOT_API_URLS[donorKey].ADDITIONAL_DATA_SCRAPER_ID}/tasks?page=${currentPage}&pageSize=10`,
         options
       );
-
       if (!response.ok) {
         return res.status(response.status).json({ message: `Error fetching data: ${response.status}` });
       }
-
+      
       const data = await response.json();
       const items = data.result.robotTasks.items;
       allItems = allItems.concat(items);
-
+      
       if (items.length < 10) {
         hasMoreData = false;
       } else {
         currentPage++;
       }
     }
-
-    const filteredItems = filterByEventPage(allItems, originalUrl);
-
+    
+    const filteredItems = filterByEventPage(allItems, event_page);
+    
     return res.status(200).json({ data: filteredItems });
   } catch (error) {
     console.error("Error fetching additional event data:", error);

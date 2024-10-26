@@ -40,6 +40,9 @@ export function updateFormatOfEventDate(eventData: string): string {
 }
 
 
-export const filterByEventPage = (items: any[], originalUrl: string) => {
-  return items.filter(item => item.originalUrl === originalUrl);
+export const filterByEventPage = (items: any[], event_page: string) => {
+  return items.filter(item => {
+    const isMatch = item.inputParameters.originUrl === event_page;
+    return isMatch;
+  });
 };
