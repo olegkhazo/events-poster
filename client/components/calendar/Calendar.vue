@@ -257,7 +257,8 @@ const calendarMonthSwitcherData = {
             <span
               v-if="
                 eventsForDay[dayObj.date.format('YYYY-MM-DD')] &&
-                dayObj.date.month() === currentMonth
+                dayObj.date.month() === currentMonth &&
+                !dayObj.isPast
               "
               class="number-of-events"
             >

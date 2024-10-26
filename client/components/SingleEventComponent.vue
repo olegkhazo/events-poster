@@ -16,6 +16,8 @@ function recordEventToStore(event) {
     currentEvent.value.site_donor = "mishkanAshdod";
   } else if (currentEvent.value.event_page.includes("mevalim")) {
     currentEvent.value.site_donor = "mevalim";
+  } else {
+    currentEvent.value.site_donor = "custom-event";
   }
 }
 </script>

@@ -20,6 +20,9 @@ class events {
   location: string;
 
   @prop()
+  event_price: number;
+
+  @prop()
   event_page: string;
 
   @prop()

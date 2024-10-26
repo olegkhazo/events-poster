@@ -10,12 +10,14 @@ function recordEventToStore(event) {
   currentEvent.value = event;
 
   // Get the site from which we will get data for the event additional page
-  if (currentEvent.value.eventPage.includes("ironit")) {
-    currentEvent.value.siteDonor = "ironit";
-  } else if (currentEvent.value.eventPage.includes("mishkan-ashdod")) {
-    currentEvent.value.siteDonor = "mishkanAshdod";
-  } else if (currentEvent.value.eventPage.includes("mevalim")) {
-    currentEvent.value.siteDonor = "mevalim";
+  if (currentEvent.value.event_page.includes("ironit")) {
+    currentEvent.value.site_donor = "ironit";
+  } else if (currentEvent.value.event_page.includes("mishkan-ashdod")) {
+    currentEvent.value.site_donor = "mishkanAshdod";
+  } else if (currentEvent.value.event_page.includes("mevalim")) {
+    currentEvent.value.site_donor = "mevalim";
+  } else {
+    currentEvent.value.site_donor = "custom-event";
   }
 }
 </script>
@@ -62,7 +64,7 @@ function recordEventToStore(event) {
 
         <NuxtLink
           @click="recordEventToStore(event)"
-          :to="'/event-page/' + event.Position"
+          :to="'/event-page/' + event._id"
           class="additional-info-link"
           >מידע נוסף</NuxtLink
         >
