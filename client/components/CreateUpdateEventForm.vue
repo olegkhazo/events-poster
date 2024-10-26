@@ -44,6 +44,8 @@ async function getSingleEventData() {
         event_page: singleEvent.value.event_page,
         event_date: singleEvent.value.event_date,
         event_time: singleEvent.value.event_time,
+        phone: singleEvent.value.phone,
+        email: singleEvent.value.email,
         event_image_url: singleEvent.value.event_image_url,
       };
     } else if (error.value) {
@@ -55,12 +57,14 @@ async function getSingleEventData() {
 
 function getErrorMessage(field) {
   const errorMessages = {
-    event_title: "Enter valid event title.",
-    event_description: "Enter valid event description.",
-    location: "Enter valid event location.",
-    event_page: "Enter valid URL address.",
+    event_title: "הזן כותרת תקינה לאירוע.",
+    event_description: "הזן תיאור אירוע חוקי.",
+    location: "הזן מיקום אירוע חוקי.",
+    event_page: "הזן כתובת URL חוקית.",
     event_date: "הזן תאריך אירוע תקין.",
-    event_time: "Enter valid event time. Format: 10:00 or 18:15.",
+    phone: "הזן מספר טלפון חוקי.",
+    email: "הזן כתובת אימייל חוקית.",
+    event_time: "הזן זמן אירוע חוקי. פורמט: 10:00 או 18:15.",
   };
   return errorMessages[field] || "Invalid input.";
 }
@@ -71,7 +75,9 @@ function getPlaceholder(field) {
     event_description: "Event description *",
     location: "Event location *",
     event_page: "Event URL *",
-    event_date: "תאריך האירוע *",
+    event_date: "Event date*",
+    phone: "Your phone number",
+    email: "Your email",
     event_time: "Event time (10:00, 18:15 etc.) *",
     event_image_url: "Event image URL",
   };
@@ -87,6 +93,8 @@ const eventData = ref({
   event_page: "",
   event_date: "",
   event_time: "",
+  phone: "",
+  email: "",
   event_image_url: "",
   approved: "",
 });
@@ -97,6 +105,8 @@ const validationRules = {
   location: "COMMON_NOT_EMPTY_PATTERN",
   event_page: "URL_PATTERN",
   event_date: "COMMON_NOT_EMPTY_PATTERN",
+  phone: "PHONE_PATTERN",
+  email: "EMAIL_PATTERN",
   event_time: "TIME_PATTERN",
 };
 
@@ -245,7 +255,6 @@ function hideSuccessWindow() {
     .form-title {
       h1 {
         font-size: 30px;
-        line-height: 0;
         margin: 10px auto;
         font-weight: 300;
 
@@ -259,13 +268,15 @@ function hideSuccessWindow() {
         }
 
         span {
+          height: 22px;
           font-weight: 500;
+          overflow-wrap: break-word;
         }
       }
     }
 
     .event-form-content {
-      padding-top: 30px;
+      padding-top: 10px;
 
       input,
       select,

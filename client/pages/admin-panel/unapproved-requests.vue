@@ -87,6 +87,8 @@ async function approveEvent(id) {
           <th>Event Page</th>
           <th>Date</th>
           <th>Time</th>
+          <th>Email</th>
+          <th>Phone</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -97,7 +99,7 @@ async function approveEvent(id) {
           id="tbody"
           :key="event._id"
         >
-          <td>{{ event.event_title }}</td>
+          <td class="limited-view-column">{{ event.event_title }}</td>
           <td>{{ event.location }}</td>
           <td class="limited-view-column">{{ event.event_description }}</td>
           <td class="limited-view-column">
@@ -107,6 +109,8 @@ async function approveEvent(id) {
           </td>
           <td>{{ event.event_date }}</td>
           <td>{{ event.event_time }}</td>
+          <td class="limited-view-column">{{ event.email }}</td>
+          <td>{{ event.phone }}</td>
           <td class="action">
             <div class="action-buttons-wrapper">
               <NuxtImg
@@ -203,7 +207,7 @@ async function approveEvent(id) {
           border: 1px solid $gray-850;
 
           &.limited-view-column {
-            max-width: 150px;
+            max-width: 100px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;

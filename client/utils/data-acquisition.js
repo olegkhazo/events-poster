@@ -1,4 +1,3 @@
-import { updateFormatOfEventDate } from "~/utils";
 import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 export const fetchPageData = async (source) => {
@@ -21,8 +20,8 @@ export const fetchPageData = async (source) => {
 
     const data = await res.json();
     return data.result.capturedLists.Events.map((event) => {
-      const formattedEventDate = updateFormatOfEventDate(event.eventDate);
-      return { ...event, eventDate: formattedEventDate };
+     
+      return { ...event };
     });
   } catch (error) {
     console.error("Error fetching data:", error);

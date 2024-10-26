@@ -11,13 +11,25 @@ class events {
   event_title: string;
 
   @prop()
-  event_description: string
+  event_description: string;
+
+  @prop()
+  event_type: string;
 
   @prop()
   location: string;
 
   @prop()
+  event_price: number;
+
+  @prop()
   event_page: string;
+
+  @prop()
+  phone: string;
+
+  @prop()
+  email: string;
 
   @prop()
   event_image_url: string; 

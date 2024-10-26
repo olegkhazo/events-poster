@@ -4,6 +4,8 @@ import bodyParser from 'body-parser';
 import apiRoutes from './routes/api';
 import { errorHandler } from './middlewares/errorMiddleware';
 import cors from 'cors';
+import './cron/eventUpdaterCron'; 
+
 require('dotenv').config();
 
 const app = express();

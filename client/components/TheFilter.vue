@@ -4,29 +4,29 @@ import { useAllEventsStore } from "~/stores/allEventsStore";
 import { useFilterDataStore } from "~/stores/filtersStore";
 
 const { filterSubString } = storeToRefs(useFilterDataStore());
-const { sortedByDateEventsCollection, currentFilteredEventCollection } =
-  storeToRefs(useAllEventsStore());
+const { allEvents, currentFilteredEventCollection } = storeToRefs(
+  useAllEventsStore()
+);
 
 const filterEvents = () => {
   if (filterSubString.value.length <= 2) {
-    currentFilteredEventCollection.value = sortedByDateEventsCollection.value;
+    currentFilteredEventCollection.value = allEvents.value;
   } else {
     const filterText = filterSubString.value.toLowerCase();
 
-    currentFilteredEventCollection.value =
-      sortedByDateEventsCollection.value.filter((event) => {
-        const eventDate = event.eventDate ? event.eventDate.toLowerCase() : "";
-        const location = event.location ? event.location.toLowerCase() : "";
-        const eventTitle = event.eventTitle
-          ? event.eventTitle.toLowerCase()
-          : "";
+    currentFilteredEventCollection.value = allEvents.value.filter((event) => {
+      const eventDate = event.event_date ? event.event_date.toLowerCase() : "";
+      const location = event.location ? event.location.toLowerCase() : "";
+      const eventTitle = event.event_title
+        ? event.event_title.toLowerCase()
+        : "";
 
-        return (
-          eventDate.includes(filterText) ||
-          location.includes(filterText) ||
-          eventTitle.includes(filterText)
-        );
-      });
+      return (
+        eventDate.includes(filterText) ||
+        location.includes(filterText) ||
+        eventTitle.includes(filterText)
+      );
+    });
   }
 };
 

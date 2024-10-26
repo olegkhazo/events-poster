@@ -10,12 +10,14 @@ function recordEventToStore(event) {
   currentEvent.value = event;
 
   // Get the site from which we will get data for the event additional page
-  if (currentEvent.value.eventPage.includes("ironit")) {
-    currentEvent.value.siteDonor = "ironit";
-  } else if (currentEvent.value.eventPage.includes("mishkan-ashdod")) {
-    currentEvent.value.siteDonor = "mishkanAshdod";
-  } else if (currentEvent.value.eventPage.includes("mevalim")) {
-    currentEvent.value.siteDonor = "mevalim";
+  if (currentEvent.value.event_page.includes("ironit")) {
+    currentEvent.value.site_donor = "ironit";
+  } else if (currentEvent.value.event_page.includes("mishkan-ashdod")) {
+    currentEvent.value.site_donor = "mishkanAshdod";
+  } else if (currentEvent.value.event_page.includes("mevalim")) {
+    currentEvent.value.site_donor = "mevalim";
+  } else {
+    currentEvent.value.site_donor = "custom-event";
   }
 }
 </script>
@@ -31,24 +33,24 @@ function recordEventToStore(event) {
       <NuxtImg v-else src="/images/logo.png" alt="image" />
     </div>
     <div class="event-description">
-      <span v-if="props.singleEventData.eventDate" class="date">{{
-        props.singleEventData.eventDate
+      <span v-if="props.singleEventData.event_date" class="date">{{
+        props.singleEventData.event_date
       }}</span>
-      <span v-if="props.singleEventData.eventTime" class="time">
+      <span v-if="props.singleEventData.event_time" class="time">
         <NuxtImg src="/images/clock.png" alt="clock" />
-        {{ props.singleEventData.eventTime }}
+        {{ props.singleEventData.event_time }}
       </span>
       <span v-if="props.singleEventData.location" class="location">{{
         props.singleEventData.location
       }}</span>
-      <span v-if="props.singleEventData.eventTitle" class="title">
-        {{ props.singleEventData.eventTitle }}
+      <span v-if="props.singleEventData.event_title" class="title">
+        {{ props.singleEventData.event_title }}
       </span>
     </div>
 
     <div class="btn-wrapper">
       <NuxtLink
-        :to="props.singleEventData.eventPage"
+        :to="props.singleEventData.event_page"
         class="buy-ticckets-link"
         target="_blank"
         >לרכישה</NuxtLink
@@ -56,7 +58,7 @@ function recordEventToStore(event) {
 
       <NuxtLink
         @click="recordEventToStore(props.singleEventData)"
-        :to="'/event-page/' + props.singleEventData.Position"
+        :to="'/event-page/' + props.singleEventData._id"
         class="additional-info-link"
         >מידע נוסף</NuxtLink
       >
@@ -74,7 +76,7 @@ function recordEventToStore(event) {
   padding-bottom: 15px;
   cursor: pointer;
   position: relative;
-  height: 100%; /* Устанавливаем высоту на 100%, чтобы flex-контейнер занимал всю доступную высоту */
+  height: 100%;
 
   &:hover {
     background-color: $blue-300;

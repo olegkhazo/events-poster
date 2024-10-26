@@ -10,128 +10,105 @@ useHead({
 });
 
 import { useCurrentEventStore } from "~/stores/currentEventStore";
-import { BOT_API_URLS } from "~/utils/bot-api-urls";
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
 
-const additionalSingleEventData = ref({});
+const additionalSingleEventData = ref(null);
 const currentEventOriginalUrl = ref("");
 const dataIsLoaded = ref(false);
 
 onMounted(() => {
-  if (currentEvent.value && currentEvent.value.eventPage) {
-    currentEventOriginalUrl.value = currentEvent.value.eventPage;
-    fetchEventAdditionalData();
-  }
+  loadCurrentEventData();
 });
 
-watch(currentEvent, (newVal) => {
-  if (newVal && newVal.eventPage) {
-    currentEventOriginalUrl.value = newVal.eventPage;
-    fetchEventAdditionalData();
-  }
+watch(currentEvent, () => {
+  loadCurrentEventData();
 });
 
 onBeforeUnmount(() => {
   currentEvent.value = {};
 });
 
+// Функция для загрузки дополнительных данных события
+async function loadCurrentEventData() {
+  if (!currentEvent.value?.event_page) return;
+
+  currentEventOriginalUrl.value = currentEvent.value.event_page;
+
+  if (currentEvent.value.site_donor === "custom-event") {
+    additionalSingleEventData.value = currentEvent.value;
+    dataIsLoaded.value = true;
+  } else {
+    await fetchEventAdditionalData();
+  }
+}
+
 function filterByEventPage(dataArray, url) {
   return dataArray.filter((item) => item.inputParameters.originUrl === url);
 }
 
-// BrowseAI ========================== BrowseAI ========================= BrowseAI
-
-const fetchEventAdditionalData = async () => {
-  if (!currentEvent.value.siteDonor) {
+async function fetchEventAdditionalData() {
+  if (!currentEvent.value.site_donor) {
     console.error("siteDonor is not defined in currentEvent");
     return;
   }
 
-  const options = {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${
-        BOT_API_URLS[currentEvent.value.siteDonor].API_KEY
-      }`,
+  const { data, error } = await useFetch(`${API_URL}additional-event-data`, {
+    method: "POST",
+    body: {
+      site_donor: currentEvent.value.site_donor,
+      event_page: currentEventOriginalUrl.value,
     },
-  };
+  });
 
-  const allItems = ref([]);
-  let currentPage = 1;
-  let hasMoreData = true;
-
-  while (hasMoreData) {
-    try {
-      const res = await fetch(
-        `${BOT_API_URLS[currentEvent.value.siteDonor].URL}/${
-          BOT_API_URLS[currentEvent.value.siteDonor].ADDITIONAL_DATA_SCRAPER_ID
-        }/tasks?page=${currentPage}&pageSize=10`,
-        options
-      );
-
-      if (!res.ok) {
-        throw new Error(`HTTP error! Status: ${res.status}`);
-      }
-
-      const data = await res.json();
-      const items = data.result.robotTasks.items;
-
-      allItems.value = allItems.value.concat(items);
-
-      if (items.length < 10) {
-        hasMoreData = false;
-      } else {
-        currentPage++;
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      hasMoreData = false;
-    }
+  if (error.value) {
+    console.error("Error fetching additional event data:", error.value);
+    return;
   }
 
   additionalSingleEventData.value = filterByEventPage(
-    allItems.value,
+    data.value?.data || [],
     currentEventOriginalUrl.value
   );
+
   dataIsLoaded.value = true;
-};
+}
 </script>
 
 <template>
   <div v-if="dataIsLoaded" class="single-event-wrapper">
-    <h1 v-if="currentEvent.eventTitle" class="title">
-      {{ currentEvent.eventTitle }}
+    <h1 v-if="currentEvent.event_title" class="title">
+      {{ currentEvent.event_title }}
     </h1>
     <div class="additional-info">
       <ul>
-        <li v-if="currentEvent.eventDate">
+        <li v-if="currentEvent.event_date">
           <div class="additional-info-img">
             <NuxtImg src="/images/calendar.png" />
           </div>
           <div class="additional-info-text">
             <span class="additional-info-title">תַאֲרִיך</span>
             <span class="additional-info-description">{{
-              currentEvent.eventDate
+              currentEvent.event_date
             }}</span>
           </div>
         </li>
-        <li v-if="currentEvent.eventTime">
+        <li v-if="currentEvent.event_time">
           <div class="additional-info-img">
             <NuxtImg src="/images/clock.png" />
           </div>
           <div class="additional-info-text">
             <span class="additional-info-title">זְמַן</span>
             <span class="additional-info-description">{{
-              currentEvent.eventTime
+              currentEvent.event_time
             }}</span>
           </div>
         </li>
 
         <li
           v-if="
-            additionalSingleEventData.length > 0 &&
-            additionalSingleEventData[0].capturedTexts.eventPrice
+            currentEvent.event_price ||
+            additionalSingleEventData[0]?.capturedTexts?.event_price
           "
         >
           <div class="additional-info-img">
@@ -140,7 +117,8 @@ const fetchEventAdditionalData = async () => {
           <div class="additional-info-text">
             <span class="additional-info-title">עֲלוּת </span>
             <span class="additional-info-description">{{
-              additionalSingleEventData[0].capturedTexts.eventPrice
+              currentEvent.event_price ||
+              additionalSingleEventData[0].capturedTexts.event_price
             }}</span>
           </div>
         </li>
@@ -161,34 +139,54 @@ const fetchEventAdditionalData = async () => {
       <div class="event-img">
         <img
           v-if="
-            additionalSingleEventData.length > 0 &&
+            currentEvent.event_image_url ||
+            additionalSingleEventData[0]?.capturedTexts?.eventImage
+          "
+          :src="
+            currentEvent.event_image_url ||
             additionalSingleEventData[0].capturedTexts.eventImage
           "
-          :src="additionalSingleEventData[0].capturedTexts.eventImage"
-          alt="event image"
-        />
-        <img
-          v-else-if="currentEvent.image"
-          :src="currentEvent.image"
           alt="event image"
         />
         <NuxtImg v-else src="/images/logo.png" alt="event image" />
 
-        <div v-if="additionalSingleEventData.length > 0" class="btn-wrapper">
+        <div
+          v-if="
+            currentEvent.event_page ||
+            additionalSingleEventData[0].inputParameters.originUrl
+          "
+          class="btn-wrapper"
+        >
           <NuxtLink
             class="action-btn"
             target="_blank"
-            :to="additionalSingleEventData[0].inputParameters.originUrl"
+            :to="
+              currentEvent.event_page ||
+              additionalSingleEventData[0].inputParameters.originUrl
+            "
             >לרכישת כרטיסים</NuxtLink
           >
         </div>
       </div>
       <div class="event-main-info">
-        <span class="main-info-title">{{ currentEvent.eventTitle }}</span>
-        <span class="location">{{ currentEvent.location }}</span>
-        <div v-if="additionalSingleEventData.length > 0" class="description">
+        <span v-if="currentEvent.event_title" class="main-info-title">{{
+          currentEvent.event_title
+        }}</span>
+        <span v-if="currentEvent.location" class="location">{{
+          currentEvent.location
+        }}</span>
+        <div
+          v-if="
+            currentEvent.event_description ||
+            additionalSingleEventData[0].capturedTexts.eventDescription
+          "
+          class="description"
+        >
           <div
-            v-html="additionalSingleEventData[0].capturedTexts.eventDescription"
+            v-html="
+              currentEvent.event_description ||
+              additionalSingleEventData[0].capturedTexts.eventDescription
+            "
           ></div>
         </div>
       </div>
