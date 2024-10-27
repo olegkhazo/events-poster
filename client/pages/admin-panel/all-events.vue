@@ -8,6 +8,7 @@ definePageMeta({
 
 const authManager = useAuthStore();
 const { userInfo } = storeToRefs(authManager);
+import Paginate from "vuejs-paginate-next";
 
 const dataGeted = ref(false);
 const isLoading = ref(true);
@@ -16,6 +17,44 @@ const editingEventId = ref(null);
 
 const { data: allEvents, error } = await useFetch(`${API_URL}all-events`);
 const currentFilteredEventCollection = ref([]);
+
+const currentPage = ref(1);
+const chunkOfRequestsForView = ref([]);
+
+const numPages = computed(() => {
+  return currentFilteredEventCollection.value.length / 10;
+});
+
+function rewriteChunkOfRequests(pageNum) {
+  currentPage.value = pageNum;
+
+  if (currentPage.value === 1) {
+    chunkOfRequestsForView.value = currentFilteredEventCollection.value.slice(
+      0,
+      10
+    );
+  } else {
+    chunkOfRequestsForView.value = currentFilteredEventCollection.value.slice(
+      currentPage.value * 10 - 10,
+      currentPage.value * 10
+    );
+  }
+  scrollToTopOfTheTableBody();
+}
+
+function scrollToTopOfTheTableBody() {
+  document.getElementById("table").scrollIntoView({
+    block: "start",
+    behavior: "smooth",
+  });
+}
+
+watch(currentFilteredEventCollection, () => {
+  chunkOfRequestsForView.value = currentFilteredEventCollection.value.slice(
+    0,
+    10
+  );
+});
 
 const updateFilteredEvents = (filteredEvents) => {
   currentFilteredEventCollection.value = filteredEvents;
@@ -29,6 +68,10 @@ onMounted(() => {
   if (allEvents.value) {
     dataGeted.value = true;
     currentFilteredEventCollection.value = allEvents.value;
+    chunkOfRequestsForView.value = currentFilteredEventCollection.value.slice(
+      0,
+      10
+    );
   } else if (error.value) {
     console.error("something wrong:" + error.value);
   }
@@ -62,7 +105,6 @@ function editEvent(eventId) {
 <template>
   <div v-if="!eventEditing" class="admin-content-wrapper">
     <h1>All Events</h1>
-
     <EventFilter
       v-if="!isLoading"
       :events-collection="allEvents"
@@ -72,66 +114,78 @@ function editEvent(eventId) {
     <div v-if="isLoading" class="loading-state">
       <p>Loading suggestions...</p>
     </div>
+    <div v-else-if="dataGeted && !isLoading">
+      <table id="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Event Page</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Approved</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="single-request-row"
+            v-for="event in chunkOfRequestsForView"
+            :key="event._id"
+          >
+            <td>{{ event.event_title }}</td>
+            <td>{{ event.location }}</td>
+            <td class="limited-view-column">{{ event.event_description }}</td>
+            <td class="limited-view-column">
+              <NuxtLink :to="event.event_page" target="blank">{{
+                event.event_page
+              }}</NuxtLink>
+            </td>
+            <td>{{ event.event_date }}</td>
+            <td>{{ event.event_time }}</td>
+            <td>{{ event.email }}</td>
+            <td>{{ event.phone }}</td>
+            <td class="status">
+              <span
+                :class="
+                  event.approved ? 'approved-status' : 'unapproved-status'
+                "
+              >
+                {{ event.approved ? "Yes" : "No" }}
+              </span>
+            </td>
+            <td class="action">
+              <div class="action-buttons-wrapper">
+                <NuxtImg
+                  src="/images/pencil.svg"
+                  @click="editEvent(event._id)"
+                  alt="edit"
+                />
 
-    <table v-else-if="dataGeted && !isLoading">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Location</th>
-          <th>Description</th>
-          <th>Event Page</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Approved</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          class="single-request-row"
-          v-for="event in currentFilteredEventCollection"
-          id="tbody"
-          :key="event._id"
-        >
-          <td>{{ event.event_title }}</td>
-          <td>{{ event.location }}</td>
-          <td class="limited-view-column">{{ event.event_description }}</td>
-          <td class="limited-view-column">
-            <NuxtLink :to="event.event_page" target="blank">{{
-              event.event_page
-            }}</NuxtLink>
-          </td>
-          <td>{{ event.event_date }}</td>
-          <td>{{ event.event_time }}</td>
-          <td>{{ event.email }}</td>
-          <td>{{ event.phone }}</td>
-          <td class="status">
-            <span
-              :class="event.approved ? 'approved-status' : 'unapproved-status'"
-            >
-              {{ event.approved ? "Yes" : "No" }}
-            </span>
-          </td>
-          <td class="action">
-            <div class="action-buttons-wrapper">
-              <NuxtImg
-                src="/images/pencil.svg"
-                @click="editEvent(event._id)"
-                alt="edit"
-              />
+                <NuxtImg
+                  src="/images/trash.svg"
+                  @click="deleteEvent(event._id)"
+                  alt="delete"
+                />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-              <NuxtImg
-                src="/images/trash.svg"
-                @click="deleteEvent(event._id)"
-                alt="delete"
-              />
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      <paginate
+        v-model="currentPage"
+        :page-count="numPages"
+        :page-range="5"
+        :click-handler="rewriteChunkOfRequests"
+        :container-class="'pagination'"
+        prev-text="<"
+        next-text=">"
+      />
+    </div>
 
     <div v-else class="no-db-entries-block">
       <p>It seems you haven't any unapproved events yet</p>
