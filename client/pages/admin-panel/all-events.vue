@@ -1,20 +1,25 @@
 <script setup>
+import EventFilter from "~/components/common-components/EventFilter.vue";
+import { useAuthStore } from "@/stores/useAuthStore";
+
 definePageMeta({
   layout: "admin-panel",
 });
 
-import { useAuthStore } from "@/stores/useAuthStore";
 const authManager = useAuthStore();
 const { userInfo } = storeToRefs(authManager);
 
 const dataGeted = ref(false);
 const isLoading = ref(true);
-
 const eventEditing = ref(false);
 const editingEventId = ref(null);
 
-//fetching all requests
 const { data: allEvents, error } = await useFetch(`${API_URL}all-events`);
+const currentFilteredEventCollection = ref([]);
+
+const updateFilteredEvents = (filteredEvents) => {
+  currentFilteredEventCollection.value = filteredEvents;
+};
 
 onMounted(() => {
   if (userInfo.value.role !== "admin") {
@@ -23,8 +28,8 @@ onMounted(() => {
 
   if (allEvents.value) {
     dataGeted.value = true;
+    currentFilteredEventCollection.value = allEvents.value;
   } else if (error.value) {
-    // should to think how better to show errors
     console.error("something wrong:" + error.value);
   }
 
@@ -32,7 +37,6 @@ onMounted(() => {
 });
 
 async function deleteEvent(id) {
-  console.log(id);
   const { data: deleteEvent, error } = await useFetch(
     `${API_URL}delete-event/${id}`,
     {
@@ -42,6 +46,8 @@ async function deleteEvent(id) {
 
   if (!error.value) {
     allEvents.value = allEvents.value.filter((event) => event._id !== id);
+    currentFilteredEventCollection.value =
+      currentFilteredEventCollection.value.filter((event) => event._id !== id);
   } else {
     console.log("Error deleting user:", error.value);
   }
@@ -56,6 +62,12 @@ function editEvent(eventId) {
 <template>
   <div v-if="!eventEditing" class="admin-content-wrapper">
     <h1>All Events</h1>
+
+    <EventFilter
+      v-if="!isLoading"
+      :events-collection="allEvents"
+      @filtered-events="updateFilteredEvents"
+    />
 
     <div v-if="isLoading" class="loading-state">
       <p>Loading suggestions...</p>
@@ -79,7 +91,7 @@ function editEvent(eventId) {
       <tbody>
         <tr
           class="single-request-row"
-          v-for="event in allEvents"
+          v-for="event in currentFilteredEventCollection"
           id="tbody"
           :key="event._id"
         >
@@ -154,6 +166,17 @@ function editEvent(eventId) {
 
     @media (max-width: 382px) {
       font-size: 22px;
+    }
+  }
+
+  .filter-wrapper {
+    align-items: right;
+    margin: 30px 0;
+
+    .input-filter {
+      margin-top: 15px;
+      width: 280px;
+      padding: 5px;
     }
   }
 

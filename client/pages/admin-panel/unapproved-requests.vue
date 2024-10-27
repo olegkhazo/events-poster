@@ -2,6 +2,7 @@
 definePageMeta({
   layout: "admin-panel",
 });
+import EventFilter from "~/components/common-components/EventFilter.vue";
 
 import { useAuthStore } from "@/stores/useAuthStore";
 const authManager = useAuthStore();
@@ -10,7 +11,12 @@ const { userInfo } = storeToRefs(authManager);
 const dataGeted = ref(false);
 const isLoading = ref(true);
 const filteredUnaprovedEvents = ref({});
-//fetching all requests
+
+const currentFilteredEventCollection = ref([]);
+
+const updateFilteredEvents = (filteredEvents) => {
+  currentFilteredEventCollection.value = filteredEvents;
+};
 
 const { data: unapprovedRequests, error } = await useFetch(
   `${API_URL}all-events`
@@ -47,6 +53,8 @@ async function deleteEvent(id) {
     filteredUnaprovedEvents.value = filteredUnaprovedEvents.value.filter(
       (event) => event._id !== id
     );
+    currentFilteredEventCollection.value =
+      currentFilteredEventCollection.value.filter((event) => event._id !== id);
   } else {
     console.log("Error deleting user:", error.value);
   }
@@ -74,6 +82,12 @@ async function approveEvent(id) {
   <div class="admin-content-wrapper">
     <h1>Unapproved Events</h1>
 
+    <EventFilter
+      v-if="dataGeted && !isLoading"
+      :events-collection="filteredUnaprovedEvents"
+      @filtered-events="updateFilteredEvents"
+    />
+
     <div v-if="isLoading" class="loading-state">
       <p>Loading suggestions...</p>
     </div>
@@ -95,7 +109,7 @@ async function approveEvent(id) {
       <tbody>
         <tr
           class="single-request-row"
-          v-for="event in filteredUnaprovedEvents"
+          v-for="event in currentFilteredEventCollection"
           id="tbody"
           :key="event._id"
         >
