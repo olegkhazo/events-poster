@@ -48,7 +48,12 @@ watch(filterSubString, filterEvents, { immediate: true });
 
 <template>
   <div class="filter-wrapper">
-    <input v-model="filterSubString" class="input-filter" type="search" />
+    <input
+      v-model="filterSubString"
+      class="input-filter"
+      type="search"
+      placeholder="Filter"
+    />
   </div>
 </template>
 
