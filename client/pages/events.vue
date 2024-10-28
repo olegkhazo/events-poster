@@ -21,7 +21,6 @@ const { data: events } = await useFetch(`${API_URL}all-events`);
 
 onMounted(() => {
   allEvents.value = events.value;
-
   dataIsLoaded.value = true;
 });
 

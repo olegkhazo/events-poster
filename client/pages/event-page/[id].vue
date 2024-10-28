@@ -139,10 +139,12 @@ async function fetchEventAdditionalData() {
       <div class="event-img">
         <img
           v-if="
+            currentEvent.event_image_blob ||
             currentEvent.event_image_url ||
             additionalSingleEventData[0]?.capturedTexts?.eventImage
           "
           :src="
+            currentEvent.event_image_blob ||
             currentEvent.event_image_url ||
             additionalSingleEventData[0].capturedTexts.eventImage
           "

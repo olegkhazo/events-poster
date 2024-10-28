@@ -56,7 +56,7 @@ function recordEventToStore(event) {
       </div>
       <div class="btn-wrapper">
         <NuxtLink
-          :to="event.eventPage"
+          :to="event.event_page"
           class="buy-ticckets-link"
           target="_blank"
           >לרכישה</NuxtLink

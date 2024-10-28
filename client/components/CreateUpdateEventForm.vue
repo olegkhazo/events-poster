@@ -1,4 +1,9 @@
 <script setup>
+import { useAuthStore } from "@/stores/useAuthStore";
+import SuccessRequestWindow from "@/components/modals/SuccessWindow";
+import { FORM_VALIDATION_PATTERNS } from "@/utils/constants";
+import Compressor from "compressorjs";
+
 const props = defineProps({
   eventId: {
     type: String,
@@ -7,17 +12,7 @@ const props = defineProps({
   },
 });
 
-onMounted(() => {
-  if (props.eventId) {
-    getSingleEventData();
-  }
-});
-
-import { useAuthStore } from "@/stores/useAuthStore";
 const authManager = useAuthStore();
-
-import { FORM_VALIDATION_PATTERNS } from "@/utils/constants";
-import SuccessRequestWindow from "@/components/modals/SuccessWindow";
 
 const showSuccessWindow = ref(false);
 const successData = props.eventId
@@ -28,9 +23,67 @@ const successData = props.eventId
       header: "Your event created successfully!",
     };
 
-async function getSingleEventData() {
-  console.log(props.eventId);
+const formButtonClicked = ref(false);
+const imageFile = ref(null);
 
+const eventData = ref({
+  event_title: "",
+  event_description: "",
+  location: "",
+  event_page: "",
+  event_date: "",
+  event_time: "",
+  phone: "",
+  email: "",
+  event_image_url: "",
+  event_image_blob: "",
+  approved: "",
+});
+
+const validationRules = {
+  event_title: "COMMON_NOT_EMPTY_PATTERN",
+  event_description: "COMMON_NOT_EMPTY_PATTERN",
+  location: "COMMON_NOT_EMPTY_PATTERN",
+  event_page: "URL_PATTERN",
+  event_date: "COMMON_NOT_EMPTY_PATTERN",
+  phone: "PHONE_PATTERN",
+  email: "EMAIL_PATTERN",
+  event_time: "TIME_PATTERN",
+};
+
+async function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}
+
+async function handleImageUpload(event) {
+  imageFile.value = event.target.files[0];
+  if (imageFile.value) {
+    try {
+      new Compressor(imageFile.value, {
+        quality: 0.8,
+        maxWidth: 800,
+        maxHeight: 400,
+        success(compressedResult) {
+          fileToBase64(compressedResult).then((base64String) => {
+            eventData.value.event_image_blob = base64String;
+          });
+        },
+        error(err) {
+          console.error("Error compressing image:", err);
+        },
+      });
+    } catch (error) {
+      console.error("Error converting image to base64:", error);
+    }
+  }
+}
+
+async function getSingleEventData() {
   if (props.eventId) {
     const { data: singleEvent, error } = await useFetch(
       `${API_URL}single-event/${props.eventId}`
@@ -47,24 +100,24 @@ async function getSingleEventData() {
         phone: singleEvent.value.phone,
         email: singleEvent.value.email,
         event_image_url: singleEvent.value.event_image_url,
+        event_image_blob: singleEvent.value.event_image_blob || "", // загружаем изображение как base64
       };
     } else if (error.value) {
-      // should to think how better to show errors
-      console.log("something wrong:" + error.value);
+      console.log("something went wrong:", error.value);
     }
   }
 }
 
 function getErrorMessage(field) {
   const errorMessages = {
-    event_title: "הזן כותרת תקינה לאירוע.",
-    event_description: "הזן תיאור אירוע חוקי.",
-    location: "הזן מיקום אירוע חוקי.",
-    event_page: "הזן כתובת URL חוקית.",
-    event_date: "הזן תאריך אירוע תקין.",
-    phone: "הזן מספר טלפון חוקי.",
-    email: "הזן כתובת אימייל חוקית.",
-    event_time: "הזן זמן אירוע חוקי. פורמט: 10:00 או 18:15.",
+    event_title: "Invalid title.",
+    event_description: "Invalid description.",
+    location: "Invalid location.",
+    event_page: "Invalid URL.",
+    event_date: "Invalid date.",
+    phone: "Invalid phone number.",
+    email: "Invalid email.",
+    event_time: "Invalid time format.",
   };
   return errorMessages[field] || "Invalid input.";
 }
@@ -79,53 +132,18 @@ function getPlaceholder(field) {
     phone: "Your phone number",
     email: "Your email",
     event_time: "Event time (10:00, 18:15 etc.) *",
-    event_image_url: "Event image URL",
+    event_image_url: "Image url",
+    event_image_blob: "Event image",
   };
   return placeholders[field] || "Enter value *";
 }
 
-const formButtonClicked = ref(false);
-
-const eventData = ref({
-  event_title: "",
-  event_description: "",
-  location: "",
-  event_page: "",
-  event_date: "",
-  event_time: "",
-  phone: "",
-  email: "",
-  event_image_url: "",
-  approved: "",
-});
-
-const validationRules = {
-  event_title: "COMMON_NOT_EMPTY_PATTERN",
-  event_description: "COMMON_NOT_EMPTY_PATTERN",
-  location: "COMMON_NOT_EMPTY_PATTERN",
-  event_page: "URL_PATTERN",
-  event_date: "COMMON_NOT_EMPTY_PATTERN",
-  phone: "PHONE_PATTERN",
-  email: "EMAIL_PATTERN",
-  event_time: "TIME_PATTERN",
-};
-
 const isFieldValid = (field) => {
   const patternKey = validationRules[field];
   const pattern = FORM_VALIDATION_PATTERNS[patternKey];
-
-  if (!pattern) {
-    console.error(`Validation pattern not found for field: ${field}`);
-    return false;
-  }
-
   const fieldValue = eventData.value[field];
 
-  if (!fieldValue) {
-    return false;
-  }
-
-  return pattern.test(fieldValue);
+  return pattern ? pattern.test(fieldValue) : false;
 };
 
 const isFormValid = computed(() => {
@@ -134,25 +152,34 @@ const isFormValid = computed(() => {
 
 async function createEvent() {
   formButtonClicked.value = true;
-
   eventData.value.approved = authManager.loggedIn;
 
   if (isFormValid.value) {
-    const { data: newEventrequest, error } = await useFetch(
-      `${API_URL}create-event`,
-      {
-        method: "post",
-        body: JSON.stringify(eventData.value),
-      }
-    );
+    console.log("Size of image blob:", eventData.value.event_image_blob.length);
+    if (!imageFile.value) {
+      eventData.value.event_image_blob = "";
+    }
 
-    if (newEventrequest.value) {
-      eventData.value = {};
-      formButtonClicked.value = false;
-      showSuccessWindow.value = true;
-    } else if (error.value) {
-      // should to think how better to show errors
-      console.log("something wrong:" + error.value);
+    try {
+      console.log(eventData.value);
+      const { data: newEventRequest, error } = await useFetch(
+        `${API_URL}create-event`,
+        {
+          method: "POST",
+          body: JSON.stringify(eventData.value),
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+
+      if (newEventRequest.value) {
+        eventData.value = {};
+        formButtonClicked.value = false;
+        showSuccessWindow.value = true;
+      } else if (error.value) {
+        console.log("something went wrong:", error.value);
+      }
+    } catch (err) {
+      console.error("Error creating event:", err);
     }
   }
 }
@@ -160,6 +187,12 @@ async function createEvent() {
 function hideSuccessWindow() {
   showSuccessWindow.value = false;
 }
+
+onMounted(() => {
+  if (props.eventId) {
+    getSingleEventData();
+  }
+});
 </script>
 
 <template>
@@ -177,8 +210,9 @@ function hideSuccessWindow() {
           <span
             v-if="!isFieldValid(field) && formButtonClicked"
             class="input-error-notification"
-            >{{ getErrorMessage(field) }}</span
           >
+            {{ getErrorMessage(field) }}
+          </span>
           <template v-if="field === 'event_description'">
             <textarea
               v-model="eventData[field]"
@@ -208,6 +242,18 @@ function hideSuccessWindow() {
             :placeholder="getPlaceholder('event_image_url')"
             class="image-url-input"
           />
+        </div>
+
+        <div>
+          <input type="file" @change="handleImageUpload" accept="image/*" />
+
+          <div v-if="eventData.event_image_blob">
+            <img
+              :src="eventData.event_image_blob"
+              alt="Event Image"
+              style="max-width: 200px"
+            />
+          </div>
         </div>
 
         <button class="xl-green-btn" @click.prevent="createEvent">
