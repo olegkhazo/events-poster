@@ -20,11 +20,15 @@ const filterEvents = () => {
       const eventTitle = event.event_title
         ? event.event_title.toLowerCase()
         : "";
+      const eventDescription = event.event_description
+        ? event.event_description.toLowerCase()
+        : "";
 
       return (
         eventDate.includes(filterText) ||
         location.includes(filterText) ||
-        eventTitle.includes(filterText)
+        eventTitle.includes(filterText) ||
+        eventDescription.includes(filterText)
       );
     });
   }

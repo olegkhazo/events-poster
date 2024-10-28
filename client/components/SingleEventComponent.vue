@@ -5,6 +5,7 @@ const props = defineProps({
 });
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
+const event = props.singleEventData;
 
 function recordEventToStore(event) {
   currentEvent.value = event;
@@ -26,39 +27,32 @@ function recordEventToStore(event) {
   <div class="single-event">
     <div class="event-img">
       <img
-        v-if="props.singleEventData.image"
-        :src="props.singleEventData.image"
-        :alt="props.singleEventData.eventAltText"
+        v-if="event.event_image_blob || event.event_image_url"
+        :src="event.event_image_blob || event.event_image_url"
+        :alt="event.eventAltText"
       />
       <NuxtImg v-else src="/images/logo.png" alt="image" />
     </div>
     <div class="event-description">
-      <span v-if="props.singleEventData.event_date" class="date">{{
-        props.singleEventData.event_date
-      }}</span>
-      <span v-if="props.singleEventData.event_time" class="time">
+      <span v-if="event.event_date" class="date">{{ event.event_date }}</span>
+      <span v-if="event.event_time" class="time">
         <NuxtImg src="/images/clock.png" alt="clock" />
-        {{ props.singleEventData.event_time }}
+        {{ event.event_time }}
       </span>
-      <span v-if="props.singleEventData.location" class="location">{{
-        props.singleEventData.location
-      }}</span>
-      <span v-if="props.singleEventData.event_title" class="title">
-        {{ props.singleEventData.event_title }}
+      <span v-if="event.location" class="location">{{ event.location }}</span>
+      <span v-if="event.event_title" class="title">
+        {{ event.event_title }}
       </span>
     </div>
 
     <div class="btn-wrapper">
-      <NuxtLink
-        :to="props.singleEventData.event_page"
-        class="buy-ticckets-link"
-        target="_blank"
+      <NuxtLink :to="event.event_page" class="buy-ticckets-link" target="_blank"
         >לרכישה</NuxtLink
       >
 
       <NuxtLink
-        @click="recordEventToStore(props.singleEventData)"
-        :to="'/event-page/' + props.singleEventData._id"
+        @click="recordEventToStore(event)"
+        :to="'/event-page/' + event._id"
         class="additional-info-link"
         >מידע נוסף</NuxtLink
       >

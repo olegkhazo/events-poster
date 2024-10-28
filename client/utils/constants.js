@@ -1,5 +1,4 @@
 export const API_URL = "http://localhost:3030/api/";
-// export const API_URL = "https://api.mynextparts.com/api/";
 
 export const FORM_ERRORS_TEXT = {
     UNKNOWN_SERVER_ERROR: "Something went wrong. Please contact us at info@mynextparts.com",

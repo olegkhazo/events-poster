@@ -7,7 +7,7 @@ import { BOT_API_URLS, BotApiUrls } from '../constants/apiUrls';
 
 export const getAllEvents = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const allEvents = await EventModel.find();
+    const allEvents = await EventModel.find().sort({ event_date: 1 });
 
     res.status(200).json(allEvents);
   } catch (error) {
@@ -138,13 +138,30 @@ export const getAdditionalEventData = async (req: Request, res: Response, next: 
 
 export const createEvent = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const newEvent = new EventModel(req.body);
+    const newEventData: any = { ...req.body };
+
+    // Проверка на наличие изображения в base64
+    if (newEventData.event_image_blob) {
+      // Здесь изображение уже в base64, так что дополнительной обработки не требуется
+      console.log("Base64 image received:", newEventData.event_image_blob);
+    }
+
+    // Создаем и сохраняем событие
+    const newEvent = new EventModel(newEventData);
     await newEvent.save();
+
     res.status(201).json(newEvent);
   } catch (error) {
-    next(error);
+    console.error("Error creating event:", error);
+    
+    if (error instanceof Error) {
+      res.status(500).json({ error: "Internal Server Error", details: error.message });
+    } else {
+      res.status(500).json({ error: "Internal Server Error", details: "Unknown error" });
+    }
   }
 };
+
 
 
 export const deleteEvent = async (req: Request, res: Response, next: NextFunction) => {

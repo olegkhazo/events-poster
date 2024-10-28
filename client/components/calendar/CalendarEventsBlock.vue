@@ -32,8 +32,8 @@ function recordEventToStore(event) {
       <div class="single-event-wrapper">
         <div class="event-img">
           <img
-            v-if="event.image"
-            :src="event.image"
+            v-if="event.event_image_url || event.event_image_blob"
+            :src="event.event_image_url || event.event_image_blob"
             :alt="event.eventAltText"
           />
           <NuxtImg v-else src="/images/logo.png" alt="image" />
@@ -56,7 +56,7 @@ function recordEventToStore(event) {
       </div>
       <div class="btn-wrapper">
         <NuxtLink
-          :to="event.eventPage"
+          :to="event.event_page"
           class="buy-ticckets-link"
           target="_blank"
           >לרכישה</NuxtLink

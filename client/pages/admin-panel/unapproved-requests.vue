@@ -1,16 +1,56 @@
 <script setup>
+import EventFilter from "~/components/common-components/EventFilter.vue";
+import Paginate from "vuejs-paginate-next";
+import { useAuthStore } from "@/stores/useAuthStore";
+
 definePageMeta({
   layout: "admin-panel",
 });
 
-import { useAuthStore } from "@/stores/useAuthStore";
 const authManager = useAuthStore();
 const { userInfo } = storeToRefs(authManager);
 
 const dataGeted = ref(false);
 const isLoading = ref(true);
-const filteredUnaprovedEvents = ref({});
-//fetching all requests
+const filteredUnaprovedEvents = ref([]);
+const currentFilteredEventCollection = ref([]);
+
+const currentPage = ref(1);
+const itemsPerPage = 10;
+const chunkOfRequestsForView = ref([]);
+
+const numPages = computed(() =>
+  Math.ceil(currentFilteredEventCollection.value.length / itemsPerPage)
+);
+
+function rewriteChunkOfRequests(pageNum) {
+  currentPage.value = pageNum;
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  chunkOfRequestsForView.value = currentFilteredEventCollection.value.slice(
+    start,
+    end
+  );
+  scrollToTopOfTheTableBody();
+}
+
+function scrollToTopOfTheTableBody() {
+  const tableElement = document.getElementById("table");
+  if (tableElement) {
+    tableElement.scrollIntoView({
+      block: "start",
+      behavior: "smooth",
+    });
+  }
+}
+
+watch(currentFilteredEventCollection, () => {
+  rewriteChunkOfRequests(1);
+});
+
+const updateFilteredEvents = (filteredEvents) => {
+  currentFilteredEventCollection.value = filteredEvents;
+};
 
 const { data: unapprovedRequests, error } = await useFetch(
   `${API_URL}all-events`
@@ -23,13 +63,13 @@ onMounted(() => {
 
   if (unapprovedRequests.value) {
     filteredUnaprovedEvents.value = unapprovedRequests.value.filter(
-      (event) => event.approved === false
+      (event) => !event.approved
     );
-
+    currentFilteredEventCollection.value = filteredUnaprovedEvents.value;
     dataGeted.value = true;
+    rewriteChunkOfRequests(1);
   } else if (error.value) {
-    // should to think how better to show errors
-    console.error("something wrong:" + error.value);
+    console.error("something wrong:", error.value);
   }
 
   isLoading.value = false;
@@ -47,8 +87,11 @@ async function deleteEvent(id) {
     filteredUnaprovedEvents.value = filteredUnaprovedEvents.value.filter(
       (event) => event._id !== id
     );
+    currentFilteredEventCollection.value =
+      currentFilteredEventCollection.value.filter((event) => event._id !== id);
+    rewriteChunkOfRequests(currentPage.value);
   } else {
-    console.log("Error deleting user:", error.value);
+    console.log("Error deleting event:", error.value);
   }
 }
 
@@ -56,7 +99,7 @@ async function approveEvent(id) {
   const { data: approveEvent, error } = await useFetch(
     `${API_URL}approve-event/${id}`,
     {
-      method: "put",
+      method: "PUT",
     }
   );
 
@@ -64,8 +107,11 @@ async function approveEvent(id) {
     filteredUnaprovedEvents.value = filteredUnaprovedEvents.value.filter(
       (event) => event._id !== id
     );
+    currentFilteredEventCollection.value =
+      currentFilteredEventCollection.value.filter((event) => event._id !== id);
+    rewriteChunkOfRequests(currentPage.value);
   } else {
-    console.log("Error deleting user:", error.value);
+    console.log("Error approving event:", error.value);
   }
 }
 </script>
@@ -74,62 +120,76 @@ async function approveEvent(id) {
   <div class="admin-content-wrapper">
     <h1>Unapproved Events</h1>
 
+    <EventFilter
+      v-if="dataGeted && !isLoading"
+      :events-collection="filteredUnaprovedEvents"
+      @filtered-events="updateFilteredEvents"
+    />
+
     <div v-if="isLoading" class="loading-state">
       <p>Loading suggestions...</p>
     </div>
+    <div v-else-if="dataGeted && !isLoading" id="table" class="table-wrapper">
+      <table id="table">
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Location</th>
+            <th>Description</th>
+            <th>Event Page</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="single-request-row"
+            v-for="event in chunkOfRequestsForView"
+            :key="event._id"
+          >
+            <td class="limited-view-column">{{ event.event_title }}</td>
+            <td>{{ event.location }}</td>
+            <td class="limited-view-column">{{ event.event_description }}</td>
+            <td class="limited-view-column">
+              <NuxtLink :to="event.event_page" target="_blank">{{
+                event.event_page
+              }}</NuxtLink>
+            </td>
+            <td>{{ event.event_date }}</td>
+            <td>{{ event.event_time }}</td>
+            <td class="limited-view-column">{{ event.email }}</td>
+            <td>{{ event.phone }}</td>
+            <td class="action">
+              <div class="action-buttons-wrapper">
+                <NuxtImg
+                  src="/images/validation.svg"
+                  @click="approveEvent(event._id)"
+                  alt="approve"
+                />
+                <NuxtImg
+                  src="/images/trash.svg"
+                  @click="deleteEvent(event._id)"
+                  alt="delete"
+                />
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <table v-else-if="dataGeted && !isLoading">
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Location</th>
-          <th>Description</th>
-          <th>Event Page</th>
-          <th>Date</th>
-          <th>Time</th>
-          <th>Email</th>
-          <th>Phone</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          class="single-request-row"
-          v-for="event in filteredUnaprovedEvents"
-          id="tbody"
-          :key="event._id"
-        >
-          <td class="limited-view-column">{{ event.event_title }}</td>
-          <td>{{ event.location }}</td>
-          <td class="limited-view-column">{{ event.event_description }}</td>
-          <td class="limited-view-column">
-            <NuxtLink :to="event.event_page" target="blank">{{
-              event.event_page
-            }}</NuxtLink>
-          </td>
-          <td>{{ event.event_date }}</td>
-          <td>{{ event.event_time }}</td>
-          <td class="limited-view-column">{{ event.email }}</td>
-          <td>{{ event.phone }}</td>
-          <td class="action">
-            <div class="action-buttons-wrapper">
-              <NuxtImg
-                src="/images/validation.svg"
-                @click="approveEvent(event._id)"
-                alt="approve"
-              />
-
-              <NuxtImg
-                src="/images/trash.svg"
-                @click="deleteEvent(event._id)"
-                alt="approve"
-              />
-            </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
+      <paginate
+        v-model="currentPage"
+        :page-count="numPages"
+        :page-range="5"
+        :click-handler="rewriteChunkOfRequests"
+        :container-class="'pagination'"
+        prev-text="<"
+        next-text=">"
+      />
+    </div>
     <div v-else class="no-db-entries-block">
       <p>It seems you haven't any unapproved events yet</p>
       <NuxtLink to="/admin-panel/all-events" class="yellow-btn"
@@ -138,6 +198,15 @@ async function approveEvent(id) {
     </div>
   </div>
 </template>
+
+<style>
+.pagination {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  margin-top: 20px;
+}
+</style>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";

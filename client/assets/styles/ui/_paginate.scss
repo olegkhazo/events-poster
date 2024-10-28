@@ -1,8 +1,10 @@
 .pagination {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 
     .page-link {
+        background-color: $white;
         cursor: pointer;
         margin-left: 8px;
         border: 1px solid  $gray-700;
@@ -13,15 +15,14 @@
         font-weight: 500;
 
         &:hover {
-            background-color: $white;
             color: $gray-950;
             border-color: $gray-700;
         }
     }
 
     .active .page-link {
-        background-color: $gray-150;
-        color: $blue;
-        border-color: $blue;
+        background-color: $green-600;
+        color: $white;
+       
     }
 }

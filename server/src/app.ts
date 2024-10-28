@@ -18,6 +18,8 @@ const DB_NAME = process.env.DB_NAME;
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true }));
 
 // Connect to MongoDB
 mongoose.connect(`mongodb://${DB_SERVER}:${DB_PORT}/${DB_NAME}`)

@@ -34,6 +34,9 @@ class events {
   @prop()
   event_image_url: string; 
 
+  @prop({ maxlength: 1000000 })
+  event_image_blob: string;
+
   @prop({ default: false })
   approved: boolean;
  
