@@ -17,7 +17,7 @@ watchEffect(() => {
   <div class="side-admin-navigation">
     <div class="admin-logo">
       <NuxtLink to="/">
-        <NuxtImg src="/images/logo.png" alt="logo" />
+        <NuxtImg src="/images/logo.svg" alt="logo" />
       </NuxtLink>
     </div>
 

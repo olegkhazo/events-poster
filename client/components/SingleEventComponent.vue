@@ -31,7 +31,7 @@ function recordEventToStore(event) {
         :src="event.event_image_blob || event.event_image_url"
         :alt="event.eventAltText"
       />
-      <NuxtImg v-else src="/images/logo.png" alt="image" />
+      <NuxtImg v-else src="/images/logo.svg" alt="image" />
     </div>
     <div class="event-description">
       <span v-if="event.event_date" class="date">{{ event.event_date }}</span>

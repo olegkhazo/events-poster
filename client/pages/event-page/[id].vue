@@ -150,7 +150,7 @@ async function fetchEventAdditionalData() {
           "
           alt="event image"
         />
-        <NuxtImg v-else src="/images/logo.png" alt="event image" />
+        <NuxtImg v-else src="/images/logo.svg" alt="event image" />
 
         <div
           v-if="
