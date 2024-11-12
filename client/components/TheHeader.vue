@@ -21,31 +21,42 @@ function hideMobileMenu() {
           <!-- <NuxtLink to="/"> האירועים הטובים ביותר </NuxtLink> -->
           <div class="logo-wrapper">
             <NuxtLink to="/">
-              <NuxtImg src="/images/logo.png" />
+              <NuxtImg src="/images/logo.svg" />
             </NuxtLink>
           </div>
         </div>
+
         <ul class="desktop-nav">
           <li>
-            <NuxtLink v-if="authManager.loggedIn" to="/admin-panel"
+            <NuxtLink
+              v-if="authManager.loggedIn"
+              class="nav-link"
+              to="/admin-panel"
               >פאנל ניהול</NuxtLink
             >
           </li>
-          <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
-          <li><NuxtLink to="/events">רשימת אירועים</NuxtLink></li>
-          <li><NuxtLink to="/create-event">צור אירוע</NuxtLink></li>
+          <li><NuxtLink class="nav-link" to="/about-us">עלינו</NuxtLink></li>
+          <li>
+            <NuxtLink class="nav-link" to="/events">רשימת אירועים</NuxtLink>
+          </li>
         </ul>
+
+        <div class="nav-btn-wrapper">
+          <NuxtLink class="create-event-link" to="/create-event"
+            >צור אירוע</NuxtLink
+          >
+        </div>
 
         <NuxtImg
           v-if="!mobileMenuVisibility"
-          src="/images/menu_black_36dp.svg"
+          src="/images/burger-menu.svg"
           class="menu-icon"
           @click="showHideMobileMenu"
         />
         <NuxtImg
           v-else
           name="close"
-          src="/images/close_black_36dp.svg"
+          src="/images/burger-menu.svg"
           class="menu-icon"
           @click="showHideMobileMenu"
         />
@@ -58,7 +69,11 @@ function hideMobileMenu() {
         <ul @click="hideMobileMenu">
           <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
           <li><NuxtLink to="/events">רשימת אירועים</NuxtLink></li>
-          <li><NuxtLink to="/create-event">צור אירוע</NuxtLink></li>
+          <li>
+            <NuxtLink to="/create-event" class="create-event-link"
+              >צור אירוע</NuxtLink
+            >
+          </li>
         </ul>
       </div>
     </nav>
@@ -70,9 +85,8 @@ function hideMobileMenu() {
 
 header {
   nav {
-    height: 63px;
-    background-color: $white;
-    box-shadow: 0px -13px 33px rgba(0, 0, 0, 0.25);
+    padding: 30px 0;
+    background-color: transparent;
     display: flex;
     align-items: center;
 
@@ -85,7 +99,7 @@ header {
       display: block;
       position: absolute;
       background-color: $white;
-      top: 65px;
+      top: 90px;
       width: 100%;
       border: 1px solid $white;
       box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.05);
@@ -103,6 +117,7 @@ header {
 
     .content-wrapper {
       justify-content: flex-start;
+      align-items: center;
 
       @media (max-width: 768px) {
         justify-content: space-between;
@@ -120,8 +135,6 @@ header {
 
       .logo {
         width: 15%;
-        font-size: 16px;
-        font-weight: 600;
 
         @media (max-width: 768px) {
           width: 70%;
@@ -139,12 +152,12 @@ header {
 
       .desktop-nav {
         display: flex;
-        width: 35%;
+        width: 25%;
         justify-content: space-between;
         align-items: center;
 
         @media (max-width: 990px) {
-          width: 35%;
+          width: 25%;
         }
 
         @media (max-width: 768px) {
@@ -152,14 +165,35 @@ header {
         }
 
         li {
-          a {
-            font-size: 15px;
-            font-weight: 500;
-
+          .nav-link {
+            font-size: 14px;
+            color: $white;
+            font-weight: 600;
             &:hover {
-              color: $blue-200;
+              color: $purple;
             }
           }
+        }
+      }
+
+      .nav-btn-wrapper {
+        width: 25%;
+        display: flex;
+        justify-content: flex-end;
+
+        @media (max-width: 768px) {
+          display: none;
+        }
+
+        .create-event-link {
+          background: linear-gradient(90deg, $blue 0%, $purple 100%);
+          border: none;
+          color: $white;
+          font-weight: 300;
+          padding: 19px 35px;
+          border-radius: 100px;
+          cursor: pointer;
+          transition: transform 0.2s;
         }
       }
     }
