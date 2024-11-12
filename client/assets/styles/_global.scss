@@ -6,7 +6,9 @@
 html {
     position: relative;
     min-height: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
     font-size: 14px;
     line-height: 1.4;
     direction: rtl;
@@ -19,19 +21,18 @@ html {
         
         .content-wrapper {
             margin: 0 auto;
-            width: 1024px;
+            width: 1280px;
             display: flex;
             justify-content: space-between;
    
         
-            @media (max-width: 1080px) {
+            @media (max-width: 1380px) {
                 width: 90%;
                 margin: 0 auto;
             }
         } 
         
         a {
-            color: $gray-1000;
             text-decoration: none;
         }
         
