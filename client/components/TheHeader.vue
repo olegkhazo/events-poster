@@ -18,7 +18,6 @@ function hideMobileMenu() {
     <nav>
       <div class="content-wrapper">
         <div class="logo">
-          <!-- <NuxtLink to="/"> האירועים הטובים ביותר </NuxtLink> -->
           <div class="logo-wrapper">
             <NuxtLink to="/">
               <NuxtImg src="/images/logo.svg" />
@@ -84,11 +83,16 @@ function hideMobileMenu() {
 @import "@/assets/styles/_variables.scss";
 
 header {
+  width: 100%;
   nav {
     padding: 30px 0;
     background-color: transparent;
     display: flex;
     align-items: center;
+
+    @media (max-width: 768px) {
+      width: 100%;
+    }
 
     .hidden-mobile-nav {
       display: none;
@@ -127,6 +131,7 @@ header {
         width: 38px;
         display: none;
         cursor: pointer;
+        z-index: 3;
 
         @media (max-width: 768px) {
           display: block;
