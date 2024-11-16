@@ -1,7 +1,5 @@
 <template>
   <div>
-    <TheHeader />
-
     <div>
       <slot />
     </div>
