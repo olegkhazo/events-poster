@@ -313,7 +313,8 @@ const calendarMonthSwitcherData = {
 }
 
 .calendar-wrapper {
-  margin: 70px 0 100px 0;
+  width: 90%;
+  margin: 100px auto;
 
   .calendar {
     display: flex;

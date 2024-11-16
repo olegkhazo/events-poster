@@ -3,7 +3,7 @@
 <template>
   <main>
     <TheSwiper />
-    <TheFilter />
+
     <Calendar />
   </main>
 </template>
