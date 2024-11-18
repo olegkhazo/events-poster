@@ -212,7 +212,7 @@ const calendarMonthSwitcherData = {
 </script>
 
 <template>
-  <div v-if="dataIsLoaded" class="calendar-wrapper">
+  <div v-if="dataIsLoaded" class="content-wrapper">
     <CalendarMonthSwitcher
       :months="calendarMonthSwitcherData"
       :is-previous-month-available="isPreviousMonthAvailable"
@@ -312,8 +312,7 @@ const calendarMonthSwitcherData = {
   flex-direction: column;
 }
 
-.calendar-wrapper {
-  width: 90%;
+.content-wrapper {
   margin: 100px auto;
 
   .calendar {

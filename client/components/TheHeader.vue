@@ -82,6 +82,10 @@ function hideMobileMenu() {
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
+.content-wrapper {
+  display: flex;
+  justify-content: space-between;
+}
 header {
   width: 100%;
   nav {
