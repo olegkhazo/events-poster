@@ -3,8 +3,9 @@
 <template>
   <main>
     <TheSwiper />
-
     <Calendar />
+    <AboutUsBlock />
+    <ShortStatistic />
   </main>
 </template>
 
