@@ -18,13 +18,11 @@ html {
     body {
         height: 100%;
         margin: 0 auto;
-        background-color: $blue-500;
+        background-color: $white;
         
         .content-wrapper {
             margin: 0 auto;
             width: 1280px;
-           
-   
         
             @media (max-width: 1380px) {
                 width: 90%;
