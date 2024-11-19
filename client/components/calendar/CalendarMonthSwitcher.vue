@@ -25,7 +25,7 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
         @click="switchToAnotherMonth(-1)"
         class="prev-month"
       >
-        <NuxtImg src="/images/black-arrow.swg" />
+        <NuxtImg src="/images/black-arrow.svg" />
         <span>{{ months.previousMonth }}</span>
       </div>
     </div>
@@ -85,25 +85,45 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
     align-items: center;
     cursor: pointer;
 
-    &:hover {
-      background: $gray-400;
+    img {
+      width: 23px;
+      width: 12px;
+
+      @media (max-width: 1280px) {
+        width: 8px;
+      }
+
+      @media (max-width: 1280px) {
+        width: 10px;
+      }
     }
   }
 
   .next-month {
     img {
-      width: 23px;
-      width: 12px;
       margin: 10px 12px 0 0;
 
       @media (max-width: 1280px) {
         margin: 4px 12px 0 0;
-        width: 8px;
       }
 
       @media (max-width: 1280px) {
         margin: 2px 8px 0 0;
-        width: 10px;
+      }
+    }
+  }
+
+  .prev-month {
+    img {
+      margin: 6px 0 0 12px;
+      transform: rotate(180deg);
+
+      @media (max-width: 1280px) {
+        margin: 4px 0 0 12px;
+      }
+
+      @media (max-width: 1280px) {
+        margin: 2px 0 0 8px;
       }
     }
   }

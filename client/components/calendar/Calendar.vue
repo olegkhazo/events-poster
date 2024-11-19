@@ -242,7 +242,7 @@ const isToday = (date) => {
               'calendar-day',
               { 'selected-day': dayObj.date.isSame(selectedDate, 'day') },
               { 'past-day': dayObj.isPast },
-              { 'today-day': isToday(dayObj.date) }, // Проверяем, текущий ли это день
+              { 'today-day': isToday(dayObj.date) },
             ]"
             @click="!dayObj.isPast && selectDate(dayObj.date, weekIndex)"
           >
@@ -258,8 +258,9 @@ const isToday = (date) => {
               "
               class="number-of-events"
             >
-              אירועים:
+              <span class="purple-circle"></span>
               {{ eventsForDay[dayObj.date.format("YYYY-MM-DD")].length }}
+              אירועים
             </span>
           </div>
 
@@ -309,7 +310,11 @@ const isToday = (date) => {
 }
 
 .content-wrapper {
-  margin: 100px auto;
+  margin: 65px auto;
+
+  @media (max-width: 768px) {
+    margin: 55px auto;
+  }
 
   .calendar {
     display: flex;
@@ -329,12 +334,22 @@ const isToday = (date) => {
       font-size: 24px;
       border: 1px solid $gray-200;
 
+      @media (max-width: 1280px) {
+        font-size: 16px;
+      }
+
+      @media (max-width: 768px) {
+        padding: 5px 0 5px 0;
+        font-size: 10px;
+        text-align: center;
+      }
+
       &:last-child {
-        border-radius: 30px 0 0 0;
+        border-radius: 15px 0 0 0;
       }
 
       &:first-child {
-        border-radius: 0 30px 0 0;
+        border-radius: 0 15px 0 0;
       }
     }
 
@@ -348,11 +363,11 @@ const isToday = (date) => {
 
         &:last-child {
           .calendar-day:first-child {
-            border-radius: 0 0 30px 0;
+            border-radius: 0 0 15px 0;
           }
 
           .calendar-day:last-child {
-            border-radius: 0 0 0 30px;
+            border-radius: 0 0 0 15px;
           }
         }
 
@@ -360,7 +375,7 @@ const isToday = (date) => {
           width: calc(100% / 7);
           position: relative;
           background: $white;
-          padding: 10px;
+          padding: 5px 5px 0 0;
           border: 1px solid $gray-200;
           cursor: pointer;
           transition: background-color 0.3s ease, color 0.3s ease;
@@ -378,7 +393,7 @@ const isToday = (date) => {
 
           .day-date {
             position: absolute;
-            top: 15px;
+            top: 5px;
 
             @media (max-width: 768px) {
               top: 5px;
@@ -386,9 +401,50 @@ const isToday = (date) => {
           }
 
           .number-of-events {
-            color: $green-600;
-            font-weight: 600;
-            font-size: 12px;
+            color: $purple;
+            font-weight: 300;
+            margin-bottom: 2px;
+            font-size: 24px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+
+            @media (max-width: 1280px) {
+              font-size: 15px;
+            }
+
+            @media (max-width: 768px) {
+              font-size: 8px;
+              justify-content: flex-start;
+            }
+
+            @media (max-width: 500px) {
+              font-size: 5px;
+            }
+
+            .purple-circle {
+              display: inline-block;
+              width: 24px;
+              height: 24px;
+              background: linear-gradient(90deg, $blue 0%, $purple 100%);
+              border-radius: 50%;
+
+              @media (max-width: 1280px) {
+                width: 15px;
+                height: 15px;
+              }
+
+              @media (max-width: 768px) {
+                width: 8px;
+                height: 8px;
+              }
+
+              @media (max-width: 500px) {
+                width: 4px;
+                height: 4px;
+              }
+            }
           }
         }
 
@@ -404,17 +460,42 @@ const isToday = (date) => {
           }
         }
 
+        .today-day {
+          .day-date {
+            padding: 2px 10px;
+            border-radius: 50%;
+            border: 1px solid $purple;
+
+            @media (max-width: 1280px) {
+              padding: 2px 7px;
+            }
+
+            @media (max-width: 768px) {
+              padding: 2px 4px;
+            }
+          }
+        }
+
+        .day-date {
+          font-family: "Sansation", sans-serif;
+          font-size: 32px;
+          font-weight: 600;
+
+          @media (max-width: 1280px) {
+            font-size: 24px;
+          }
+
+          @media (max-width: 768px) {
+            font-size: 14px;
+          }
+        }
+
         .selected-day {
           background: $pink;
           border-bottom: none;
 
           &:hover {
             background: $pink;
-          }
-
-          .day-date {
-            color: $gray-1000;
-            font-weight: 600;
           }
         }
 
