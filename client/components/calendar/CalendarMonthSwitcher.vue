@@ -54,6 +54,10 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
     @media (max-width: 1280px) {
       font-size: 32px;
     }
+
+    @media (max-width: 768px) {
+      font-size: 20px;
+    }
   }
 }
 
@@ -68,6 +72,11 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
   @media (max-width: 1280px) {
     padding: 0;
     font-size: 20px;
+  }
+
+  @media (max-width: 768px) {
+    padding: 0;
+    font-size: 12px;
   }
 
   .prev-month,
@@ -89,8 +98,12 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
 
       @media (max-width: 1280px) {
         margin: 4px 12px 0 0;
-
         width: 8px;
+      }
+
+      @media (max-width: 1280px) {
+        margin: 2px 8px 0 0;
+        width: 10px;
       }
     }
   }
