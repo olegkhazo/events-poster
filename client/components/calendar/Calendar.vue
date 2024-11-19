@@ -209,6 +209,10 @@ const calendarMonthSwitcherData = {
     return monthsInHebrew[month];
   }),
 };
+
+const isToday = (date) => {
+  return date.isSame(dayjs(), "day");
+};
 </script>
 
 <template>
@@ -238,21 +242,13 @@ const calendarMonthSwitcherData = {
               'calendar-day',
               { 'selected-day': dayObj.date.isSame(selectedDate, 'day') },
               { 'past-day': dayObj.isPast },
+              { 'today-day': isToday(dayObj.date) }, // Проверяем, текущий ли это день
             ]"
             @click="!dayObj.isPast && selectDate(dayObj.date, weekIndex)"
           >
             <span v-if="dayObj.date.month() === currentMonth" class="day-date">
               {{ dayObj.date.date() }}
             </span>
-
-            <span
-              v-if="
-                eventsForDay[dayObj.date.format('YYYY-MM-DD')] &&
-                eventsForDay[dayObj.date.format('YYYY-MM-DD')].length > 0 &&
-                dayObj.date.month() === currentMonth
-              "
-              class="day-date-indicator"
-            ></span>
 
             <span
               v-if="
@@ -319,6 +315,7 @@ const calendarMonthSwitcherData = {
     display: flex;
     flex-direction: column;
     width: 100%;
+    color: $black-1000;
 
     .calendar-header {
       display: flex;
@@ -326,11 +323,19 @@ const calendarMonthSwitcherData = {
 
     .day-of-week {
       width: calc(100% / 7);
-      background-color: $gray-400;
-      font-weight: 300;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid $gray-300;
+      background-color: $white;
+      font-weight: 600;
+      padding: 10px 2px 2px 0;
+      font-size: 24px;
+      border: 1px solid $gray-200;
+
+      &:last-child {
+        border-radius: 30px 0 0 0;
+      }
+
+      &:first-child {
+        border-radius: 0 30px 0 0;
+      }
     }
 
     .calendar-body {
@@ -341,12 +346,22 @@ const calendarMonthSwitcherData = {
         display: flex;
         flex-wrap: wrap;
 
+        &:last-child {
+          .calendar-day:first-child {
+            border-radius: 0 0 30px 0;
+          }
+
+          .calendar-day:last-child {
+            border-radius: 0 0 0 30px;
+          }
+        }
+
         .calendar-day {
           width: calc(100% / 7);
           position: relative;
           background: $white;
           padding: 10px;
-          border: 1px solid $gray-300;
+          border: 1px solid $gray-200;
           cursor: pointer;
           transition: background-color 0.3s ease, color 0.3s ease;
 
@@ -357,12 +372,8 @@ const calendarMonthSwitcherData = {
           }
 
           &:hover {
-            background: $blue-200;
+            background: $pink;
             color: $white;
-
-            .day-date-indicator {
-              background: $white;
-            }
           }
 
           .day-date {
@@ -374,21 +385,6 @@ const calendarMonthSwitcherData = {
             }
           }
 
-          .day-date-indicator {
-            position: absolute;
-            top: 35px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: $blue-200;
-
-            @media (max-width: 768px) {
-              top: 25px;
-              width: 5px;
-              height: 5px;
-            }
-          }
-
           .number-of-events {
             color: $green-600;
             font-weight: 600;
@@ -397,14 +393,10 @@ const calendarMonthSwitcherData = {
         }
 
         .past-day {
-          background: $gray-300;
+          background: $light-gray;
           color: $gray-700;
-          border: 1px solid $gray-400;
+          border: 1px solid $gray-200;
           cursor: not-allowed;
-
-          .day-date-indicator {
-            display: none;
-          }
 
           &:hover {
             background: $gray-300;
@@ -413,15 +405,11 @@ const calendarMonthSwitcherData = {
         }
 
         .selected-day {
-          background: $gray-400;
+          background: $pink;
           border-bottom: none;
 
           &:hover {
-            background: $gray-400;
-          }
-
-          .day-date-indicator {
-            display: none;
+            background: $pink;
           }
 
           .day-date {
@@ -435,7 +423,7 @@ const calendarMonthSwitcherData = {
           padding: 0 20px 40px 20px;
           border: 1px solid $gray-300;
           border-top: none;
-          background: $gray-400;
+          background: $pink;
 
           hr {
             height: 1px;
