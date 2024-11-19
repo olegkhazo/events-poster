@@ -15,3 +15,11 @@ export const monthsInHebrew = {
     December: "דצמבר",
   };
   
+export const iconCollection = {
+  "הצגות תיאטרון": "masks",
+  "ספורט": "schedule",
+  "פסטיבלים": "firecracker",
+  "התכנסויות נושאיות": "team",
+  "מפגשים עם מפורסמים": "sermon",
+  "מפגשים עם סופרים": "pencil"
+} 
