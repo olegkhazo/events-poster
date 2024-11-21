@@ -48,16 +48,51 @@ function showNextEvents() {
 
 <template>
   <div v-if="dataIsLoaded" class="all-events-wrapper">
-    <TheFilter />
-    <div class="events-wrapper">
-      <div class="event" v-for="event in displayedEvents" :key="event.Position">
-        <SingleEventComponent :single-event-data="event" />
+    <div class="slider">
+      <div class="slider-container">
+        <div
+          class="slide"
+          :style="{
+            backgroundImage: 'url(/images/money.png)',
+          }"
+        >
+          <TheHeader />
+          <div class="slide-content">
+            <div class="banner-text">
+              <h2>אירועים</h2>
+              <p>למידע נוסף על אירועים</p>
+            </div>
+          </div>
+
+          <div class="filter-social">
+            <div class="filter-block">
+              <TheFilter />
+            </div>
+            <div class="social-icons">
+              <NuxtImg src="/images/whatsapp.png" />
+              <NuxtImg src="/images/instagram.png" />
+              <NuxtImg src="/images/facebook.png" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="btn-wrapper" v-if="hasMoreEvents">
-      <button @click="showNextEvents" class="events-show-btn">
-        הצג את האירועים הבאים
-      </button>
+
+    <div class="content-wrapper">
+      <div class="events-wrapper">
+        <div
+          class="event"
+          v-for="event in displayedEvents"
+          :key="event.Position"
+        >
+          <SingleEventComponent :single-event-data="event" />
+        </div>
+      </div>
+      <div class="btn-wrapper" v-if="hasMoreEvents">
+        <button @click="showNextEvents" class="events-show-btn">
+          הצג את האירועים הבאים
+        </button>
+      </div>
     </div>
   </div>
   <div v-else class="preloader">
@@ -83,7 +118,129 @@ function showNextEvents() {
   margin-bottom: 30px;
   display: flex;
   flex-direction: column;
-  width: 90%;
+  width: 100%;
+
+  .slider {
+    background-color: $black;
+
+    .slider-container {
+      .slide {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        background-size: cover;
+        background-position: center;
+
+        @media (max-width: 768px) {
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          text-align: center;
+
+          &::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 0;
+            pointer-events: none;
+          }
+        }
+
+        .slide-content {
+          width: 90%;
+          margin-top: 80px;
+          display: flex;
+          justify-content: center;
+          z-index: 1;
+
+          @media (max-width: 1280px) {
+            width: 60%;
+          }
+
+          @media (max-width: 768px) {
+            width: 100%;
+            margin-top: 0;
+          }
+
+          .banner-text {
+            text-align: center;
+            h2 {
+              color: $white;
+              font-size: 64px;
+              margin: 0;
+              line-height: 0.8;
+              letter-spacing: 4px;
+
+              @media (max-width: 768px) {
+                font-size: 32px;
+              }
+            }
+
+            p {
+              color: $white;
+              font-size: 32px;
+              margin-bottom: 50px;
+
+              @media (max-width: 768px) {
+                margin-top: 15px;
+                font-size: 8px;
+                font-weight: 300;
+              }
+            }
+          }
+        }
+      }
+
+      .filter-social {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 100%;
+
+        @media (max-width: 1280px) {
+          flex-direction: column-reverse;
+        }
+
+        .filter-block {
+          width: 100%;
+          border-radius: 40px 0 0 0;
+          background-color: $pink;
+          z-index: 3;
+
+          @media (max-width: 1280px) {
+            width: 100%;
+            border-radius: 0;
+          }
+        }
+
+        .social-icons {
+          display: flex;
+          width: 35%;
+          padding-right: 5%;
+
+          @media (max-width: 1280px) {
+            width: 100%;
+            padding: 0 70% 40px 0;
+          }
+
+          @media (max-width: 768px) {
+            display: none;
+          }
+
+          img {
+            width: 55px;
+            height: 55px;
+            margin-left: 20px;
+          }
+        }
+      }
+    }
+  }
 
   .events-wrapper {
     display: flex;
