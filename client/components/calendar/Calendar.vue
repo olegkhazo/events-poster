@@ -460,10 +460,6 @@ const isToday = (date) => {
             @media (max-width: 768px) {
               padding: 0px 2px;
             }
-
-            @media (max-width: 500px) {
-              padding: 1px;
-            }
           }
         }
 
