@@ -20,8 +20,6 @@ function recordEventToStore(event) {
     currentEvent.value.site_donor = "custom-event";
   }
 }
-
-console.log(props.singleDataEvents);
 </script>
 
 <template>
@@ -74,7 +72,7 @@ console.log(props.singleDataEvents);
           </div>
 
           <div v-if="event.event_title" class="data-point">
-            {{ event.eventTitle }}
+            {{ event.event_title }}
           </div>
         </div>
       </div>

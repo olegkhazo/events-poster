@@ -90,7 +90,7 @@ function showNextEvents() {
       </div>
       <div class="btn-wrapper" v-if="hasMoreEvents">
         <button @click="showNextEvents" class="events-show-btn">
-          הצג את האירועים הבאים
+          בדוק את האירועים הבאים
         </button>
       </div>
     </div>
@@ -247,18 +247,18 @@ function showNextEvents() {
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-top: 60px;
 
     @media (max-width: 768px) {
       flex-direction: column;
+      align-content: center;
     }
 
     .event {
-      margin-top: 20px;
-      background: white;
-      border: 1px solid $gray-100;
+      margin-top: 50px;
 
       @media (max-width: 768px) {
-        flex-direction: column;
+        margin-top: 30px;
       }
     }
   }
@@ -271,12 +271,16 @@ function showNextEvents() {
     margin-bottom: 50px;
 
     .events-show-btn {
-      padding: 10px 100px;
-      border: 1px solid $blue-200;
-      color: $blue-200;
-      background-color: $white;
-      font-size: 18px;
+      padding: 17px 46px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 2px;
       cursor: pointer;
+      border-radius: 100px;
+      text-align: center;
+      background: linear-gradient(90deg, $blue 0%, $purple 100%);
+      color: $white;
+      border: none;
     }
   }
 }
