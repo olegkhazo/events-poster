@@ -274,18 +274,6 @@ const isToday = (date) => {
             "
             class="event-block"
           >
-            <h3>
-              אירועים עבור
-              <span class="date-of-list">
-                {{
-                  selectedDate && dayjs.isDayjs(selectedDate)
-                    ? selectedDate.format("D")
-                    : ""
-                }}
-                {{ calendarMonthSwitcherData.currentMonthAndYear }}
-              </span>
-            </h3>
-            <hr />
             <CalendarEventsBlock :single-data-events="eventsForSelectedDate" />
           </div>
         </div>
@@ -375,7 +363,7 @@ const isToday = (date) => {
           width: calc(100% / 7);
           position: relative;
           background: $white;
-          padding: 5px 5px 0 0;
+          padding: 3px 8px 0 0;
           border: 1px solid $gray-200;
           cursor: pointer;
           transition: background-color 0.3s ease, color 0.3s ease;
@@ -388,16 +376,12 @@ const isToday = (date) => {
 
           &:hover {
             background: $pink;
-            color: $white;
+            color: $gray-paragraph;
           }
 
           .day-date {
             position: absolute;
-            top: 5px;
-
-            @media (max-width: 768px) {
-              top: 5px;
-            }
+            top: 3px;
           }
 
           .number-of-events {
@@ -408,7 +392,7 @@ const isToday = (date) => {
             font-style: italic;
             display: flex;
             align-items: center;
-            justify-content: space-evenly;
+            justify-content: flex-start;
 
             @media (max-width: 1280px) {
               font-size: 15px;
@@ -429,15 +413,18 @@ const isToday = (date) => {
               height: 24px;
               background: linear-gradient(90deg, $blue 0%, $purple 100%);
               border-radius: 50%;
+              margin-left: 5px;
 
               @media (max-width: 1280px) {
                 width: 15px;
                 height: 15px;
+                margin-left: 3px;
               }
 
               @media (max-width: 768px) {
                 width: 8px;
                 height: 8px;
+                margin-left: 0px;
               }
 
               @media (max-width: 500px) {
@@ -455,23 +442,27 @@ const isToday = (date) => {
           cursor: not-allowed;
 
           &:hover {
-            background: $gray-300;
-            color: $gray-700;
+            background-color: $light-gray;
+            color: $gray-100;
           }
         }
 
         .today-day {
           .day-date {
-            padding: 2px 10px;
+            padding: 1px 8px;
             border-radius: 50%;
             border: 1px solid $purple;
 
             @media (max-width: 1280px) {
-              padding: 2px 7px;
+              padding: 0px 5px;
             }
 
             @media (max-width: 768px) {
-              padding: 2px 4px;
+              padding: 0px 2px;
+            }
+
+            @media (max-width: 500px) {
+              padding: 1px;
             }
           }
         }
@@ -492,7 +483,6 @@ const isToday = (date) => {
 
         .selected-day {
           background: $pink;
-          border-bottom: none;
 
           &:hover {
             background: $pink;
@@ -501,28 +491,9 @@ const isToday = (date) => {
 
         .event-block {
           width: 100%;
-          padding: 0 20px 40px 20px;
           border: 1px solid $gray-300;
           border-top: none;
           background: $pink;
-
-          hr {
-            height: 1px;
-            background-color: $gray-300;
-            border: none;
-            margin-block-start: 0;
-            margin-block-end: 0;
-          }
-
-          .date-of-list {
-            color: $blue-200;
-            font-size: 24px;
-            margin-right: 8px;
-
-            @media (max-width: 768px) {
-              font-size: 16px;
-            }
-          }
         }
       }
     }
