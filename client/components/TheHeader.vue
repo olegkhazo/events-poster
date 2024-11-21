@@ -52,13 +52,6 @@ function hideMobileMenu() {
           class="menu-icon"
           @click="showHideMobileMenu"
         />
-        <!-- <NuxtImg
-          v-else
-          name="close"
-          src="/images/burger-menu.svg"
-          class="menu-icon"
-          @click="showHideMobileMenu"
-        /> -->
       </div>
 
       <div

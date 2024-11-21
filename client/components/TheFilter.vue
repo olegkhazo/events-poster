@@ -81,7 +81,7 @@ const updateCurrentFilter = (filter) => {
     font-size: 32px;
 
     @media (max-width: 1280px) {
-      font-size: 14px;
+      font-size: 22px;
       color: $black;
     }
   }
