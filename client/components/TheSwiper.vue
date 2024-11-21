@@ -155,7 +155,6 @@ onMounted(() => {
 
           p {
             color: $white;
-            font-weight: 14px;
 
             @media (max-width: 768px) {
               margin-top: 15px;
