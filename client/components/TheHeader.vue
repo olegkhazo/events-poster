@@ -52,28 +52,41 @@ function hideMobileMenu() {
           class="menu-icon"
           @click="showHideMobileMenu"
         />
-        <NuxtImg
+        <!-- <NuxtImg
           v-else
           name="close"
           src="/images/burger-menu.svg"
           class="menu-icon"
           @click="showHideMobileMenu"
-        />
+        /> -->
       </div>
 
       <div
         class="hidden-mobile-nav"
         :class="{ 'mobile-menu': mobileMenuVisibility }"
       >
-        <ul @click="hideMobileMenu">
-          <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
-          <li><NuxtLink to="/events">רשימת אירועים</NuxtLink></li>
-          <li>
-            <NuxtLink to="/create-event" class="create-event-link"
-              >צור אירוע</NuxtLink
-            >
-          </li>
-        </ul>
+        <div class="top-mobile-menu">
+          <ul @click="hideMobileMenu">
+            <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
+            <li><NuxtLink to="/events">רשימת אירועים</NuxtLink></li>
+            <li>
+              <NuxtLink to="/create-event" class="create-event-link"
+                >צור אירוע</NuxtLink
+              >
+            </li>
+          </ul>
+          <NuxtImg
+            @click="showHideMobileMenu"
+            src="/images/white-cross.svg"
+            alt="cross"
+          />
+        </div>
+
+        <div class="mobile-social-icons">
+          <NuxtImg src="/images/whatsapp.png" />
+          <NuxtImg src="/images/instagram.png" />
+          <NuxtImg src="/images/facebook.png" />
+        </div>
       </div>
     </nav>
   </header>
@@ -104,21 +117,61 @@ header {
 
     .mobile-menu {
       z-index: 5;
-      display: block;
+      display: flex;
+      flex-direction: column;
       position: absolute;
-      background-color: $white;
-      top: 90px;
+      background-color: $black-1000;
       width: 100%;
-      border: 1px solid $white;
-      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.05);
+      top: 0px;
+      align-items: flex-start;
+      justify-content: space-between;
+      box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.5);
+      padding: 45px 45px 75vh 45px;
 
-      ul {
-        flex-direction: column;
-        padding-inline-start: 15px;
-        padding-bottom: 15px;
+      .top-mobile-menu {
+        display: flex;
+        width: 100%;
+        align-items: flex-start;
+        justify-content: space-between;
+        ul {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
 
-        li {
-          padding: 10px 0;
+          li {
+            margin-top: 30px;
+
+            a {
+              font-size: 20px;
+              color: $white;
+
+              &:hover {
+                color: $purple;
+              }
+            }
+          }
+        }
+
+        img {
+          width: 22px;
+        }
+      }
+
+      .mobile-social-icons {
+        display: none;
+        margin-top: 40px;
+
+        @media (max-width: 768px) {
+          display: block;
+        }
+
+        img {
+          width: 55px;
+          height: 55px;
+
+          &:not(:first-child) {
+            margin-right: 20px;
+          }
         }
       }
     }
