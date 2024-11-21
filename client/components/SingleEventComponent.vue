@@ -31,18 +31,42 @@ function recordEventToStore(event) {
         :src="event.event_image_blob || event.event_image_url"
         :alt="event.eventAltText"
       />
-      <NuxtImg v-else src="/images/logo.svg" alt="image" />
+      <NuxtImg v-else src="/images/about-us-block/concert.png" alt="image" />
     </div>
-    <div class="event-description">
-      <span v-if="event.event_date" class="date">{{ event.event_date }}</span>
-      <span v-if="event.event_time" class="time">
-        <NuxtImg src="/images/clock.png" alt="clock" />
-        {{ event.event_time }}
-      </span>
-      <span v-if="event.location" class="location">{{ event.location }}</span>
-      <span v-if="event.event_title" class="title">
-        {{ event.event_title }}
-      </span>
+
+    <div class="event-data">
+      <div v-if="event.event_title" class="data-point">
+        <span class="point-title">
+          {{ event.event_title }}
+        </span>
+      </div>
+
+      <div v-if="event.event_date" class="data-point">
+        <div class="data-img">
+          <NuxtImg src="/images/event-card/calendar.svg" alt="calendar" />
+        </div>
+        <span class="point-text">
+          {{ event.event_date }}
+        </span>
+      </div>
+
+      <div v-if="event.event_time" class="data-point">
+        <div class="data-img">
+          <NuxtImg src="/images/event-card/clock.svg" alt="clock" />
+        </div>
+        <span class="point-text">
+          {{ event.event_time }}
+        </span>
+      </div>
+
+      <div v-if="event.location" class="data-point">
+        <div class="data-img">
+          <NuxtImg src="/images/event-card/geo.svg" alt="geo" />
+        </div>
+        <span class="point-text">
+          {{ event.location }}
+        </span>
+      </div>
     </div>
 
     <div class="btn-wrapper">
@@ -66,96 +90,62 @@ function recordEventToStore(event) {
 .single-event {
   display: flex;
   flex-direction: column;
-  width: 250px;
-  padding-bottom: 15px;
+  width: 300px;
+  border-radius: 30px;
   cursor: pointer;
   position: relative;
   height: 100%;
-
-  &:hover {
-    background-color: $blue-300;
-  }
-
-  @media (max-width: 768px) {
-    width: 100%;
-    background-color: $blue-300;
-    border: none;
-    padding-bottom: 0;
-    margin-bottom: 0;
-    border-bottom: 1px solid $gray-150;
-    padding: 20px;
-    padding: 20px 0;
-  }
-
-  @media (max-width: 768px) {
-    flex-direction: row;
-  }
+  background-color: $light-gray;
 
   .event-img {
     max-width: 100%;
 
-    @media (max-width: 768px) {
-      max-width: 150px;
-      margin-right: 20px;
-    }
-
     img {
       width: 100%;
-      height: auto;
+      height: 200px;
+      border-radius: 30px 30px 0 0;
     }
   }
 
-  .event-description {
-    flex: 1; /* Занимаем все оставшееся пространство */
-    margin-right: 20px;
+  .event-data {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 50px 0 50px;
 
-    span {
-      display: block;
-    }
+    .data-point {
+      display: flex;
+      align-items: flex-start;
 
-    .date {
-      color: $blue-200;
-      font-weight: 500;
-
-      @media (max-width: 768px) {
-        font-size: 8px;
-      }
-    }
-
-    .time {
-      color: $blue-200;
-      font-weight: 300;
-
-      @media (max-width: 768px) {
-        font-size: 8px;
+      &:not(:first-child) {
+        margin-top: 10px;
       }
 
-      img {
-        width: 10px;
+      .point-title {
+        font-size: 16px;
+        font-weight: 600;
+      }
 
-        @media (max-width: 768px) {
-          width: 8px;
+      .data-img {
+        display: flex;
+        width: 16px;
+
+        img {
+          width: 16px;
         }
       }
-    }
 
-    .title {
-      font-size: 16px;
-      font-weight: 600;
-
-      @media (max-width: 768px) {
-        font-size: 14px;
-        font-weight: 500;
-      }
-    }
-
-    .location {
-      margin-top: 10px;
-      font-size: 12px;
-
-      @media (max-width: 768px) {
+      .point-text {
+        margin-right: 10px;
         font-size: 10px;
-        font-weight: 300;
+        font-weight: 600;
+
+        @media (max-width: 1220px) {
+          font-size: 12px;
+        }
+
+        @media (max-width: 394px) {
+          font-size: 10px;
+        }
       }
     }
   }
@@ -163,22 +153,16 @@ function recordEventToStore(event) {
   .btn-wrapper {
     display: flex;
     flex-direction: column;
-    padding: 0 10px;
-    margin-top: auto; /* Закрепляем снизу */
-
-    @media (max-width: 768px) {
-      width: 230px;
-    }
+    padding: 20px 50px 30px 50px;
+    margin-top: auto;
 
     a {
-      padding: 10px 80px;
-      margin-top: 10px;
+      font-weight: 500;
       font-size: 14px;
+      padding: 12px 0;
+      cursor: pointer;
+      border-radius: 100px;
       text-align: center;
-
-      @media (max-width: 768px) {
-        font-weight: 600;
-      }
 
       @media (max-width: 425px) {
         padding: 10px 30px;
@@ -186,22 +170,15 @@ function recordEventToStore(event) {
     }
 
     .additional-info-link {
-      border: 1px solid $blue-200;
-      color: $blue-200;
-      background-color: $white;
-
-      &:hover {
-        color: $gray-700;
-      }
+      margin-top: 10px;
+      background: $white;
+      border: 1px solid $black-1000;
+      color: $black-1000;
     }
 
     .buy-ticckets-link {
-      background-color: $blue-200;
+      background: linear-gradient(90deg, $blue 0%, $purple 100%);
       color: $white;
-
-      &:hover {
-        color: $gray-300;
-      }
     }
   }
 }
