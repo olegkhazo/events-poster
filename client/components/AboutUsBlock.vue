@@ -82,7 +82,7 @@ import { iconCollection } from "~/utils/collections";
       width: 45%;
 
       @media (max-width: 1280px) {
-        width: 55%;
+        width: 60%;
         flex-direction: column;
         justify-content: space-between;
         align-items: center;
