@@ -158,12 +158,7 @@ function showNextEvents() {
           justify-content: center;
           z-index: 1;
 
-          @media (max-width: 1280px) {
-            width: 60%;
-          }
-
           @media (max-width: 768px) {
-            width: 100%;
             margin-top: 0;
           }
 
