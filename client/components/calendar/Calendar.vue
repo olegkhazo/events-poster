@@ -449,16 +449,16 @@ const isToday = (date) => {
 
         .today-day {
           .day-date {
-            padding: 1px 8px;
+            padding: 3px 8px;
             border-radius: 50%;
             border: 1px solid $purple;
 
             @media (max-width: 1280px) {
-              padding: 0px 5px;
+              padding: 2px 5px;
             }
 
             @media (max-width: 768px) {
-              padding: 0px 2px;
+              padding: 1px 2px;
             }
           }
         }
