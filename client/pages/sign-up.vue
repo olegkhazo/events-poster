@@ -376,7 +376,7 @@ async function createRequestToRegistrationApi() {
         }
       }
 
-      button {
+      .blue-btn {
         font-weight: 300;
         font-size: 14px;
         margin: 30px auto 0 auto;
