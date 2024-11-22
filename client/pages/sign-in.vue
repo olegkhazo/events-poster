@@ -240,7 +240,7 @@ async function signIn() {
     }
   }
   .content-wrapper {
-    min-height: 90vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -250,6 +250,7 @@ async function signIn() {
     }
 
     .form-wrapper {
+      margin: 50px auto;
       padding: 40px 120px;
       background-color: $light-gray;
       border-radius: 30px;
