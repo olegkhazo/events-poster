@@ -1,4 +1,0 @@
-[build]
-  command = "yarn generate"
-  publish = "client/.output/public"
-  base = "client"
