@@ -45,11 +45,11 @@ router.post('/logout', logOut);
 // Subscribe routers
 // ***
 
-router.get('/get-all-subscriptions', getAllSubscriptions);
+router.get('/all-subscriptions', getAllSubscriptions);
 
 router.post('/create-subscribe', createSubscription);
 
-router.delete('/delete-subscription', deleteSubscription);
+router.delete('/delete-subscription/:id', deleteSubscription);
 
 
 
