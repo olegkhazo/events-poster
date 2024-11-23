@@ -1,12 +1,15 @@
 import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
+  
   runtimeConfig: {
+    
     public: {
-      // posthogPublicKey: 'phc_LZxuf3gxxKB9PFXd5GxPmmwoDE96aGi83ALMS63ijpW',
-      // posthogHost: 'https://eu.i.posthog.com'
+      posthogPublicKey: 'phc_LZxuf3gxxKB9PFXd5GxPmmwoDE96aGi83ALMS63ijpW',
+      posthogHost: 'https://eu.i.posthog.com'
     }
   },
+  
   app: {
     head: {
       htmlAttrs: {
