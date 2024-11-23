@@ -6,8 +6,11 @@
 html {
     position: relative;
     min-height: 100%;
-    font-family: 'Roboto', sans-serif;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
     font-size: 14px;
+    letter-spacing: 2px;
     line-height: 1.4;
     direction: rtl;
     box-sizing: border-box;
@@ -15,23 +18,19 @@ html {
     body {
         height: 100%;
         margin: 0 auto;
-        background-color: $blue-500;
+        background-color: $white;
         
         .content-wrapper {
             margin: 0 auto;
-            width: 1024px;
-            display: flex;
-            justify-content: space-between;
-   
+            width: 1280px;
         
-            @media (max-width: 1080px) {
+            @media (max-width: 1380px) {
                 width: 90%;
                 margin: 0 auto;
             }
         } 
         
         a {
-            color: $gray-1000;
             text-decoration: none;
         }
         

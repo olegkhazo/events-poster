@@ -11,7 +11,7 @@ useHead({
 </script>
 
 <template>
-  <div class="content-wrapper">
+  <div>
     <TheMainContent />
   </div>
 </template>

@@ -56,7 +56,13 @@ const updateCurrentFilter = (filter) => {
         >{{ filter }}</span
       >
     </div>
-    <input v-model="filterSubString" class="input-filter" type="search" />
+    <span>מצא אירוע</span>
+    <input
+      v-model="filterSubString"
+      class="input-filter"
+      type="search"
+      placeholder="מצא אירוע"
+    />
   </div>
 </template>
 
@@ -66,10 +72,19 @@ const updateCurrentFilter = (filter) => {
 .filter-wrapper {
   width: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 30px 0;
+  margin: 55px 0;
+
+  span {
+    margin-left: 24px;
+    font-size: 32px;
+
+    @media (max-width: 1280px) {
+      font-size: 22px;
+      color: $black;
+    }
+  }
 
   .filters {
     .single-filter {
@@ -78,7 +93,6 @@ const updateCurrentFilter = (filter) => {
       cursor: pointer;
       box-sizing: border-box;
       border: 2px solid transparent;
-      border-radius: 3px;
 
       &:hover {
         transition: border-color 0.6s ease;
@@ -94,9 +108,26 @@ const updateCurrentFilter = (filter) => {
   }
 
   .input-filter {
-    margin-top: 15px;
-    width: 280px;
-    padding: 5px;
+    border: 1px solid $gray-850;
+    font-size: 14px;
+    color: $gray-850;
+    border-radius: 100px;
+    width: 40%;
+    padding: 10px;
+    text-align: center;
+
+    &::placeholder {
+      color: $gray-850;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1280px) {
+      width: 40%;
+    }
+
+    @media (max-width: 768px) {
+      width: 60%;
+    }
   }
 }
 </style>

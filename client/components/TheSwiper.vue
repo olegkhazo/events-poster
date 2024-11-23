@@ -5,7 +5,7 @@ const currentIndex = ref(0);
 const isMobile = ref(false);
 
 const checkIsMobile = () => {
-  isMobile.value = window.innerWidth < 768;
+  isMobile.value = window.innerWidth < 1280;
 };
 
 const prevSlide = () => {
@@ -28,66 +28,77 @@ onMounted(() => {
     <div class="slider-container">
       <div
         class="slide"
-        v-for="(slide, index) in slidesData"
-        :key="index"
-        :class="{ active: index === currentIndex }"
-        :style="isMobile ? { backgroundImage: `url(${slide.img})` } : {}"
+        :style="{
+          backgroundImage: 'url(/images/man.png)',
+        }"
       >
+        <TheHeader />
         <div class="slide-content">
-          <h2>{{ slide.title }}</h2>
-          <p>{{ slide.content }}</p>
+          <div class="left-switch">
+            <NuxtImg
+              src="/images/right-arrow.svg"
+              @click="prevSlide"
+              alt="right-arrow"
+            />
+          </div>
+          <div class="banner-text">
+            <h2>איפה להתחיל?</h2>
+            <hr />
+            <p>
+              נסחו את המשימה והבינו איזה סוג אירוע תרצו לארגן, לכמה אנשים, האם
+              יש לכם מגבלות תקציב, האם יש מדדי KPI ברורים, באיזו עיר יתקיים
+              האירוע. החלט על המשימה העיקרית, זה יעזור לך בחיפוש שלך ויקל על
+              תקשורת נוספת.
+            </p>
+            <div class="nav-btn-wrapper">
+              <NuxtLink class="create-event-link" to="/create-event">
+                צפו בלוח הזמנים
+              </NuxtLink>
+            </div>
+          </div>
+          <div class="right-switch">
+            <NuxtImg
+              src="/images/left-arrow.svg"
+              @click="nextSlide"
+              alt="left-arrow"
+            />
+          </div>
         </div>
-        <div class="slide-image" v-if="!isMobile">
-          <img :src="slide.img" alt="Slide image" />
+
+        <div class="filter-social">
+          <div class="filter-block">
+            <TheFilter />
+          </div>
+          <div class="social-icons">
+            <NuxtImg src="/images/whatsapp.png" />
+            <NuxtImg src="/images/instagram.png" />
+            <NuxtImg src="/images/facebook.png" />
+          </div>
         </div>
       </div>
     </div>
-    <button class="nav-button prev" @click="prevSlide">&gt;</button>
-    <button class="nav-button next" @click="nextSlide">&lt;</button>
   </div>
 </template>
-
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
 .slider {
-  position: relative;
-  width: 100%;
-  overflow: hidden;
-  margin-top: 40px;
-  border: 1px solid $gray-100;
-  padding: 20px 0;
-  background-color: $white;
-
-  @media (max-width: 767px) {
-    padding: 0;
-  }
+  background-color: $black;
 
   .slider-container {
-    display: flex;
-    transition: transform 0.5s ease;
-    width: 100%;
-    height: 250px;
-
     .slide {
+      position: relative;
       display: flex;
-      flex-direction: row-reverse;
-      justify-content: space-around;
-      flex-shrink: 0;
-      width: 100%;
-      opacity: 0;
-      transition: opacity 0.5s ease;
-      position: absolute;
+      flex-direction: column;
       background-size: cover;
       background-position: center;
 
-      @media (max-width: 767px) {
+      @media (max-width: 768px) {
         flex-direction: column;
         align-items: center;
         justify-content: center;
         color: white;
         text-align: center;
-        background-color: rgba(0, 0, 0, 0.5);
 
         &::before {
           content: "";
@@ -98,70 +109,140 @@ onMounted(() => {
           height: 100%;
           background-color: rgba(0, 0, 0, 0.6);
           z-index: 0;
+          pointer-events: none;
         }
       }
 
       .slide-content {
-        width: 50%;
-        box-sizing: border-box;
+        width: 40%;
+        margin-top: 80px;
+        display: flex;
+        justify-content: space-between;
         z-index: 1;
 
-        @media (max-width: 767px) {
-          width: 70%;
-          z-index: 1;
+        @media (max-width: 1280px) {
+          width: 60%;
+        }
+
+        @media (max-width: 768px) {
+          width: 100%;
+          margin-top: 0;
+        }
+
+        .banner-text {
+          h2 {
+            color: $white;
+            font-size: 86px;
+            margin: 0;
+            line-height: 0.8;
+
+            @media (max-width: 768px) {
+              font-size: 32px;
+            }
+          }
+
+          hr {
+            height: 5px;
+            background: linear-gradient(90deg, $blue 0%, $purple 100%);
+            border-radius: 10px;
+            border: none;
+            margin-top: 1px;
+
+            @media (max-width: 768px) {
+              display: none;
+            }
+          }
+
+          p {
+            color: $white;
+
+            @media (max-width: 768px) {
+              margin-top: 15px;
+              font-size: 8px;
+            }
+          }
+
+          .nav-btn-wrapper {
+            margin: 40px 0 100px 0;
+
+            .create-event-link {
+              background: linear-gradient(90deg, $blue 0%, $purple 100%);
+              border: none;
+              color: $white;
+              font-weight: 300;
+              padding: 19px 35px;
+              border-radius: 100px;
+              cursor: pointer;
+              transition: transform 0.2s;
+
+              @media (max-width: 768px) {
+                font-size: 8px;
+              }
+            }
+          }
+        }
+
+        .left-switch,
+        .right-switch {
+          img {
+            margin: 100px 20px 0 20px;
+            cursor: pointer;
+
+            @media (max-width: 1280px) {
+              margin: 100px 40px 0 40px;
+            }
+
+            @media (max-width: 768px) {
+              margin: 30px 20px 0 20px;
+            }
+          }
+        }
+      }
+    }
+
+    .filter-social {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+
+      @media (max-width: 1280px) {
+        flex-direction: column-reverse;
+      }
+
+      .filter-block {
+        width: 100%;
+        border-radius: 40px 0 0 0;
+        background-color: $pink;
+        z-index: 3;
+
+        @media (max-width: 1280px) {
+          width: 100%;
+          border-radius: 0;
         }
       }
 
-      .slide-image {
-        width: 30%;
+      .social-icons {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        width: 35%;
+        padding-right: 5%;
 
-        @media (max-width: 767px) {
+        @media (max-width: 1280px) {
+          width: 100%;
+          padding: 0 70% 40px 0;
+        }
+
+        @media (max-width: 768px) {
           display: none;
         }
+
+        img {
+          width: 55px;
+          height: 55px;
+          margin-left: 20px;
+        }
       }
-
-      .slide-image img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-      }
     }
-
-    .slide.active {
-      opacity: 1;
-      position: relative;
-    }
-  }
-
-  .nav-button {
-    position: absolute;
-    font-size: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: $blue-200;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-    z-index: 4;
-    background: none;
-
-    &:hover {
-      background-color: $blue;
-      border-radius: 50%;
-      color: $white;
-      padding: 5px 10px;
-    }
-  }
-
-  .nav-button.prev {
-    left: 10px;
-  }
-
-  .nav-button.next {
-    right: 10px;
   }
 }
 </style>

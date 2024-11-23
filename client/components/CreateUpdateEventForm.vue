@@ -30,6 +30,7 @@ const eventData = ref({
   event_title: "",
   event_description: "",
   location: "",
+  event_price: "",
   event_page: "",
   event_date: "",
   event_time: "",
@@ -49,6 +50,7 @@ const validationRules = {
   phone: "PHONE_PATTERN",
   email: "EMAIL_PATTERN",
   event_time: "TIME_PATTERN",
+  event_price: "COMMON_NOT_EMPTY_PATTERN",
 };
 
 async function fileToBase64(file) {
@@ -94,6 +96,7 @@ async function getSingleEventData() {
         event_title: singleEvent.value.event_title,
         event_description: singleEvent.value.event_description,
         location: singleEvent.value.location,
+        event_price: singleEvent.value.event_price,
         event_page: singleEvent.value.event_page,
         event_date: singleEvent.value.event_date,
         event_time: singleEvent.value.event_time,
@@ -200,66 +203,65 @@ onMounted(() => {
     <div class="event-form" v-if="!showSuccessWindow">
       <div class="form-title">
         <h1 v-if="props.eventId">
-          Edit event: <span>{{ eventData.event_title }}</span>
+          עריכת אירוע: <span>{{ eventData.event_title }}</span>
         </h1>
-        <h1 v-else>Create event</h1>
+        <h1 v-else>צור אירוע</h1>
       </div>
 
       <div class="event-form-content">
-        <div v-for="field in Object.keys(validationRules)" :key="field">
+        <div
+          class="input-wrapper"
+          v-for="field in Object.keys(validationRules).filter(
+            (f) => f !== 'event_description'
+          )"
+          :key="field"
+        >
           <span
             v-if="!isFieldValid(field) && formButtonClicked"
             class="input-error-notification"
           >
             {{ getErrorMessage(field) }}
           </span>
-          <template v-if="field === 'event_description'">
-            <textarea
-              v-model="eventData[field]"
-              :placeholder="getPlaceholder(field)"
-              rows="5"
-              class="textarea-input"
-            ></textarea>
-          </template>
-          <template v-else>
-            <input
-              v-model="eventData[field]"
-              :type="field === 'event_date' ? 'date' : 'text'"
-              :placeholder="getPlaceholder(field)"
-              :class="
-                field === 'event_date' || field === 'event_time'
-                  ? 'date-input'
-                  : ''
-              "
-            />
-          </template>
-        </div>
-
-        <div>
           <input
-            v-model="eventData.event_image_url"
-            type="text"
-            :placeholder="getPlaceholder('event_image_url')"
-            class="image-url-input"
+            v-model="eventData[field]"
+            :type="field === 'event_date' ? 'date' : 'text'"
+            :placeholder="getPlaceholder(field)"
+            :class="
+              field === 'event_date' || field === 'event_time'
+                ? 'date-input'
+                : ''
+            "
           />
         </div>
 
-        <div>
-          <input type="file" @change="handleImageUpload" accept="image/*" />
+        <input
+          v-model="eventData.event_image_url"
+          type="text"
+          :placeholder="getPlaceholder('event_image_url')"
+          class="image-url-input"
+        />
 
-          <div v-if="eventData.event_image_blob">
-            <img
-              :src="eventData.event_image_blob"
-              alt="Event Image"
-              style="max-width: 200px"
-            />
-          </div>
+        <input type="file" @change="handleImageUpload" accept="image/*" />
+
+        <div v-if="eventData.event_image_blob">
+          <img
+            :src="eventData.event_image_blob"
+            alt="Event Image"
+            style="max-width: 200px"
+          />
         </div>
-
-        <button class="xl-green-btn" @click.prevent="createEvent">
-          {{ props.eventId ? "Update event" : "Create event" }}
-        </button>
       </div>
+
+      <textarea
+        v-model="eventData.event_description"
+        :placeholder="getPlaceholder('event_description')"
+        rows="5"
+        class="textarea-input"
+      ></textarea>
+
+      <button class="blue-btn" @click.prevent="createEvent">
+        {{ props.eventId ? "עדכון האירוע" : "צור אירוע" }}
+      </button>
     </div>
 
     <SuccessRequestWindow
@@ -279,38 +281,42 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
 
-  .event-form {
-    margin: 30px auto 60px auto;
-    background-color: $white;
-    padding: 20px 40px 10px 40px;
-    border: 2px solid $gray-100;
-    border-radius: 15px;
-    text-align: center;
-    width: 50%;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 
-    @media (max-width: 768px) {
-      margin: 80px auto;
-      padding: 10px 30px 10px 30px;
-      width: 65%;
+  .event-form {
+    margin: 50px auto;
+    width: 70%;
+    padding: 40px 0;
+    background-color: $light-gray;
+    border-radius: 30px;
+    text-align: center;
+
+    @media (max-width: 1440px) {
+      padding: 30px 100px;
     }
 
-    @media (max-width: 460px) {
-      width: 85%;
+    @media (max-width: 768px) {
+      width: 100%;
+      padding: 40px 0;
+      border-radius: 0;
     }
 
     .form-title {
       h1 {
-        font-size: 30px;
+        font-size: 48px;
+        color: $black-1000;
         margin: 10px auto;
         font-weight: 300;
 
-        @media (max-width: 768px) {
-          font-size: 24px;
-          margin: 20px auto 10px auto;
+        @media (max-width: 1440px) {
+          font-size: 48px;
+          margin: 10px 0 0 0;
         }
 
-        @media (max-width: 382px) {
-          font-size: 22px;
+        @media (max-width: 768px) {
+          font-size: 20px;
         }
 
         span {
@@ -322,19 +328,52 @@ onMounted(() => {
     }
 
     .event-form-content {
-      padding-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 40px;
+
+      @media (max-width: 1440px) {
+        margin-top: 20px;
+      }
+
+      @media (max-width: 1024px) {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .input-wrapper {
+        width: 45%;
+        flex: 1 1 calc(50% - 10px);
+        box-sizing: border-box;
+
+        @media (max-width: 1024px) {
+          width: 100%;
+        }
+
+        @media (max-width: 768px) {
+          width: 95%;
+        }
+      }
 
       input,
-      select,
-      textarea {
+      select {
         margin-bottom: 12px;
+        border-radius: 30px;
       }
 
       input {
+        border: 1px solid $gray-paragraph;
+        width: 100%;
+        padding: 20px 60px;
+        color: $gray-paragraph;
+        font-size: 14px;
+        background-color: $white;
+
         @media (max-width: 768px) {
-          &::placeholder {
-            font-size: 14px;
-          }
+          width: 95%;
+          padding: 15px 40px;
         }
       }
 
@@ -343,9 +382,32 @@ onMounted(() => {
       }
     }
 
-    button {
-      width: 100%;
-      margin: 20px auto 20px auto;
+    textarea {
+      border-radius: 30px;
+      margin-top: 10px;
+      padding: 20px 60px;
+
+      @media (max-width: 768px) {
+        width: 95%;
+      }
+    }
+
+    .blue-btn {
+      font-weight: 300;
+      font-size: 14px;
+      margin: 30px auto 0 auto;
+      padding: 18px 0;
+      border-radius: 100px;
+      background: linear-gradient(90deg, $blue 0%, $purple 100%);
+      width: 60%;
+      color: $white;
+      transition: transform 0.2s;
+
+      @media (max-width: 768px) {
+        width: 300px;
+        padding: 15px 0;
+        margin: 15px auto 0 auto;
+      }
     }
 
     .confirm-information {

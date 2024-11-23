@@ -209,10 +209,14 @@ const calendarMonthSwitcherData = {
     return monthsInHebrew[month];
   }),
 };
+
+const isToday = (date) => {
+  return date.isSame(dayjs(), "day");
+};
 </script>
 
 <template>
-  <div v-if="dataIsLoaded" class="calendar-wrapper">
+  <div v-if="dataIsLoaded" class="content-wrapper">
     <CalendarMonthSwitcher
       :months="calendarMonthSwitcherData"
       :is-previous-month-available="isPreviousMonthAvailable"
@@ -238,6 +242,7 @@ const calendarMonthSwitcherData = {
               'calendar-day',
               { 'selected-day': dayObj.date.isSame(selectedDate, 'day') },
               { 'past-day': dayObj.isPast },
+              { 'today-day': isToday(dayObj.date) },
             ]"
             @click="!dayObj.isPast && selectDate(dayObj.date, weekIndex)"
           >
@@ -248,22 +253,14 @@ const calendarMonthSwitcherData = {
             <span
               v-if="
                 eventsForDay[dayObj.date.format('YYYY-MM-DD')] &&
-                eventsForDay[dayObj.date.format('YYYY-MM-DD')].length > 0 &&
-                dayObj.date.month() === currentMonth
-              "
-              class="day-date-indicator"
-            ></span>
-
-            <span
-              v-if="
-                eventsForDay[dayObj.date.format('YYYY-MM-DD')] &&
                 dayObj.date.month() === currentMonth &&
                 !dayObj.isPast
               "
               class="number-of-events"
             >
-              אירועים:
+              <span class="purple-circle"></span>
               {{ eventsForDay[dayObj.date.format("YYYY-MM-DD")].length }}
+              אירועים
             </span>
           </div>
 
@@ -277,18 +274,6 @@ const calendarMonthSwitcherData = {
             "
             class="event-block"
           >
-            <h3>
-              אירועים עבור
-              <span class="date-of-list">
-                {{
-                  selectedDate && dayjs.isDayjs(selectedDate)
-                    ? selectedDate.format("D")
-                    : ""
-                }}
-                {{ calendarMonthSwitcherData.currentMonthAndYear }}
-              </span>
-            </h3>
-            <hr />
             <CalendarEventsBlock :single-data-events="eventsForSelectedDate" />
           </div>
         </div>
@@ -312,13 +297,18 @@ const calendarMonthSwitcherData = {
   flex-direction: column;
 }
 
-.calendar-wrapper {
-  margin: 70px 0 100px 0;
+.content-wrapper {
+  margin: 65px auto;
+
+  @media (max-width: 768px) {
+    margin: 55px auto;
+  }
 
   .calendar {
     display: flex;
     flex-direction: column;
     width: 100%;
+    color: $black-1000;
 
     .calendar-header {
       display: flex;
@@ -326,11 +316,29 @@ const calendarMonthSwitcherData = {
 
     .day-of-week {
       width: calc(100% / 7);
-      background-color: $gray-400;
-      font-weight: 300;
-      padding: 10px;
-      font-size: 16px;
-      border: 1px solid $gray-300;
+      background-color: $white;
+      font-weight: 600;
+      padding: 10px 2px 2px 0;
+      font-size: 24px;
+      border: 1px solid $gray-200;
+
+      @media (max-width: 1280px) {
+        font-size: 16px;
+      }
+
+      @media (max-width: 768px) {
+        padding: 5px 0 5px 0;
+        font-size: 10px;
+        text-align: center;
+      }
+
+      &:last-child {
+        border-radius: 15px 0 0 0;
+      }
+
+      &:first-child {
+        border-radius: 0 15px 0 0;
+      }
     }
 
     .calendar-body {
@@ -341,12 +349,22 @@ const calendarMonthSwitcherData = {
         display: flex;
         flex-wrap: wrap;
 
+        &:last-child {
+          .calendar-day:first-child {
+            border-radius: 0 0 15px 0;
+          }
+
+          .calendar-day:last-child {
+            border-radius: 0 0 0 15px;
+          }
+        }
+
         .calendar-day {
           width: calc(100% / 7);
           position: relative;
           background: $white;
-          padding: 10px;
-          border: 1px solid $gray-300;
+          padding: 3px 8px 0 0;
+          border: 1px solid $gray-200;
           cursor: pointer;
           transition: background-color 0.3s ease, color 0.3s ease;
 
@@ -357,103 +375,121 @@ const calendarMonthSwitcherData = {
           }
 
           &:hover {
-            background: $blue-200;
-            color: $white;
-
-            .day-date-indicator {
-              background: $white;
-            }
+            background: $pink;
+            color: $gray-paragraph;
           }
 
           .day-date {
             position: absolute;
-            top: 15px;
-
-            @media (max-width: 768px) {
-              top: 5px;
-            }
-          }
-
-          .day-date-indicator {
-            position: absolute;
-            top: 35px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: $blue-200;
-
-            @media (max-width: 768px) {
-              top: 25px;
-              width: 5px;
-              height: 5px;
-            }
+            top: 3px;
           }
 
           .number-of-events {
-            color: $green-600;
-            font-weight: 600;
-            font-size: 12px;
+            color: $purple;
+            font-weight: 300;
+            margin-bottom: 2px;
+            font-size: 24px;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+
+            @media (max-width: 1280px) {
+              font-size: 15px;
+            }
+
+            @media (max-width: 768px) {
+              font-size: 8px;
+              justify-content: flex-start;
+            }
+
+            @media (max-width: 500px) {
+              font-size: 5px;
+            }
+
+            .purple-circle {
+              display: inline-block;
+              width: 24px;
+              height: 24px;
+              background: linear-gradient(90deg, $blue 0%, $purple 100%);
+              border-radius: 50%;
+              margin-left: 5px;
+
+              @media (max-width: 1280px) {
+                width: 15px;
+                height: 15px;
+                margin-left: 3px;
+              }
+
+              @media (max-width: 768px) {
+                width: 8px;
+                height: 8px;
+                margin-left: 0px;
+              }
+
+              @media (max-width: 500px) {
+                width: 4px;
+                height: 4px;
+              }
+            }
           }
         }
 
         .past-day {
-          background: $gray-300;
+          background: $light-gray;
           color: $gray-700;
-          border: 1px solid $gray-400;
+          border: 1px solid $gray-200;
           cursor: not-allowed;
 
-          .day-date-indicator {
-            display: none;
+          &:hover {
+            background-color: $light-gray;
+            color: $gray-100;
+          }
+        }
+
+        .today-day {
+          .day-date {
+            padding: 3px 8px;
+            border-radius: 50%;
+            border: 1px solid $purple;
+
+            @media (max-width: 1280px) {
+              padding: 2px 5px;
+            }
+
+            @media (max-width: 768px) {
+              padding: 1px 2px;
+            }
+          }
+        }
+
+        .day-date {
+          font-family: "Sansation", sans-serif;
+          font-size: 32px;
+          font-weight: 600;
+
+          @media (max-width: 1280px) {
+            font-size: 24px;
           }
 
-          &:hover {
-            background: $gray-300;
-            color: $gray-700;
+          @media (max-width: 768px) {
+            font-size: 14px;
           }
         }
 
         .selected-day {
-          background: $gray-400;
-          border-bottom: none;
+          background: $pink;
 
           &:hover {
-            background: $gray-400;
-          }
-
-          .day-date-indicator {
-            display: none;
-          }
-
-          .day-date {
-            color: $gray-1000;
-            font-weight: 600;
+            background: $pink;
           }
         }
 
         .event-block {
           width: 100%;
-          padding: 0 20px 40px 20px;
           border: 1px solid $gray-300;
           border-top: none;
-          background: $gray-400;
-
-          hr {
-            height: 1px;
-            background-color: $gray-300;
-            border: none;
-            margin-block-start: 0;
-            margin-block-end: 0;
-          }
-
-          .date-of-list {
-            color: $blue-200;
-            font-size: 24px;
-            margin-right: 8px;
-
-            @media (max-width: 768px) {
-              font-size: 16px;
-            }
-          }
+          background: $pink;
         }
       }
     }
