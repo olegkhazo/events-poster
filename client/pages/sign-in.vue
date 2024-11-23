@@ -10,9 +10,7 @@ useHead({
 });
 
 import { validateFormField } from "@/utils/index";
-import { useAuthStore } from "~/stores/useAuthStore";
 
-const authManager = useAuthStore();
 const formButtonClicked = ref(false);
 
 const backendErrors = ref({
@@ -33,22 +31,6 @@ const isEmailValid = computed(() => {
 const isPasswordValid = computed(() => {
   return validateFormField(signInCreds.value.password, "PASSWORD_PATTERN");
 });
-
-async function signIn() {
-  formButtonClicked.value = true;
-  backendErrors.value = { email: "", password: "", general: "" };
-
-  if (isEmailValid.value && isPasswordValid.value) {
-    const loginResponse = await authManager.login(signInCreds.value);
-
-    if (loginResponse && loginResponse.success) {
-      navigateTo("/admin-panel");
-    } else {
-      backendErrors.value.general = "הכניסה נכשלה. אנא בדוק את האישורים שלך.";
-      console.error("Login error:", loginResponse.error);
-    }
-  }
-}
 </script>
 
 <template>
@@ -120,7 +102,7 @@ async function signIn() {
             {{ backendErrors.general }}
           </span>
 
-          <button class="xl-green-btn" @click="signIn">היכנס</button>
+          <button class="xl-green-btn">היכנס</button>
         </div>
         <p>
           אין לך חשבון "Pickevent"?

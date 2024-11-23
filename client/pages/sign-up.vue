@@ -44,28 +44,6 @@ const isEmailValid = computed(() => {
 const isPasswordValid = computed(() => {
   return validateFormField(userCreds.value.password, "PASSWORD_PATTERN");
 });
-
-function registerUser() {
-  formButtonClicked.value = true;
-  if (isFirstNameValid.value && isEmailValid.value && isPasswordValid.value) {
-    createRequestToRegistrationApi();
-  }
-}
-
-async function createRequestToRegistrationApi() {
-  const { data: newUserCreating, error } = await useFetch(`${API_URL}sign-up`, {
-    method: "post",
-    body: JSON.stringify(userCreds.value),
-  });
-
-  if (newUserCreating.value) {
-    console.log("Sign-up went successfully");
-    userCredentialsSentSuccessful.value = true;
-  } else if (error.value) {
-    // should to think how better to show errors
-    console.log("something really wrong:" + error.value);
-  }
-}
 </script>
 
 <template>
@@ -157,9 +135,7 @@ async function createRequestToRegistrationApi() {
             placeholder="סיסמה (8 תווים או יותר) *"
           />
 
-          <button class="blue-btn" @click="registerUser()">
-            צור את החשבון שלי
-          </button>
+          <button class="blue-btn">צור את החשבון שלי</button>
           <p>כבר יש לך חשבון? <NuxtLink to="/sign-in">התחבר</NuxtLink></p>
         </div>
 

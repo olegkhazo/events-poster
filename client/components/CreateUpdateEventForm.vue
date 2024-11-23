@@ -153,40 +153,6 @@ const isFormValid = computed(() => {
   return Object.keys(validationRules).every((field) => isFieldValid(field));
 });
 
-async function createEvent() {
-  formButtonClicked.value = true;
-  eventData.value.approved = authManager.loggedIn;
-
-  if (isFormValid.value) {
-    console.log("Size of image blob:", eventData.value.event_image_blob.length);
-    if (!imageFile.value) {
-      eventData.value.event_image_blob = "";
-    }
-
-    try {
-      console.log(eventData.value);
-      const { data: newEventRequest, error } = await useFetch(
-        `${API_URL}create-event`,
-        {
-          method: "POST",
-          body: JSON.stringify(eventData.value),
-          headers: { "Content-Type": "application/json" },
-        }
-      );
-
-      if (newEventRequest.value) {
-        eventData.value = {};
-        formButtonClicked.value = false;
-        showSuccessWindow.value = true;
-      } else if (error.value) {
-        console.log("something went wrong:", error.value);
-      }
-    } catch (err) {
-      console.error("Error creating event:", err);
-    }
-  }
-}
-
 function hideSuccessWindow() {
   showSuccessWindow.value = false;
 }
@@ -259,7 +225,7 @@ onMounted(() => {
         class="textarea-input"
       ></textarea>
 
-      <button class="blue-btn" @click.prevent="createEvent">
+      <button class="blue-btn">
         {{ props.eventId ? "עדכון האירוע" : "צור אירוע" }}
       </button>
     </div>

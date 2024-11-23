@@ -9,7 +9,15 @@ useHead({
   ],
 });
 
+import events from "@/assets/JSON/events.json";
+
 import { useAllEventsStore } from "~/stores/allEventsStore";
+
+const eventsObject = events.reduce((acc, event) => {
+  const eventId = event._id?.$oid || event._id;
+  acc[eventId] = { ...event, id: eventId };
+  return acc;
+}, {});
 
 const { allEvents, currentFilteredEventCollection } = storeToRefs(
   useAllEventsStore()
@@ -17,20 +25,20 @@ const { allEvents, currentFilteredEventCollection } = storeToRefs(
 
 const dataIsLoaded = ref(false);
 
-const { data: events } = await useFetch(`${API_URL}all-events`);
-
 onMounted(() => {
-  allEvents.value = events.value;
+  allEvents.value = eventsObject;
   dataIsLoaded.value = true;
 });
 
 const eventsAmount = ref(20);
 
-// Get actual event collection for the view according to allEvents
 const actualityCollection = computed(() => {
-  return currentFilteredEventCollection.value.length > 0
-    ? currentFilteredEventCollection.value
-    : allEvents.value;
+  const filteredCollection = Object.values(
+    currentFilteredEventCollection.value
+  );
+  return filteredCollection.length > 0
+    ? filteredCollection
+    : Object.values(allEvents.value);
 });
 
 const displayedEvents = computed(() => {
@@ -41,6 +49,7 @@ const hasMoreEvents = computed(() => {
   return eventsAmount.value < actualityCollection.value.length;
 });
 
+// Загружаем следующую порцию событий
 function showNextEvents() {
   eventsAmount.value += 20;
 }
