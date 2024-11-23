@@ -1,5 +1,35 @@
 <script setup>
-const subscribeData = ref({});
+const subscribeData = ref({
+  name: "",
+  phone: "",
+  email: "",
+});
+const formButtonClicked = ref(false);
+
+async function sendSubscribeData() {
+  formButtonClicked.value = true;
+
+  try {
+    console.log(subscribeData.value);
+    const { data: newSubscribeRequest, error } = await useFetch(
+      `${API_URL}create-subscribe`,
+      {
+        method: "POST",
+        body: JSON.stringify(subscribeData.value),
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+
+    if (newSubscribeRequest.value) {
+      subscribeData.value = {};
+      formButtonClicked.value = false;
+    } else if (error.value) {
+      console.log("something went wrong:", error.value);
+    }
+  } catch (err) {
+    console.error("Error creating event:", err);
+  }
+}
 </script>
 
 <template>
@@ -56,7 +86,11 @@ const subscribeData = ref({});
             placeholder="כתובת המייל שלך"
           />
 
-          <NuxtLink class="subscribe-button" to="/create-event">
+          <NuxtLink
+            class="subscribe-button"
+            to="/create-event"
+            @click="sendSubscribeData"
+          >
             <NuxtImg src="/images/btn-envelope.svg" /> לשיר למעלה
           </NuxtLink>
         </div>
@@ -228,6 +262,7 @@ footer {
           text-align: center;
           padding: 18px 0;
           background-color: $black-1000;
+          color: $white;
 
           &:not(:first-child) {
             margin-top: 15px;
