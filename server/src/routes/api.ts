@@ -1,7 +1,7 @@
 import express from 'express';
 import { registerUser, authoriseUser, getUser, logOut } from '../controllers/userController';
 import { createEvent, getAllEvents, getSingleEvent, deleteEvent, approveEvent, getAdditionalEventData } from '../controllers/eventsController';
-
+import { getAllSubscriptions, createSubscription, deleteSubscription} from '../controllers/subscribeController'
 const router = express.Router();
 
 
@@ -39,5 +39,18 @@ router.post('/login', authoriseUser);
 router.get('/user/:id', getUser);
 
 router.post('/logout', logOut);
+
+
+// ***
+// Subscribe routers
+// ***
+
+router.get('/get-all-subscriptions', getAllSubscriptions);
+
+router.post('/create-subscribe', createSubscription);
+
+router.delete('/delete-subscription', deleteSubscription);
+
+
 
 export default router;
