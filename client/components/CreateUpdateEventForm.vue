@@ -103,7 +103,7 @@ async function getSingleEventData() {
         phone: singleEvent.value.phone,
         email: singleEvent.value.email,
         event_image_url: singleEvent.value.event_image_url,
-        event_image_blob: singleEvent.value.event_image_blob || "", // загружаем изображение как base64
+        event_image_blob: singleEvent.value.event_image_blob || "",
       };
     } else if (error.value) {
       console.log("something went wrong:", error.value);
