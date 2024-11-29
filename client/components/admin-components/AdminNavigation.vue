@@ -46,6 +46,9 @@ watchEffect(() => {
       <li>
         <NuxtLink to="/admin-panel/my-profile">My profile</NuxtLink>
       </li>
+      <li>
+        <NuxtLink to="/admin-panel/banners">Banners</NuxtLink>
+      </li>
     </ul>
   </div>
 </template>
