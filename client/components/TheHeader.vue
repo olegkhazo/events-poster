@@ -93,6 +93,7 @@ function hideMobileMenu() {
   justify-content: space-between;
 }
 header {
+  z-index: 10;
   width: 100%;
   nav {
     padding: 30px 0;
