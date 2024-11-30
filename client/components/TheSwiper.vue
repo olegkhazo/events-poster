@@ -1,8 +1,7 @@
 <script setup>
-import { slidesData } from "~/utils/slides-data";
-
 const currentIndex = ref(0);
 const isMobile = ref(false);
+const { data: banners } = await useFetch(`${API_URL}all-banners`);
 
 const checkIsMobile = () => {
   isMobile.value = window.innerWidth < 1280;
@@ -10,11 +9,12 @@ const checkIsMobile = () => {
 
 const prevSlide = () => {
   currentIndex.value =
-    (currentIndex.value - 1 + slidesData.length) % slidesData.length;
+    (currentIndex.value - 1 + (banners?.value?.length || 0)) %
+    (banners?.value?.length || 1);
 };
 
 const nextSlide = () => {
-  currentIndex.value = (currentIndex.value + 1) % slidesData.length;
+  currentIndex.value = (currentIndex.value + 1) % (banners?.value?.length || 1);
 };
 
 onMounted(() => {
@@ -25,11 +25,11 @@ onMounted(() => {
 
 <template>
   <div class="slider">
-    <div class="slider-container">
+    <div class="slider-container" v-if="banners && banners.length">
       <div
         class="slide"
         :style="{
-          backgroundImage: 'url(/images/man.png)',
+          backgroundImage: `url(${banners[currentIndex]?.img})`,
         }"
       >
         <TheHeader />
@@ -42,14 +42,9 @@ onMounted(() => {
             />
           </div>
           <div class="banner-text">
-            <h2>איפה להתחיל?</h2>
+            <h2>{{ banners[currentIndex].title }}</h2>
             <hr />
-            <p>
-              נסחו את המשימה והבינו איזה סוג אירוע תרצו לארגן, לכמה אנשים, האם
-              יש לכם מגבלות תקציב, האם יש מדדי KPI ברורים, באיזו עיר יתקיים
-              האירוע. החלט על המשימה העיקרית, זה יעזור לך בחיפוש שלך ויקל על
-              תקשורת נוספת.
-            </p>
+            <p>{{ banners[currentIndex].description }}</p>
             <div class="nav-btn-wrapper">
               <NuxtLink class="create-event-link" to="/create-event">
                 צפו בלוח הזמנים
@@ -77,8 +72,11 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <div v-else class="loading">Loading banners...</div>
   </div>
 </template>
+
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
@@ -92,6 +90,24 @@ onMounted(() => {
       flex-direction: column;
       background-size: cover;
       background-position: center;
+      width: 100%;
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        z-index: 1;
+      }
+
+      .slide-content,
+      .filter-social {
+        position: relative;
+        z-index: 2;
+      }
 
       @media (max-width: 768px) {
         flex-direction: column;
@@ -100,17 +116,17 @@ onMounted(() => {
         color: white;
         text-align: center;
 
-        &::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background-color: rgba(0, 0, 0, 0.6);
-          z-index: 0;
-          pointer-events: none;
-        }
+        // &::before {
+        //   content: "";
+        //   position: absolute;
+        //   top: 0;
+        //   left: 0;
+        //   width: 100%;
+        //   height: 100%;
+        //   background-color: rgba(0, 0, 0, 0.6);
+        //   z-index: 0;
+        //   pointer-events: none;
+        // }
       }
 
       .slide-content {
@@ -134,7 +150,7 @@ onMounted(() => {
             color: $white;
             font-size: 86px;
             margin: 0;
-            line-height: 0.8;
+            line-height: 1;
 
             @media (max-width: 768px) {
               font-size: 32px;
