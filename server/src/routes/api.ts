@@ -1,7 +1,8 @@
 import express from 'express';
 import { registerUser, authoriseUser, getUser, logOut } from '../controllers/userController';
 import { createEvent, getAllEvents, getSingleEvent, deleteEvent, approveEvent, getAdditionalEventData } from '../controllers/eventsController';
-import { getAllSubscriptions, createSubscription, deleteSubscription} from '../controllers/subscribeController'
+import { getAllSubscriptions, createSubscription, deleteSubscription} from '../controllers/subscribeController';
+import { getAllBanners, createBanner, deleteBunner } from '../controllers/bannersController';
 const router = express.Router();
 
 
@@ -51,6 +52,16 @@ router.post('/create-subscribe', createSubscription);
 
 router.delete('/delete-subscription/:id', deleteSubscription);
 
+
+// ***
+// Banner roters
+// ***
+
+router.get('/all-banners', getAllBanners);
+
+router.post('/create-banner', createBanner);
+
+router.delete('/delete-banner/:id', deleteBunner);
 
 
 export default router;
