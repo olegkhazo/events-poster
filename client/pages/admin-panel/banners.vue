@@ -17,10 +17,13 @@ const bannerData = ref({
   img: "",
 });
 
+const { data: banners } = await useFetch(`${API_URL}all-banners`);
+
 async function createBanner() {
   formButtonClicked.value = true;
 
   try {
+    console.log(bannerData.value);
     const { data: newBannerRequest, error } = await useFetch(
       `${API_URL}create-banner`,
       {
@@ -30,14 +33,30 @@ async function createBanner() {
       }
     );
 
-    if (newEventRequest.value) {
+    if (newBannerRequest.value) {
       bannerData.value = {};
-      formButtonClicked.value = false;
+
+      bunnerCreating.value = false;
     } else if (error.value) {
       console.log("something went wrong:", error.value);
     }
   } catch (err) {
     console.error("Error creating event:", err);
+  }
+}
+
+async function deleteBanner(id) {
+  const { data: deleteBanner, error } = await useFetch(
+    `${API_URL}delete-banner/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+
+  if (!error.value) {
+    banners.value = banners.value.filter((banner) => banner._id !== id);
+  } else {
+    console.log("Error deleting user:", error.value);
   }
 }
 </script>
@@ -50,22 +69,26 @@ async function createBanner() {
       <table id="table">
         <thead>
           <tr>
-            <th>Image</th>
             <th>Title</th>
             <th>Description</th>
+            <th>Image</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr class="single-request-row">
-            <td></td>
-            <td></td>
-            <td></td>
+          <tr
+            v-for="banner in banners"
+            :key="banner._id"
+            class="single-request-row"
+          >
+            <td>{{ banner.title }}</td>
+            <td>{{ banner.description }}</td>
+            <td>{{ banner.img }}</td>
             <td class="action">
               <div class="action-buttons-wrapper">
                 <NuxtImg
                   src="/images/trash.svg"
-                  @click="deleteSubscription(subscription._id)"
+                  @click="deleteBanner(banner._id)"
                   alt="delete"
                 />
               </div>
@@ -88,7 +111,7 @@ async function createBanner() {
           v-model="bannerData.description"
           placeholder="Banner description"
         />
-        <input type="text" placeholder="Img Url" />
+        <input type="text" v-model="bannerData.img" placeholder="Img Url" />
 
         <button class="blue-btn" @click.prevent="createBanner">
           Create banner
