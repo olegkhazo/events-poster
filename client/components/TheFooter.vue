@@ -10,7 +10,6 @@ async function sendSubscribeData() {
   formButtonClicked.value = true;
 
   try {
-    console.log(subscribeData.value);
     const { data: newSubscribeRequest, error } = await useFetch(
       `${API_URL}create-subscribe`,
       {
