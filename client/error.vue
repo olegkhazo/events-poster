@@ -23,6 +23,10 @@
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
 
+header {
+  background-color: $black-1000;
+}
+
 .content-wrapper {
   font-size: 16px;
   display: flex;
