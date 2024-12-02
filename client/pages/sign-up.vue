@@ -9,7 +9,9 @@ useHead({
   ],
 });
 
-import { API_URL } from "@/utils/constants";
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 import { validateFormField } from "@/utils/index";
 
 const formButtonClicked = ref(false);
@@ -53,10 +55,13 @@ function registerUser() {
 }
 
 async function createRequestToRegistrationApi() {
-  const { data: newUserCreating, error } = await useFetch(`${API_URL}sign-up`, {
-    method: "post",
-    body: JSON.stringify(userCreds.value),
-  });
+  const { data: newUserCreating, error } = await useFetch(
+    `${API_URL}/sign-up`,
+    {
+      method: "post",
+      body: JSON.stringify(userCreds.value),
+    }
+  );
 
   if (newUserCreating.value) {
     console.log("Sign-up went successfully");

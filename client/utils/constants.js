@@ -1,7 +1,6 @@
-export const API_URL = "http://localhost:3030/api/";
 
 export const FORM_ERRORS_TEXT = {
-    UNKNOWN_SERVER_ERROR: "Something went wrong. Please contact us at info@mynextparts.com",
+    UNKNOWN_SERVER_ERROR: "Something went wrong. Please contact us at pickevent87@gmail.com",
   };
   
 export const FORM_VALIDATION_PATTERNS = {

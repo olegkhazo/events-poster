@@ -9,6 +9,9 @@ useHead({
   ],
 });
 
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 import { useAllEventsStore } from "~/stores/allEventsStore";
 
 const { allEvents, currentFilteredEventCollection } = storeToRefs(
@@ -17,7 +20,7 @@ const { allEvents, currentFilteredEventCollection } = storeToRefs(
 
 const dataIsLoaded = ref(false);
 
-const { data: events } = await useFetch(`${API_URL}all-events`);
+const { data: events } = await useFetch(`${API_URL}/all-events`);
 
 onMounted(() => {
   allEvents.value = events.value;

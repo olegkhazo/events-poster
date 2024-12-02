@@ -7,6 +7,9 @@ definePageMeta({
   layout: "admin-panel",
 });
 
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 const authManager = useAuthStore();
 const { userInfo } = storeToRefs(authManager);
 
@@ -53,7 +56,7 @@ const updateFilteredEvents = (filteredEvents) => {
 };
 
 const { data: unapprovedRequests, error } = await useFetch(
-  `${API_URL}all-events`
+  `${API_URL}/all-events`
 );
 
 onMounted(() => {
@@ -77,7 +80,7 @@ onMounted(() => {
 
 async function deleteEvent(id) {
   const { data: deleteEvent, error } = await useFetch(
-    `${API_URL}delete-event/${id}`,
+    `${API_URL}/delete-event/${id}`,
     {
       method: "DELETE",
     }
@@ -97,7 +100,7 @@ async function deleteEvent(id) {
 
 async function approveEvent(id) {
   const { data: approveEvent, error } = await useFetch(
-    `${API_URL}approve-event/${id}`,
+    `${API_URL}/approve-event/${id}`,
     {
       method: "PUT",
     }

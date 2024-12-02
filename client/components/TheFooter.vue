@@ -4,6 +4,10 @@ const subscribeData = ref({
   phone: "",
   email: "",
 });
+
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 const formButtonClicked = ref(false);
 
 async function sendSubscribeData() {
@@ -11,7 +15,7 @@ async function sendSubscribeData() {
 
   try {
     const { data: newSubscribeRequest, error } = await useFetch(
-      `${API_URL}create-subscribe`,
+      `${API_URL}/create-subscribe`,
       {
         method: "POST",
         body: JSON.stringify(subscribeData.value),

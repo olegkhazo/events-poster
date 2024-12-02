@@ -5,6 +5,9 @@ definePageMeta({
   layout: "admin-panel",
 });
 
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 const authManager = useAuthStore();
 const { userInfo } = storeToRefs(authManager);
 const bunnerCreating = ref(false);
@@ -16,7 +19,7 @@ const bannerData = ref({
   img: "",
 });
 
-const { data: banners } = await useFetch(`${API_URL}all-banners`);
+const { data: banners } = await useFetch(`${API_URL}/all-banners`);
 
 async function createBanner() {
   formButtonClicked.value = true;
@@ -24,7 +27,7 @@ async function createBanner() {
   try {
     console.log(bannerData.value);
     const { data: newBannerRequest, error } = await useFetch(
-      `${API_URL}create-banner`,
+      `${API_URL}/create-banner`,
       {
         method: "POST",
         body: JSON.stringify(bannerData.value),
@@ -46,7 +49,7 @@ async function createBanner() {
 
 async function deleteBanner(id) {
   const { data: deleteBanner, error } = await useFetch(
-    `${API_URL}delete-banner/${id}`,
+    `${API_URL}/delete-banner/${id}`,
     {
       method: "DELETE",
     }

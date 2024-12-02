@@ -1,3 +1,5 @@
+<script setup></script>
+
 <template>
   <TheHeader />
   <div class="content-wrapper">
@@ -17,8 +19,6 @@
   </div>
   <TheFooter />
 </template>
-
-<script setup></script>
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";

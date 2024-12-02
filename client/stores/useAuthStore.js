@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 
+
 const userStorageKey = "user-info";
 const tokenKey = "user-token";
 
@@ -50,8 +51,10 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   async function login(creds) {
+    const config = useRuntimeConfig();
+    const API_URL = config.public.API_URL;
     try {
-      const { data: authorisedUser, error } = await useFetch(API_URL + "login", {
+      const { data: authorisedUser, error } = await useFetch(API_URL + "/" + "login", {
         method: "post",
         body: JSON.stringify(creds),
       });
@@ -75,8 +78,11 @@ export const useAuthStore = defineStore("auth", () => {
   }
 
   async function logout() {
+    const config = useRuntimeConfig();
+    const API_URL = config.public.API_URL;
+
     try {
-      const { data, error } = await useFetch(API_URL + "logout", {
+      const { data, error } = await useFetch(API_URL + "/" + "logout", {
         method: "post",
         headers: {
           Authorization: `Bearer ${userToken.value}`,

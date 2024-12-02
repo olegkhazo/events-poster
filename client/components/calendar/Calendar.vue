@@ -6,6 +6,9 @@ import isoWeek from "dayjs/plugin/isoWeek";
 import { useAllEventsStore } from "~/stores/allEventsStore";
 import { useSelectedDate } from "~/stores/calendarStore";
 
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 const { allEvents, currentFilteredEventCollection } = storeToRefs(
   useAllEventsStore()
 );
@@ -26,7 +29,7 @@ const weekRefs = ref([]);
 
 const dataIsLoaded = ref(false);
 
-const { data: events } = await useFetch(`${API_URL}all-events`);
+const { data: events } = await useFetch(`${API_URL}/all-events`);
 
 onMounted(async () => {
   allEvents.value = events.value;

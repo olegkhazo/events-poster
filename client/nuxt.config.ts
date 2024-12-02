@@ -3,8 +3,9 @@ import { defineNuxtConfig } from 'nuxt/config';
 export default defineNuxtConfig({
   runtimeConfig: {
     public: {
+      API_URL: process.env.API_URL || 'http://localhost:3030/api',
       // posthogPublicKey: 'phc_LZxuf3gxxKB9PFXd5GxPmmwoDE96aGi83ALMS63ijpW',
-      // posthogHost: 'https://eu.i.posthog.com'
+      // posthogHost: 'https://eu.i.posthog.com',
     }
   },
   app: {

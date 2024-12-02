@@ -1,7 +1,10 @@
 <script setup>
 const currentIndex = ref(0);
 const isMobile = ref(false);
-const { data: banners } = await useFetch(`${API_URL}all-banners`);
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
+const { data: banners } = await useFetch(`${API_URL}/all-banners`);
 
 const checkIsMobile = () => {
   isMobile.value = window.innerWidth < 1280;

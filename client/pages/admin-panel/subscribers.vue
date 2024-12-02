@@ -6,6 +6,9 @@ definePageMeta({
   layout: "admin-panel",
 });
 
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 const authManager = useAuthStore();
 const { userInfo } = storeToRefs(authManager);
 
@@ -46,7 +49,7 @@ watch(currentFilteredSubscribersCollection, () => {
 });
 
 const { data: allSubscribers, error } = await useFetch(
-  `${API_URL}all-subscriptions`
+  `${API_URL}/all-subscriptions`
 );
 
 onMounted(() => {
@@ -70,7 +73,7 @@ onMounted(() => {
 
 async function deleteSubscription(id) {
   const { data: deleteSubscription, error } = await useFetch(
-    `${API_URL}delete-subscription/${id}`,
+    `${API_URL}/delete-subscription/${id}`,
     {
       method: "DELETE",
     }

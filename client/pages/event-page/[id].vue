@@ -9,6 +9,9 @@ useHead({
   ],
 });
 
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 import { useCurrentEventStore } from "~/stores/currentEventStore";
 
 const { currentEvent } = storeToRefs(useCurrentEventStore());
@@ -53,7 +56,7 @@ async function fetchEventAdditionalData() {
     return;
   }
 
-  const { data, error } = await useFetch(`${API_URL}additional-event-data`, {
+  const { data, error } = await useFetch(`${API_URL}/additional-event-data`, {
     method: "POST",
     body: {
       site_donor: currentEvent.value.site_donor,

@@ -6,6 +6,9 @@ definePageMeta({
 import { useAuthStore } from "@/stores/useAuthStore";
 const authManager = useAuthStore();
 
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 const { userInfo, userId } = storeToRefs(authManager);
 const isAuthInitialized = ref(false);
 
@@ -18,7 +21,7 @@ onMounted(async () => {
 
   if (userId.value) {
     const { data, error: fetchError } = await useFetch(
-      `${API_URL}user/${userId.value}`
+      `${API_URL}/user/${userId.value}`
     );
     if (data.value) {
       userData.value = data.value;

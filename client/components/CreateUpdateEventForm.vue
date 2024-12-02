@@ -4,6 +4,9 @@ import SuccessRequestWindow from "@/components/modals/SuccessWindow";
 import { FORM_VALIDATION_PATTERNS } from "@/utils/constants";
 import Compressor from "compressorjs";
 
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 const props = defineProps({
   eventId: {
     type: String,
@@ -88,7 +91,7 @@ async function handleImageUpload(event) {
 async function getSingleEventData() {
   if (props.eventId) {
     const { data: singleEvent, error } = await useFetch(
-      `${API_URL}single-event/${props.eventId}`
+      `${API_URL}/single-event/${props.eventId}`
     );
 
     if (singleEvent.value) {
@@ -133,6 +136,7 @@ function getPlaceholder(field) {
     event_page: "Event URL *",
     event_date: "Event date*",
     phone: "Your phone number",
+    event_price: "Price",
     email: "Your email",
     event_time: "Event time (10:00, 18:15 etc.) *",
     event_image_url: "Image url",
@@ -166,7 +170,7 @@ async function createEvent() {
     try {
       console.log(eventData.value);
       const { data: newEventRequest, error } = await useFetch(
-        `${API_URL}create-event`,
+        `${API_URL}/create-event`,
         {
           method: "POST",
           body: JSON.stringify(eventData.value),

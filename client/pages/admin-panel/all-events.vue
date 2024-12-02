@@ -6,6 +6,9 @@ definePageMeta({
   layout: "admin-panel",
 });
 
+const config = useRuntimeConfig();
+const API_URL = config.public.API_URL;
+
 const authManager = useAuthStore();
 const { userInfo } = storeToRefs(authManager);
 import Paginate from "vuejs-paginate-next";
@@ -15,7 +18,7 @@ const isLoading = ref(true);
 const eventEditing = ref(false);
 const editingEventId = ref(null);
 
-const { data: allEvents, error } = await useFetch(`${API_URL}all-events`);
+const { data: allEvents, error } = await useFetch(`${API_URL}/all-events`);
 const currentFilteredEventCollection = ref([]);
 
 const currentPage = ref(1);
@@ -81,7 +84,7 @@ onMounted(() => {
 
 async function deleteEvent(id) {
   const { data: deleteEvent, error } = await useFetch(
-    `${API_URL}delete-event/${id}`,
+    `${API_URL}/delete-event/${id}`,
     {
       method: "DELETE",
     }
