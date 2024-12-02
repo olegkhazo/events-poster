@@ -1,6 +1,5 @@
 <script setup>
 import { useAuthStore } from "@/stores/useAuthStore";
-import { FORM_VALIDATION_PATTERNS } from "@/utils/constants";
 
 definePageMeta({
   layout: "admin-panel",
