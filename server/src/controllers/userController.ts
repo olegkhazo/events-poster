@@ -2,11 +2,10 @@ import { Request, Response, NextFunction } from 'express';
 import { UsersModel } from '../models/user.models';
 import bcrypt from 'bcrypt';
 const jwt = require('jsonwebtoken');
-// const API_HOST = process.env.API_HOST;
+const API_HOST = process.env.API_HOST;
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
-  // const SECRET_KEY: string = process.env.SECRET_KEY as string;
-console.log(res);
+  const SECRET_KEY: string = process.env.SECRET_KEY as string;
   try {
     const existingUser = await UsersModel.findOne({ email: req.body.email });
     
@@ -21,7 +20,7 @@ console.log(res);
     // Rewriting password to hashed one
     req.body.password = hashedPassword;
 
-    // const activationToken = jwt.sign({ email: req.body.email }, SECRET_KEY, { expiresIn: '1h' });
+    const activationToken = jwt.sign({ email: req.body.email }, SECRET_KEY, { expiresIn: '1h' });
 
     const newUser = new UsersModel(req.body);
     await newUser.save();
