@@ -49,7 +49,12 @@ onMounted(() => {
             <hr />
             <p>{{ banners[currentIndex].description }}</p>
             <div class="nav-btn-wrapper">
-              <NuxtLink class="create-event-link" to="/create-event">
+              <NuxtLink
+                v-if="banners[currentIndex].link"
+                class="create-event-link"
+                :to="banners[currentIndex].link"
+                :target="blank"
+              >
                 צפו בלוח הזמנים
               </NuxtLink>
             </div>
