@@ -16,6 +16,7 @@ const formButtonClicked = ref(false);
 const bannerData = ref({
   title: "",
   description: "",
+  link: "",
   img: "",
 });
 
@@ -73,6 +74,7 @@ async function deleteBanner(id) {
           <tr>
             <th>Title</th>
             <th>Description</th>
+            <th>Button Link</th>
             <th>Image</th>
             <th>Action</th>
           </tr>
@@ -85,6 +87,7 @@ async function deleteBanner(id) {
           >
             <td>{{ banner.title }}</td>
             <td>{{ banner.description }}</td>
+            <td>{{ banner.link }}</td>
             <td>{{ banner.img }}</td>
             <td class="action">
               <div class="action-buttons-wrapper">
@@ -112,6 +115,11 @@ async function deleteBanner(id) {
           type="text"
           v-model="bannerData.description"
           placeholder="Banner description"
+        />
+        <input
+          type="text"
+          v-model="bannerData.link"
+          placeholder="Banner link"
         />
         <input type="text" v-model="bannerData.img" placeholder="Img Url" />
 
