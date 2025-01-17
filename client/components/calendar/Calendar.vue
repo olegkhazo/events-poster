@@ -364,6 +364,7 @@ const isToday = (date) => {
 
         .calendar-day {
           width: calc(100% / 7);
+          aspect-ratio: 1 / 1;
           position: relative;
           background: $white;
           padding: 3px 8px 0 0;
@@ -452,16 +453,16 @@ const isToday = (date) => {
 
         .today-day {
           .day-date {
-            padding: 3px 8px;
+            padding: 1px 9px;
             border-radius: 50%;
             border: 1px solid $purple;
 
             @media (max-width: 1280px) {
-              padding: 2px 5px;
+              padding: 0px 5px;
             }
 
             @media (max-width: 768px) {
-              padding: 1px 2px;
+              padding: 1px 3px;
             }
           }
         }

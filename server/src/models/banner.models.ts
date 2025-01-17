@@ -9,6 +9,9 @@ export class Banners {
 
   @prop() 
   img: string;
+
+  @prop() 
+  link: string;
 }
 
 export const BannerModel = getModelForClass(Banners);
