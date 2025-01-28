@@ -99,6 +99,7 @@ onMounted(() => {
       background-size: cover;
       background-position: center;
       width: 100%;
+      height: 80vh;
 
       &::before {
         content: "";
@@ -123,34 +124,18 @@ onMounted(() => {
         justify-content: center;
         color: white;
         text-align: center;
-
-        // &::before {
-        //   content: "";
-        //   position: absolute;
-        //   top: 0;
-        //   left: 0;
-        //   width: 100%;
-        //   height: 100%;
-        //   background-color: rgba(0, 0, 0, 0.6);
-        //   z-index: 0;
-        //   pointer-events: none;
-        // }
+        height: auto;
       }
 
       .slide-content {
-        width: 40%;
-        margin-top: 80px;
+        width: 75%;
+        margin-top: 20px;
         display: flex;
         justify-content: space-between;
         z-index: 1;
 
-        @media (max-width: 1280px) {
-          width: 60%;
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 942px) {
           width: 100%;
-          margin-top: 0;
         }
 
         .banner-text {
@@ -232,6 +217,14 @@ onMounted(() => {
 
       @media (max-width: 1280px) {
         flex-direction: column-reverse;
+      }
+
+      @media (max-width: 1440px) {
+        margin-top: 85px;
+      }
+
+      @media (min-width: 1440px) {
+        margin-top: 85px;
       }
 
       .filter-block {

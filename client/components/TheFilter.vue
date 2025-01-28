@@ -76,6 +76,10 @@ const updateCurrentFilter = (filter) => {
   align-items: center;
   margin: 55px 0;
 
+  @media (max-width: 1280px) {
+    margin: 35px 0;
+  }
+
   span {
     margin-left: 24px;
     font-size: 32px;
