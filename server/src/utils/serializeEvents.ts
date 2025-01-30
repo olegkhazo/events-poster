@@ -6,7 +6,7 @@ export interface Event {
     eventDate: string;
     eventTime: string;
     eventPage: string;
-    [key: string]: any; // allow any additional field
+    [key: string]: any;
   }
   
 export interface SerializedEvent {
