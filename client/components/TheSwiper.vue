@@ -1,10 +1,14 @@
 <script setup>
+import { ref, onMounted, onUnmounted } from "vue";
+
 const currentIndex = ref(0);
 const isMobile = ref(false);
 const config = useRuntimeConfig();
 const API_URL = config.public.API_URL;
 
 const { data: banners } = await useFetch(`${API_URL}/all-banners`);
+
+let intervalId = null;
 
 const checkIsMobile = () => {
   isMobile.value = window.innerWidth < 1280;
@@ -20,9 +24,29 @@ const nextSlide = () => {
   currentIndex.value = (currentIndex.value + 1) % (banners?.value?.length || 1);
 };
 
+const startAutoSlide = () => {
+  intervalId = setInterval(nextSlide, 3000);
+};
+
+const stopAutoSlide = () => {
+  if (intervalId) {
+    clearInterval(intervalId);
+    intervalId = null;
+  }
+};
+
 onMounted(() => {
   checkIsMobile();
   window.addEventListener("resize", checkIsMobile);
+
+  if (banners?.value?.length > 1) {
+    startAutoSlide();
+  }
+});
+
+onUnmounted(() => {
+  stopAutoSlide();
+  window.removeEventListener("resize", checkIsMobile);
 });
 </script>
 
@@ -123,30 +147,14 @@ onMounted(() => {
         justify-content: center;
         color: white;
         text-align: center;
-
-        // &::before {
-        //   content: "";
-        //   position: absolute;
-        //   top: 0;
-        //   left: 0;
-        //   width: 100%;
-        //   height: 100%;
-        //   background-color: rgba(0, 0, 0, 0.6);
-        //   z-index: 0;
-        //   pointer-events: none;
-        // }
       }
 
       .slide-content {
-        width: 40%;
+        width: 60%;
         margin-top: 80px;
         display: flex;
         justify-content: space-between;
         z-index: 1;
-
-        @media (max-width: 1280px) {
-          width: 60%;
-        }
 
         @media (max-width: 768px) {
           width: 100%;
