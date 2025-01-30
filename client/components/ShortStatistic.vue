@@ -7,25 +7,25 @@
         <span class="number">
           <NuxtImg src="/images/purple-cross.svg" alt="plus" />20</span
         >
-        <p>העיתונאי שלנו</p>
+        <p>קטגוריות</p>
       </div>
     </div>
 
     <div class="statistic-block">
       <div class="block-wrapper">
         <span class="number">
-          <NuxtImg src="/images/blue-cross.svg" alt="plus" />55</span
+          <!--<NuxtImg src="/images/blue-cross.svg" alt="plus" />-->24</span
         >
-        <p>העיתונאי שלנו</p>
+        <p>שעות ביממה של אירועים</p>
       </div>
     </div>
 
     <div class="statistic-block">
       <div class="block-wrapper">
         <span class="number"
-          ><NuxtImg src="/images/purple-cross.svg" alt="plus" />40</span
+          ><NuxtImg src="/images/purple-cross.svg" alt="plus" />55</span
         >
-        <p>הדובר שלנו</p>
+        <p>מקומות של אירועים</p>
       </div>
     </div>
 
@@ -34,7 +34,7 @@
         <span class="number"
           ><NuxtImg src="/images/blue-cross.svg" alt="plus" />180
         </span>
-        <p>האירועים שלנו</p>
+        <p>אירועים</p>
       </div>
     </div>
   </div>

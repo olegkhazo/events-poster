@@ -24,12 +24,14 @@ import { iconCollection } from "~/utils/collections";
       </div>
 
       <div class="description-block">
-        <p class="pre-header-block">מבוא אודותינו</p>
-        <h2>מה צריך לבדוק כשבוחרים סוכנות?</h2>
+        <p class="pre-header-block">אודותינו</p>
+        <h2>כל האירועים במקום אחד</h2>
         <p class="short-description">
-          נסחו את המשימה והבינו איזה סוג אירוע תרצו לארגן, לכמה אנשים, האם יש
-          לכם מגבלות תקציב, האם יש מדדי KPI ברורים, באיזו עיר יתקיים האירוע.
-          החלט על המשימה העיקרית, זה יעזור לך בחיפוש שלך ויקל על תקשורת נוספת.
+        Pickevent הוא אתר המרכז את כל האירועים במקום אחד.<br/><br/>
+האתר מאפשר למשתמשים לגלות בקלות אירועים מגוונים, כולל פעילויות לילדים, הופעות, סדנאות ועוד.<br/><br/>
+הממשק הנוח והידידותי מספק גישה מהירה לכל הפרטים החשובים על האירועים הקרובים.<br/><br/>
+Pickevent שם דגש על חוויית משתמש איכותית ושקיפות במידע הניתן.<br/><br/>
+הצטרפו אלינו והישארו מעודכנים בכל מה שקורה סביבכם!<br/><br/>
         </p>
         <div class="icons-container">
           <div
@@ -42,7 +44,7 @@ import { iconCollection } from "~/utils/collections";
             />
             <span>{{ key }}</span>
           </div>
-          <NuxtLink class="link" to="/create-event"> קרא עוד </NuxtLink>
+          <NuxtLink class="link" to="/create-event"> צור אירוע</NuxtLink>
         </div>
       </div>
 

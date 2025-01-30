@@ -44,9 +44,10 @@ async function sendSubscribeData() {
             <NuxtImg src="/images/logo.svg" />
           </NuxtLink>
           <p>
-            נסחו את המשימה והבינו איזה סוג אירוע תרצו לארגן, לכמה אנשים, האם יש
-            לכם מגבלות תקציב, האם יש מדדי KPI ברורים, באיזו עיר יתקיים האירוע.
-            החלט על המשימה העיקרית, זה יעזור לך בחיפוש שלך ויקל על תקשורת נוספת.
+            Pickevent הוא אתר המרכז את כל האירועים במקום אחד, בצורה נגישה ונוחה.
+            האתר מציע מגוון רחב של אירועים, כולל פעילויות לילדים, הופעות וסדנאות.
+            הממשק הידידותי מאפשר למצוא במהירות את כל המידע החשוב על האירועים הקרובים.
+            עם Pickevent תהיו תמיד מעודכנים ותוכלו ליהנות מחוויית משתמש איכותית.
           </p>
           <div class="social-icons">
             <NuxtImg src="/images/whatsapp.png" />
@@ -57,18 +58,19 @@ async function sendSubscribeData() {
 
         <div class="contacts">
           <p>צור קשר</p>
-          <NuxtLink type="email"
-            ><NuxtImg src="/images/envelope.svg" />האימייל שלנו
-          </NuxtLink>
-          <NuxtLink type="phone">
+          <NuxtLink type="email">
+            <a href="mailto:info@pickevent.co.il">
+              <NuxtImg src="/images/envelope.svg" />האימייל שלנו
+            </a></NuxtLink>
+         <!-- <NuxtLink type="phone">
             <NuxtImg src="/images/phone.svg" />הטלפון שלנו</NuxtLink
-          >
+          >-->
         </div>
 
         <div class="mobile-social-icons">
-          <NuxtImg src="/images/whatsapp.png" />
-          <NuxtImg src="/images/instagram.png" />
-          <NuxtImg src="/images/facebook.png" />
+          <!--<NuxtImg src="/images/whatsapp.png" />-->
+          <a href="https://www.instagram.com/ashdodfun/"><NuxtImg src="/images/instagram.png" /></a>
+          <a href="https://www.facebook.com/groups/ashdodfun"><NuxtImg src="/images/facebook.png" /></a>
         </div>
 
         <div class="subscribe-form">
@@ -76,17 +78,17 @@ async function sendSubscribeData() {
           <input
             v-model="subscribeData.name"
             type="text"
-            placeholder="השם שלך"
+            placeholder="שם"
           />
           <input
             v-model="subscribeData.phone"
             type="text"
-            placeholder="הטלפון שלך"
+            placeholder="טלפון "
           />
           <input
             v-model="subscribeData.email"
             type="text"
-            placeholder="כתובת המייל שלך"
+            placeholder="כתובת מייל"
           />
 
           <NuxtLink
@@ -94,13 +96,13 @@ async function sendSubscribeData() {
             to="/create-event"
             @click="sendSubscribeData"
           >
-            <NuxtImg src="/images/btn-envelope.svg" /> לשיר למעלה
+            <NuxtImg src="/images/btn-envelope.svg" /> שלח
           </NuxtLink>
         </div>
       </div>
       <div class="site-rights">
         <span> Pickevent </span>
-        <span> © 2024 "אירועי ישראל" כל הזכויות שמורות. </span>
+        <span> © 2024 "PickEvent" כל הזכויות שמורות. </span>
       </div>
     </div>
   </footer>
