@@ -17,13 +17,17 @@ export const getAllEvents = async (req: Request, res: Response, next: NextFuncti
 
 export const getDataFromBrowserAi = async (req?: Request, res?: Response, next?: NextFunction): Promise<void> => {
   try {
-    const [ironitEvents, mishkanEvents, mevalimEvents] = await Promise.all([
-      fetchEventsFromApi('ironit'),
+    const [mishkanAshdod, mevalim, smarticket] = await Promise.all([
       fetchEventsFromApi('mishkanAshdod'),
       fetchEventsFromApi('mevalim'),
-    ]);
+      fetchEventsFromApi('smarticket'),
+    ]);  
 
-    const combinedEvents = [...ironitEvents, ...mishkanEvents, ...mevalimEvents];
+    const combinedEvents = [
+      ...(Array.isArray(mishkanAshdod) ? mishkanAshdod : []),
+      ...(Array.isArray(mevalim) ? mevalim : []),
+      ...(Array.isArray(smarticket) ? smarticket : []),
+    ];
 
     const serializedEventsCollection = serializeEvents(combinedEvents);
 
@@ -42,6 +46,7 @@ export const getDataFromBrowserAi = async (req?: Request, res?: Response, next?:
           event_page: event.event_page,
           location: event.location,
           event_type: event.event_type,
+          event_image_url: event.event_img_url,
           approved: true,
         });
 
@@ -56,7 +61,6 @@ export const getDataFromBrowserAi = async (req?: Request, res?: Response, next?:
     if (res) {
       res.status(200).json(serializedEventsCollection);
     }
-
   } catch (error) {
     if (next) {
       next(error);
