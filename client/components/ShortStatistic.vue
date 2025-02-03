@@ -14,7 +14,7 @@
     <div class="statistic-block">
       <div class="block-wrapper">
         <span class="number">
-          <!--<NuxtImg src="/images/blue-cross.svg" alt="plus" />-->24</span
+          <NuxtImg src="/images/blue-cross.svg" alt="plus" />24</span
         >
         <p>שעות ביממה של אירועים</p>
       </div>
