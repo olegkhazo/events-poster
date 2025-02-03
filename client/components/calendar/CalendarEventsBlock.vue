@@ -10,12 +10,12 @@ function recordEventToStore(event) {
   currentEvent.value = event;
 
   // Get the site from which we will get data for the event additional page
-  if (currentEvent.value.event_page.includes("ironit")) {
-    currentEvent.value.site_donor = "ironit";
-  } else if (currentEvent.value.event_page.includes("mishkan-ashdod")) {
+  if (currentEvent.value.event_page.includes("mishkan-ashdod")) {
     currentEvent.value.site_donor = "mishkanAshdod";
   } else if (currentEvent.value.event_page.includes("mevalim")) {
     currentEvent.value.site_donor = "mevalim";
+  } else if (currentEvent.value.event_page.includes("smarticket")) {
+    currentEvent.value.site_donor = "smarticket";
   } else {
     currentEvent.value.site_donor = "custom-event";
   }
@@ -100,6 +100,7 @@ function recordEventToStore(event) {
   display: flex;
   justify-content: space-around;
   margin: 60px auto;
+  flex-wrap: wrap;
 
   @media (max-width: 1080px) {
     margin: 30px auto;
@@ -111,6 +112,7 @@ function recordEventToStore(event) {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-bottom: 40px;
 
     @media (max-width: 1080px) {
       width: 90%;
