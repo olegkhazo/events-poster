@@ -120,6 +120,7 @@ function recordEventToStore(event) {
 
       .event-img {
         img {
+          width: 100%;
           border-radius: 10px;
         }
       }
