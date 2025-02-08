@@ -70,9 +70,9 @@ async function signIn() {
 
             <div class="filter-social">
               <div class="social-icons">
-                <NuxtImg src="/images/whatsapp.png" />
-                <NuxtImg src="/images/instagram.png" />
-                <NuxtImg src="/images/facebook.png" />
+                <img src="/images/whatsapp.png" />
+                <img src="/images/instagram.png" />
+                <img src="/images/facebook.png" />
               </div>
             </div>
           </div>

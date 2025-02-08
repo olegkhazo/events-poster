@@ -31,7 +31,7 @@ function recordEventToStore(event) {
         :src="event.event_image_blob || event.event_image_url"
         :alt="event.eventAltText"
       />
-      <NuxtImg v-else src="/images/about-us-block/concert.png" alt="image" />
+      <img v-else src="/images/about-us-block/concert.png" alt="image" />
     </div>
 
     <div class="event-data">
@@ -43,7 +43,7 @@ function recordEventToStore(event) {
 
       <div v-if="event.event_date" class="data-point">
         <div class="data-img">
-          <NuxtImg src="/images/event-card/calendar.svg" alt="calendar" />
+          <img src="/images/event-card/calendar.svg" alt="calendar" />
         </div>
         <span class="point-text">
           {{ event.event_date }}
@@ -52,7 +52,7 @@ function recordEventToStore(event) {
 
       <div v-if="event.event_time" class="data-point">
         <div class="data-img">
-          <NuxtImg src="/images/event-card/clock.svg" alt="clock" />
+          <img src="/images/event-card/clock.svg" alt="clock" />
         </div>
         <span class="point-text">
           {{ event.event_time }}
@@ -61,7 +61,7 @@ function recordEventToStore(event) {
 
       <div v-if="event.location" class="data-point">
         <div class="data-img">
-          <NuxtImg src="/images/event-card/geo.svg" alt="geo" />
+          <img src="/images/event-card/geo.svg" alt="geo" />
         </div>
         <span class="point-text">
           {{ event.location }}

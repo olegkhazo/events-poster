@@ -97,9 +97,9 @@ async function fetchEventAdditionalData() {
 
             <div class="filter-social">
               <div class="social-icons">
-                <NuxtImg src="/images/whatsapp.png" />
-                <NuxtImg src="/images/instagram.png" />
-                <NuxtImg src="/images/facebook.png" />
+                <img src="/images/whatsapp.png" />
+                <img src="/images/instagram.png" />
+                <img src="/images/facebook.png" />
               </div>
             </div>
           </div>
@@ -115,7 +115,7 @@ async function fetchEventAdditionalData() {
         <ul>
           <li v-if="currentEvent.event_date">
             <div class="additional-info-img">
-              <NuxtImg src="/images/event-card/calendar.svg" />
+              <img src="/images/event-card/calendar.svg" />
             </div>
             <div class="additional-info-text">
               <span class="additional-info-title">תַאֲרִיך</span>
@@ -126,7 +126,7 @@ async function fetchEventAdditionalData() {
           </li>
           <li v-if="currentEvent.event_time">
             <div class="additional-info-img">
-              <NuxtImg src="/images/event-card/clock.svg" />
+              <img src="/images/event-card/clock.svg" />
             </div>
             <div class="additional-info-text">
               <span class="additional-info-title">זְמַן</span>
@@ -143,7 +143,7 @@ async function fetchEventAdditionalData() {
             "
           >
             <div class="additional-info-img">
-              <NuxtImg src="/images/walet.png" />
+              <img src="/images/walet.png" />
             </div>
             <div class="additional-info-text">
               <span class="additional-info-title">עֲלוּת </span>
@@ -158,7 +158,7 @@ async function fetchEventAdditionalData() {
 
       <div class="img-and-description">
         <div class="event-img">
-          <NuxtImg
+          <img
             v-if="
               currentEvent.event_image_blob ||
               currentEvent.event_image_url ||
@@ -171,7 +171,7 @@ async function fetchEventAdditionalData() {
             "
             alt="event image"
           />
-          <NuxtImg
+          <img
             v-else
             src="/images/about-us-block/concert.png"
             alt="event image"
@@ -224,7 +224,7 @@ async function fetchEventAdditionalData() {
       </div>
     </div>
     <div v-else class="preloader">
-      <NuxtImg src="/animation-cat.gif" alt="event image" />
+      <img src="/animation-cat.gif" alt="event image" />
       <span>קבלת המידע...</span>
     </div>
   </div>

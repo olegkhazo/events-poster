@@ -162,13 +162,13 @@ function editEvent(eventId) {
             </td>
             <td class="action">
               <div class="action-buttons-wrapper">
-                <NuxtImg
+                <img
                   src="/images/pencil.svg"
                   @click="editEvent(event._id)"
                   alt="edit"
                 />
 
-                <NuxtImg
+                <img
                   src="/images/trash.svg"
                   @click="deleteEvent(event._id)"
                   alt="delete"

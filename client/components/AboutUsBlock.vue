@@ -7,19 +7,19 @@ import { iconCollection } from "~/utils/collections";
     <div class="content-wrapper">
       <div class="images-block">
         <span class="openair">
-          <NuxtImg src="/images/about-us-block/openair.png" alt="openair" />
+          <img src="/images/about-us-block/openair.png" alt="openair" />
         </span>
         <span class="concert">
-          <NuxtImg src="/images/about-us-block/concert.png" alt="concert" />
+          <img src="/images/about-us-block/concert.png" alt="concert" />
         </span>
         <span class="business-event">
-          <NuxtImg
+          <img
             src="/images/about-us-block/business-event.png"
             alt="business-event"
           />
         </span>
         <span class="fireshow">
-          <NuxtImg src="/images/about-us-block/fireshow.png" alt="fireshow" />
+          <img src="/images/about-us-block/fireshow.png" alt="fireshow" />
         </span>
       </div>
 
@@ -27,11 +27,13 @@ import { iconCollection } from "~/utils/collections";
         <p class="pre-header-block">אודותינו</p>
         <h2>כל האירועים במקום אחד</h2>
         <p class="short-description">
-        Pickevent הוא אתר המרכז את כל האירועים במקום אחד.<br/><br/>
-האתר מאפשר למשתמשים לגלות בקלות אירועים מגוונים, כולל פעילויות לילדים, הופעות, סדנאות ועוד.<br/><br/>
-הממשק הנוח והידידותי מספק גישה מהירה לכל הפרטים החשובים על האירועים הקרובים.<br/><br/>
-Pickevent שם דגש על חוויית משתמש איכותית ושקיפות במידע הניתן.<br/><br/>
-הצטרפו אלינו והישארו מעודכנים בכל מה שקורה סביבכם!<br/><br/>
+          Pickevent הוא אתר המרכז את כל האירועים במקום אחד.<br /><br />
+          האתר מאפשר למשתמשים לגלות בקלות אירועים מגוונים, כולל פעילויות לילדים,
+          הופעות, סדנאות ועוד.<br /><br />
+          הממשק הנוח והידידותי מספק גישה מהירה לכל הפרטים החשובים על האירועים
+          הקרובים.<br /><br />
+          Pickevent שם דגש על חוויית משתמש איכותית ושקיפות במידע הניתן.<br /><br />
+          הצטרפו אלינו והישארו מעודכנים בכל מה שקורה סביבכם!<br /><br />
         </p>
         <div class="icons-container">
           <div
@@ -39,7 +41,7 @@ Pickevent שם דגש על חוויית משתמש איכותית ושקיפות
             :key="key"
             class="single-icon-block"
           >
-            <NuxtImg
+            <img
               :src="`/images/about-us-block/icons/${iconCollection[key]}.svg`"
             />
             <span>{{ key }}</span>
@@ -49,7 +51,7 @@ Pickevent שם דגש על חוויית משתמש איכותית ושקיפות
       </div>
 
       <div class="mobile-images-block">
-        <NuxtImg src="/images/about-us-block/concert.png" alt="concert" />
+        <img src="/images/about-us-block/concert.png" alt="concert" />
       </div>
     </div>
   </div>

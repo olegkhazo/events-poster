@@ -92,9 +92,9 @@ async function createRequestToRegistrationApi() {
 
             <div class="filter-social">
               <div class="social-icons">
-                <NuxtImg src="/images/whatsapp.png" />
-                <NuxtImg src="/images/instagram.png" />
-                <NuxtImg src="/images/facebook.png" />
+                <Img src="/images/whatsapp.png" />
+                <Img src="/images/instagram.png" />
+                <Img src="/images/facebook.png" />
               </div>
             </div>
           </div>
@@ -169,7 +169,7 @@ async function createRequestToRegistrationApi() {
         </div>
 
         <div v-else class="confirm-information">
-          <NuxtImg
+          <Img
             src="https://i.ibb.co/6HY86R7/checkmark.png"
             title="green-checkmark"
           />

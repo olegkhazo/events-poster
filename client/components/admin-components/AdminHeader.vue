@@ -7,7 +7,7 @@ function redirectToMyAccountPage() {
 <template>
   <div class="header">
     <div class="avatar-wrapper" @click="redirectToMyAccountPage">
-      <NuxtImg src="/images/avatar-default.svg" alt="avatar" />
+      <img src="/images/avatar-default.svg" alt="avatar" />
     </div>
   </div>
 </template>

@@ -16,7 +16,7 @@ function closeWindow() {
 <template>
   <div class="request-sending-result">
     <div class="succesful-notification">
-      <NuxtImg
+      <img
         src="https://i.ibb.co/6HY86R7/checkmark.jpg"
         title="green-checkmark"
       />
