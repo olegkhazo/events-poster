@@ -25,14 +25,14 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
         @click="switchToAnotherMonth(-1)"
         class="prev-month"
       >
-        <NuxtImg src="/images/black-arrow.svg" />
+        <img src="/images/black-arrow.svg" />
         <span>{{ months.previousMonth }}</span>
       </div>
     </div>
 
     <div @click="switchToAnotherMonth(1)" class="next-month">
       <span>{{ props.months.nextMonth }}</span>
-      <NuxtImg src="/images/black-arrow.svg" />
+      <img src="/images/black-arrow.svg" />
     </div>
   </div>
 </template>

@@ -72,9 +72,9 @@ function showNextEvents() {
               <TheFilter />
             </div>
             <div class="social-icons">
-              <NuxtImg src="/images/whatsapp.png" />
-              <NuxtImg src="/images/instagram.png" />
-              <NuxtImg src="/images/facebook.png" />
+              <img src="/images/whatsapp.png" />
+              <img src="/images/instagram.png" />
+              <img src="/images/facebook.png" />
             </div>
           </div>
         </div>
@@ -99,7 +99,7 @@ function showNextEvents() {
     </div>
   </div>
   <div v-else class="preloader">
-    <NuxtImg src="/animation-cat.gif" alt="event image" />
+    <img src="/animation-cat.gif" alt="event image" />
     <span>קבלת המידע...</span>
   </div>
 </template>

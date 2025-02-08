@@ -124,7 +124,7 @@ async function deleteSubscription(id) {
             <td>{{ subscription.agreement }}</td>
             <td class="action">
               <div class="action-buttons-wrapper">
-                <NuxtImg
+                <img
                   src="/images/trash.svg"
                   @click="deleteSubscription(subscription._id)"
                   alt="delete"

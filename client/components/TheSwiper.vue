@@ -62,7 +62,7 @@ onUnmounted(() => {
         <TheHeader />
         <div class="slide-content">
           <div class="left-switch">
-            <NuxtImg
+            <img
               src="/images/right-arrow.svg"
               @click="prevSlide"
               alt="right-arrow"
@@ -84,7 +84,7 @@ onUnmounted(() => {
             </div>
           </div>
           <div class="right-switch">
-            <NuxtImg
+            <img
               src="/images/left-arrow.svg"
               @click="nextSlide"
               alt="left-arrow"
@@ -97,9 +97,9 @@ onUnmounted(() => {
             <TheFilter />
           </div>
           <div class="social-icons">
-            <NuxtImg src="/images/whatsapp.png" />
-            <NuxtImg src="/images/instagram.png" />
-            <NuxtImg src="/images/facebook.png" />
+            <img src="/images/whatsapp.png" />
+            <img src="/images/instagram.png" />
+            <img src="/images/facebook.png" />
           </div>
         </div>
       </div>

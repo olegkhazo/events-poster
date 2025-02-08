@@ -284,7 +284,7 @@ const isToday = (date) => {
     </div>
   </div>
   <div v-else class="preloader">
-    <NuxtImg src="/animation-cat.gif" alt="event image" />
+    <img src="/animation-cat.gif" alt="event image" />
     <span>קבלת המידע...</span>
   </div>
 </template>

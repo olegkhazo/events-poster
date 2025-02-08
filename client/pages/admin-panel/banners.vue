@@ -91,7 +91,7 @@ async function deleteBanner(id) {
             <td>{{ banner.img }}</td>
             <td class="action">
               <div class="action-buttons-wrapper">
-                <NuxtImg
+                <img
                   src="/images/trash.svg"
                   @click="deleteBanner(banner._id)"
                   alt="delete"

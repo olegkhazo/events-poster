@@ -29,9 +29,9 @@ useHead({
 
             <div class="filter-social">
               <div class="social-icons">
-                <NuxtImg src="/images/whatsapp.png" />
-                <NuxtImg src="/images/instagram.png" />
-                <NuxtImg src="/images/facebook.png" />
+                <img src="/images/whatsapp.png" />
+                <img src="/images/instagram.png" />
+                <img src="/images/facebook.png" />
               </div>
             </div>
           </div>
@@ -43,25 +43,22 @@ useHead({
       <div class="content-wrapper">
         <div class="images-block">
           <span class="dj">
-            <NuxtImg src="/images/about-us-block/dj.png" alt="dj" />
+            <img src="/images/about-us-block/dj.png" alt="dj" />
           </span>
 
           <span class="concert">
-            <NuxtImg src="/images/about-us-block/concert.png" alt="concert" />
+            <img src="/images/about-us-block/concert.png" alt="concert" />
           </span>
 
           <span class="business-event">
-            <NuxtImg
+            <img
               src="/images/about-us-block/business-event.png"
               alt="business-event"
             />
           </span>
 
           <span class="asia-girl">
-            <NuxtImg
-              src="/images/about-us-block/asia-girl.png"
-              alt="asia-girl"
-            />
+            <img src="/images/about-us-block/asia-girl.png" alt="asia-girl" />
           </span>
         </div>
 
@@ -77,11 +74,11 @@ useHead({
           </p>
 
           <span class="mobile-images-block">
-            <NuxtImg src="/images/about-us-block/dj.png" alt="dj" />
+            <img src="/images/about-us-block/dj.png" alt="dj" />
           </span>
 
           <span class="mobile-images-block mobile-concert">
-            <NuxtImg
+            <img
               src="/images/about-us-block/business-event.png"
               alt="business-event"
             />
@@ -99,14 +96,11 @@ useHead({
           </p>
 
           <div class="mobile-images-block">
-            <NuxtImg src="/images/about-us-block/concert.png" alt="concert" />
+            <img src="/images/about-us-block/concert.png" alt="concert" />
           </div>
 
           <span class="mobile-images-block">
-            <NuxtImg
-              src="/images/about-us-block/asia-girl.png"
-              alt="asia-girl"
-            />
+            <img src="/images/about-us-block/asia-girl.png" alt="asia-girl" />
           </span>
           <div class="btn-wrapper">
             <NuxtLink class="link" to="/create-event"> קרא עוד </NuxtLink>
@@ -124,7 +118,7 @@ useHead({
           <div class="additional-info-block">
             <div class="h5-img">
               <div class="img-wrapper">
-                <NuxtImg src="/images/additional-info/darts.png" alt="darts" />
+                <img src="/images/additional-info/darts.png" alt="darts" />
               </div>
               <h5>הקריירה שלנו</h5>
             </div>
@@ -138,7 +132,7 @@ useHead({
           <div class="additional-info-block">
             <div class="h5-img">
               <div class="img-wrapper">
-                <NuxtImg src="/images/additional-info/deal.png" alt="deal" />
+                <img src="/images/additional-info/deal.png" alt="deal" />
               </div>
               <h5>הקריירה שלנו</h5>
             </div>
@@ -152,7 +146,7 @@ useHead({
           <div class="additional-info-block">
             <div class="h5-img">
               <div class="img-wrapper">
-                <NuxtImg src="/images/additional-info/team.png" alt="team" />
+                <img src="/images/additional-info/team.png" alt="team" />
               </div>
               <h5>הקריירה שלנו</h5>
             </div>

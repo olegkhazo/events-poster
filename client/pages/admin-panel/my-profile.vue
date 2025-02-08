@@ -45,7 +45,7 @@ async function logoutUser() {
   <div class="admin-content-wrapper">
     <div class="profile-header">
       <div class="user-avatar">
-        <NuxtImg src="/images/photo-camera.svg" alt="camera" />
+        <img src="/images/photo-camera.svg" alt="camera" />
       </div>
     </div>
 
@@ -67,7 +67,7 @@ async function logoutUser() {
       <div class="main-user-information">
         <div class="personal-information">
           <div class="subheader">
-            <NuxtImg
+            <img
               class="green-icon"
               src="/images/green-user.svg"
               alt="user-icon"

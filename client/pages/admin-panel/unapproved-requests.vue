@@ -167,12 +167,12 @@ async function approveEvent(id) {
             <td>{{ event.phone }}</td>
             <td class="action">
               <div class="action-buttons-wrapper">
-                <NuxtImg
+                <img
                   src="/images/validation.svg"
                   @click="approveEvent(event._id)"
                   alt="approve"
                 />
-                <NuxtImg
+                <img
                   src="/images/trash.svg"
                   @click="deleteEvent(event._id)"
                   alt="delete"

@@ -20,7 +20,7 @@ function hideMobileMenu() {
         <div class="logo">
           <div class="logo-wrapper">
             <NuxtLink to="/">
-              <NuxtImg src="/images/logo.svg" />
+              <img src="/images/logo.svg" />
             </NuxtLink>
           </div>
         </div>
@@ -46,7 +46,7 @@ function hideMobileMenu() {
           >
         </div>
 
-        <NuxtImg
+        <img
           v-if="!mobileMenuVisibility"
           src="/images/burger-menu.svg"
           class="menu-icon"
@@ -68,7 +68,7 @@ function hideMobileMenu() {
               >
             </li>
           </ul>
-          <NuxtImg
+          <img
             @click="showHideMobileMenu"
             src="/images/white-cross.svg"
             alt="cross"
@@ -76,9 +76,9 @@ function hideMobileMenu() {
         </div>
 
         <div class="mobile-social-icons">
-          <NuxtImg src="/images/whatsapp.png" />
-          <NuxtImg src="/images/instagram.png" />
-          <NuxtImg src="/images/facebook.png" />
+          <img src="/images/whatsapp.png" />
+          <img src="/images/instagram.png" />
+          <img src="/images/facebook.png" />
         </div>
       </div>
     </nav>

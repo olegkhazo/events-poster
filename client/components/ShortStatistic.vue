@@ -5,7 +5,7 @@
     <div class="statistic-block">
       <div class="block-wrapper">
         <span class="number">
-          <NuxtImg src="/images/purple-cross.svg" alt="plus" />20</span
+          <img src="/images/purple-cross.svg" alt="plus" />20</span
         >
         <p>קטגוריות</p>
       </div>
@@ -14,7 +14,7 @@
     <div class="statistic-block">
       <div class="block-wrapper">
         <span class="number">
-          <NuxtImg src="/images/blue-cross.svg" alt="plus" />24</span
+          <img src="/images/blue-cross.svg" alt="plus" />24</span
         >
         <p>שעות ביממה של אירועים</p>
       </div>
@@ -23,7 +23,7 @@
     <div class="statistic-block">
       <div class="block-wrapper">
         <span class="number"
-          ><NuxtImg src="/images/purple-cross.svg" alt="plus" />55</span
+          ><img src="/images/purple-cross.svg" alt="plus" />55</span
         >
         <p>מקומות של אירועים</p>
       </div>
@@ -32,7 +32,7 @@
     <div class="statistic-block">
       <div class="block-wrapper">
         <span class="number"
-          ><NuxtImg src="/images/blue-cross.svg" alt="plus" />180
+          ><img src="/images/blue-cross.svg" alt="plus" />180
         </span>
         <p>אירועים</p>
       </div>
