@@ -59,16 +59,18 @@ export const fetchEventsFromApi = async (source: keyof BotApiUrls) => {
     
     const filteredAndSortedEvents = allEvents
     .map((event: any) => {
-      const formattedEventDate = event.eventDate ? updateFormatOfEventDate(event.eventDate) : '';
+      const formattedEventDate = event.eventDate ? updateFormatOfEventDate(event.eventDate) : "";
       return { ...event, eventDate: formattedEventDate };
     })
     .filter((event: any) => {
-      const eventDate = new Date(event.eventDate);
-      return eventDate >= currentDate;
+      const eventDate = new Date(`${event.eventDate}T00:00:00`); 
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); 
+      return eventDate >= today; 
     })
     .sort((a: any, b: any) => {
-      const dateA = new Date(a.eventDate);
-      const dateB = new Date(b.eventDate);
+      const dateA = new Date(`${a.eventDate}T00:00:00`);
+      const dateB = new Date(`${b.eventDate}T00:00:00`);
       return dateA.getTime() - dateB.getTime();
     });
 
