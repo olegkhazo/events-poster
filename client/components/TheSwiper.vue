@@ -114,8 +114,11 @@ onUnmounted(() => {
 
 .slider {
   background-color: $black;
+  position: relative;
 
   .slider-container {
+    height: inherit;
+
     .slide {
       position: relative;
       display: flex;
@@ -123,6 +126,7 @@ onUnmounted(() => {
       background-size: cover;
       background-position: center;
       width: 100%;
+      height: inherit;
 
       &::before {
         content: "";
@@ -151,7 +155,7 @@ onUnmounted(() => {
 
       .slide-content {
         width: 60%;
-        margin-top: 80px;
+        margin: 30px 0;
         display: flex;
         justify-content: space-between;
         z-index: 1;
@@ -162,14 +166,24 @@ onUnmounted(() => {
         }
 
         .banner-text {
+          max-height: 350px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+
           h2 {
             color: $white;
-            font-size: 86px;
+            font-size: 76px;
             margin: 0;
             line-height: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 20ch;
 
             @media (max-width: 768px) {
-              font-size: 32px;
+              font-size: 30px;
             }
           }
 
@@ -187,6 +201,10 @@ onUnmounted(() => {
 
           p {
             color: $white;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60ch;
 
             @media (max-width: 768px) {
               margin-top: 15px;
