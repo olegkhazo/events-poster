@@ -25,7 +25,7 @@ export const BOT_API_URLS: BotApiUrls = {
       URL,
       API_KEY,
       MAIN_PAGE_SCRAPER_ID: "24326015-2190-4377-8d7d-f17b0af64e25",
-      ADDITIONAL_DATA_SCRAPER_ID: "55d177ef-b87f-4172-810b-7cd2407416a3",
+      ADDITIONAL_DATA_SCRAPER_ID: "7f8b7756-454d-45eb-8dc0-205a89844b2d",
   },
   smarticket: {
       URL,
