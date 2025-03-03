@@ -93,11 +93,7 @@ async function sendSubscribeData() {
             placeholder="כתובת מייל"
           />
 
-          <NuxtLink
-            class="subscribe-button"
-            to="/create-event"
-            @click="sendSubscribeData"
-          >
+          <NuxtLink class="subscribe-button" @click="sendSubscribeData">
             <img src="/images/btn-envelope.svg" /> שלח
           </NuxtLink>
         </div>

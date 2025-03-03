@@ -46,7 +46,6 @@ const eventData = ref({
 
 const validationRules = {
   event_title: "COMMON_NOT_EMPTY_PATTERN",
-  event_description: "COMMON_NOT_EMPTY_PATTERN",
   location: "COMMON_NOT_EMPTY_PATTERN",
   event_page: "URL_PATTERN",
   event_date: "COMMON_NOT_EMPTY_PATTERN",
@@ -117,7 +116,6 @@ async function getSingleEventData() {
 function getErrorMessage(field) {
   const errorMessages = {
     event_title: "Invalid title.",
-    event_description: "Invalid description.",
     location: "Invalid location.",
     event_page: "Invalid URL.",
     event_date: "Invalid date.",
@@ -131,7 +129,7 @@ function getErrorMessage(field) {
 function getPlaceholder(field) {
   const placeholders = {
     event_title: "Event title *",
-    event_description: "Event description *",
+    event_description: "Event description",
     location: "Event location *",
     event_page: "Event URL *",
     event_date: "Event date*",
@@ -159,20 +157,23 @@ const isFormValid = computed(() => {
 
 async function createEvent() {
   formButtonClicked.value = true;
+
   eventData.value.approved = authManager.loggedIn;
 
   if (isFormValid.value) {
-    console.log("Size of image blob:", eventData.value.event_image_blob.length);
     if (!imageFile.value) {
       eventData.value.event_image_blob = "";
     }
 
     try {
-      console.log(eventData.value);
+      let eventRouter = props.eventId
+        ? `update-event/${props.eventId}`
+        : "create-event";
+
       const { data: newEventRequest, error } = await useFetch(
-        `${API_URL}/create-event`,
+        `${API_URL}/${eventRouter}`,
         {
-          method: "POST",
+          method: props.eventId ? "PUT" : "POST",
           body: JSON.stringify(eventData.value),
           headers: { "Content-Type": "application/json" },
         }

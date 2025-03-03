@@ -32,11 +32,19 @@ function recordEventToStore(event) {
       <div class="single-event-wrapper">
         <div class="event-img">
           <img
-            v-if="event.event_image_url || event.event_image_blob"
-            :src="event.event_image_url || event.event_image_blob"
+            v-if="
+              event.event_image_blob ||
+              (event.event_image_url &&
+                !event.event_image_url.includes('no_pic.png'))
+            "
+            :src="event.event_image_blob || event.event_image_url"
             :alt="event.eventAltText"
           />
-          <img v-else src="/images/about-us-block/openair.png" alt="openair" />
+          <img
+            v-else
+            src="/images/about-us-block/openair.png"
+            alt="Fallback Image"
+          />
         </div>
 
         <div class="event-data">

@@ -5,6 +5,7 @@ import apiRoutes from './routes/api';
 import { errorHandler } from './middlewares/errorMiddleware';
 import cors from 'cors';
 import './cron/eventUpdaterCron'; 
+import './cron/deletePastEventsCron';
 
 require('dotenv').config();
 

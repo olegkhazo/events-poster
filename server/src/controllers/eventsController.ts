@@ -144,13 +144,10 @@ export const createEvent = async (req: Request, res: Response, next: NextFunctio
   try {
     const newEventData: any = { ...req.body };
 
-    // Проверка на наличие изображения в base64
     if (newEventData.event_image_blob) {
-      // Здесь изображение уже в base64, так что дополнительной обработки не требуется
       console.log("Base64 image received:", newEventData.event_image_blob);
     }
 
-    // Создаем и сохраняем событие
     const newEvent = new EventModel(newEventData);
     await newEvent.save();
 
@@ -166,6 +163,22 @@ export const createEvent = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
+export const eventUpdate = async (req: Request, res: Response, next: NextFunction) => {
+  const eventId = req.params.id;
+  const updateData = req.body;
+
+  try {
+    const updatedEvent = await EventModel.findByIdAndUpdate(eventId, updateData, { new: true });
+
+    if (!updatedEvent) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    res.status(200).json({ message: "Event updated successfully", event: updatedEvent });
+  } catch (error) {
+    next(error);
+  }
+};
 
 
 export const deleteEvent = async (req: Request, res: Response, next: NextFunction) => {
@@ -204,5 +217,31 @@ export const approveEvent = async (req: Request, res: Response, next: NextFuncti
     next(error);
   }
 };
+
+export const deletePastEvents = async (req?: Request, res?: Response, next?: NextFunction) => {
+  try {    
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const formattedYesterday = yesterday.toISOString().split('T')[0];
+
+    const result = await EventModel.deleteMany({ event_date: { $lt: formattedYesterday } });
+
+    if (res) {
+      res.status(200).json({
+        message: `Deleted ${result.deletedCount} past events`,
+      });
+    } else {
+      console.log(`Deleted ${result.deletedCount} past events`);
+    }
+  } catch (error) {
+    if (next) {
+      next(error);
+    } else {
+      console.error("Error in deletePastEvents:", error);
+    }
+  }
+};
+
+
 
 
