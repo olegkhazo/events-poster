@@ -17,7 +17,7 @@ function closeWindow() {
   <div class="request-sending-result">
     <div class="succesful-notification">
       <img
-        src="https://i.ibb.co/6HY86R7/checkmark.jpg"
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Eo_circle_green_checkmark.svg/1024px-Eo_circle_green_checkmark.svg.png"
         title="green-checkmark"
       />
     </div>
