@@ -157,22 +157,23 @@ const isFormValid = computed(() => {
 
 async function createEvent() {
   formButtonClicked.value = true;
-  console.log(isFormValid.value);
-  console.log(eventData.value.event_description);
+
   eventData.value.approved = authManager.loggedIn;
 
   if (isFormValid.value) {
-    console.log("Size of image blob:", eventData.value.event_image_blob.length);
     if (!imageFile.value) {
       eventData.value.event_image_blob = "";
     }
 
     try {
-      console.log(eventData.value);
+      let eventRouter = props.eventId
+        ? `update-event/${props.eventId}`
+        : "create-event";
+
       const { data: newEventRequest, error } = await useFetch(
-        `${API_URL}/create-event`,
+        `${API_URL}/${eventRouter}`,
         {
-          method: "POST",
+          method: props.eventId ? "PUT" : "POST",
           body: JSON.stringify(eventData.value),
           headers: { "Content-Type": "application/json" },
         }
