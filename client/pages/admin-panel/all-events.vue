@@ -25,7 +25,7 @@ const currentPage = ref(1);
 const chunkOfRequestsForView = ref([]);
 
 const numPages = computed(() => {
-  return currentFilteredEventCollection.value.length / 10;
+  return Math.ceil(currentFilteredEventCollection.value.length / 10);
 });
 
 function rewriteChunkOfRequests(pageNum) {
@@ -182,7 +182,7 @@ function editEvent(eventId) {
       <paginate
         v-model="currentPage"
         :page-count="numPages"
-        :page-range="5"
+        :page-range="10"
         :click-handler="rewriteChunkOfRequests"
         :container-class="'pagination'"
         prev-text="<"
