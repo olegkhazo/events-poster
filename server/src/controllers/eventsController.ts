@@ -205,4 +205,30 @@ export const approveEvent = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
+export const deletePastEvents = async (req?: Request, res?: Response, next?: NextFunction) => {
+  try {    
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const formattedYesterday = yesterday.toISOString().split('T')[0];
+
+    const result = await EventModel.deleteMany({ event_date: { $lt: formattedYesterday } });
+
+    if (res) {
+      res.status(200).json({
+        message: `Deleted ${result.deletedCount} past events`,
+      });
+    } else {
+      console.log(`Deleted ${result.deletedCount} past events`);
+    }
+  } catch (error) {
+    if (next) {
+      next(error);
+    } else {
+      console.error("Error in deletePastEvents:", error);
+    }
+  }
+};
+
+
+
 
