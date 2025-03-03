@@ -1,6 +1,6 @@
 import express from 'express';
 import { registerUser, authoriseUser, getUser, logOut } from '../controllers/userController';
-import { createEvent, getAllEvents, getSingleEvent, deleteEvent, approveEvent, getAdditionalEventData } from '../controllers/eventsController';
+import { createEvent, eventUpdate, getAllEvents, getSingleEvent, deleteEvent, approveEvent, getAdditionalEventData } from '../controllers/eventsController';
 import { getAllSubscriptions, createSubscription, deleteSubscription} from '../controllers/subscribeController';
 import { getAllBanners, createBanner, deleteBunner } from '../controllers/bannersController';
 const router = express.Router();
@@ -12,6 +12,9 @@ const router = express.Router();
 
 // Route for creating new event in DB
 router.post('/create-event', createEvent);
+
+// Route for event updating
+router.put('/update-event/:id', eventUpdate);
 
 // Route to get all events from DB
 router.get('/all-events', getAllEvents);
