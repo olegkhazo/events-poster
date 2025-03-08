@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "ts-node-dev --respawn --pretty --no-notify -r dotenv/config src/app.ts",
-    "start": "ts-node -r dotenv/config src/app.ts"
+    "start": "TS_NODE_IMPORTS=1 ts-node --loader ts-node/esm -r dotenv/config src/app.ts"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
