@@ -6,7 +6,9 @@
   "main": "app.ts",
   "type": "module",
   "scripts": {
-    "dev": "ts-node-dev --respawn --pretty --no-notify -r dotenv/config src/app.ts"
+    "dev": "ts-node-dev --respawn --pretty --no-notify -r dotenv/config src/app.ts",
+    "start": "node src/app.ts",
+    "build": "tsc"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",
