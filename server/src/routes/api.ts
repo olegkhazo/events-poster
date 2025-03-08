@@ -5,7 +5,6 @@ import { getAllSubscriptions, createSubscription, deleteSubscription} from '../c
 import { getAllBanners, createBanner, deleteBunner } from '../controllers/bannersController';
 const router = express.Router();
 
-
 // ***
 // Events API routers
 // ***
