@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from 'express';
 
-export default function errorHandler(
+export const errorHandler = (
   err: Error,
   req: Request,
   res: Response,
   next: NextFunction
-) {
+) => {
+ 
   res.status(500).json({ error: 'Something went wrong' });
-}
+};

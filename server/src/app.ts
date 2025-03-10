@@ -2,7 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
 import apiRoutes from './routes/api';
-import errorHandler from './middlewares/errorMiddleware';
+import { errorHandler } from './middlewares/errorMiddleware';
 import cors from 'cors';
 import './cron/eventUpdaterCron'; 
 import './cron/deletePastEventsCron';
