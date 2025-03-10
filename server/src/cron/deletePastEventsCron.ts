@@ -1,4 +1,4 @@
-const cron = require('node-cron');
+import cron from 'node-cron';
 
 import { deletePastEvents } from "../../src/controllers/eventsController";
 

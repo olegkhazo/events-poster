@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { UsersModel } from '../models/user.models';
 import bcrypt from 'bcrypt';
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
 const API_HOST = process.env.API_HOST;
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {

@@ -6,8 +6,7 @@ import { errorHandler } from './middlewares/errorMiddleware';
 import cors from 'cors';
 import './cron/eventUpdaterCron'; 
 import './cron/deletePastEventsCron';
-
-require('dotenv').config();
+import 'dotenv/config';
 
 const app = express();
 
