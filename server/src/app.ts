@@ -28,6 +28,7 @@ mongoose.connect(`mongodb://${DB_SERVER}:${DB_PORT}/${DB_NAME}`)
   })
   .catch(error => {
     console.error('Error connecting to MongoDB:', error);
+  
   });
 
 app.use('/api', apiRoutes);
