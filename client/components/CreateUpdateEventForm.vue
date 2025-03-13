@@ -119,7 +119,7 @@ function getErrorMessage(field) {
     location: "Invalid location.",
     event_page: "Invalid URL.",
     event_date: "Invalid date.",
-    phone: "Invalid phone number.",
+    phone: "Invalid phone.",
     email: "Invalid email.",
     event_time: "Invalid time format.",
   };
