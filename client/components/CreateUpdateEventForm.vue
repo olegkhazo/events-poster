@@ -49,7 +49,7 @@ const validationRules = {
   location: "COMMON_NOT_EMPTY_PATTERN",
   event_page: "URL_PATTERN",
   event_date: "COMMON_NOT_EMPTY_PATTERN",
-  phone: "PHONE_PATTERN",
+  phone: "COMMON_NOT_EMPTY_PATTERN",
   email: "EMAIL_PATTERN",
   event_time: "TIME_PATTERN",
   event_price: "COMMON_NOT_EMPTY_PATTERN",
