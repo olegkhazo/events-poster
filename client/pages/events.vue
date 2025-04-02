@@ -72,9 +72,9 @@ function showNextEvents() {
               <TheFilter />
             </div>
             <div class="social-icons">
-              <img src="/images/whatsapp.png" />
-              <img src="/images/instagram.png" />
-              <img src="/images/facebook.png" />
+              <!-- <img src="/images/whatsapp.png" />-->
+              <a href="https://www.instagram.com/pickevent0/" target="_blank"><img src="/images/instagram.png" /></a>
+              <a href="https://www.facebook.com/groups/ashdodfun" target="_blank"><img src="/images/facebook.png" /></a>
             </div>
           </div>
         </div>
@@ -93,7 +93,7 @@ function showNextEvents() {
       </div>
       <div class="btn-wrapper" v-if="hasMoreEvents">
         <button @click="showNextEvents" class="events-show-btn">
-          בדוק את האירועים הבאים
+          האירועים הבאים
         </button>
       </div>
     </div>
@@ -175,7 +175,7 @@ function showNextEvents() {
               letter-spacing: 4px;
 
               @media (max-width: 768px) {
-                font-size: 32px;
+                font-size: 40px;
               }
             }
 
@@ -186,7 +186,7 @@ function showNextEvents() {
 
               @media (max-width: 768px) {
                 margin-top: 15px;
-                font-size: 8px;
+                font-size: 32px;
                 font-weight: 300;
               }
             }
@@ -270,7 +270,7 @@ function showNextEvents() {
 
     .events-show-btn {
       padding: 17px 46px;
-      font-size: 14px;
+      font-size: 18px;
       font-weight: 500;
       letter-spacing: 2px;
       cursor: pointer;

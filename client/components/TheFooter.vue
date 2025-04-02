@@ -45,43 +45,46 @@ async function sendSubscribeData() {
           </NuxtLink>
           <p>
             Pickevent הוא אתר המרכז את כל האירועים במקום אחד, בצורה נגישה ונוחה.
-            האתר מציע מגוון רחב של אירועים, כולל פעילויות לילדים, הופעות
-            וסדנאות. הממשק הידידותי מאפשר למצוא במהירות את כל המידע החשוב על
-            האירועים הקרובים. עם Pickevent תהיו תמיד מעודכנים ותוכלו ליהנות
-            מחוויית משתמש איכותית.
+            האתר מציע מגוון רחב של אירועים, כולל פעילויות לילדים, הופעות וסדנאות.
+            הממשק הידידותי מאפשר למצוא במהירות את כל המידע החשוב על האירועים הקרובים.
+            עם Pickevent תהיו תמיד מעודכנים ותוכלו ליהנות מחוויית משתמש איכותית.
           </p>
           <div class="social-icons">
-            <img src="/images/whatsapp.png" />
-            <img src="/images/instagram.png" />
-            <img src="/images/facebook.png" />
+            <!-- <img src="/images/whatsapp.png" />-->
+            <a href="https://www.instagram.com/pickevent0/" target="_blank"><img src="/images/instagram.png" /></a>
+            <a href="https://www.facebook.com/groups/ashdodfun" target="_blank"><img src="/images/facebook.png" /></a>
           </div>
         </div>
 
         <div class="contacts">
           <p>צור קשר</p>
           <NuxtLink type="email">
-            <a href="mailto:info@pickevent.co.il">
+            <a href="mailto:info@pickevent.co.il" target="_blank">
               <img src="/images/envelope.svg" />האימייל שלנו
-            </a></NuxtLink
-          >
-          <!-- <NuxtLink type="phone">
+            </a></NuxtLink>
+         <!-- <NuxtLink type="phone">
             <img src="/images/phone.svg" />הטלפון שלנו</NuxtLink
           >-->
+        </div>
+        <div class="contacts">
+          <p>שימוש באתר</p>
+          <a href="/terms">תנאי שימוש</a>
+          <a href="/privacy">מדיניות הפרטיות</a>
         </div>
 
         <div class="mobile-social-icons">
           <!--<img src="/images/whatsapp.png" />-->
-          <a href="https://www.instagram.com/ashdodfun/"
-            ><img src="/images/instagram.png"
-          /></a>
-          <a href="https://www.facebook.com/groups/ashdodfun"
-            ><img src="/images/facebook.png"
-          /></a>
+          <a href="https://www.instagram.com/ashdodfun/"><img src="/images/instagram.png" /></a>
+          <a href="https://www.facebook.com/groups/ashdodfun"><img src="/images/facebook.png" /></a>
         </div>
 
         <div class="subscribe-form">
           <p>הירשם לניוזלטר שלנו</p>
-          <input v-model="subscribeData.name" type="text" placeholder="שם" />
+          <input
+            v-model="subscribeData.name"
+            type="text"
+            placeholder="שם"
+          />
           <input
             v-model="subscribeData.phone"
             type="text"
@@ -93,7 +96,10 @@ async function sendSubscribeData() {
             placeholder="כתובת מייל"
           />
 
-          <NuxtLink class="subscribe-button" @click="sendSubscribeData">
+          <NuxtLink
+            class="subscribe-button"
+            @click="sendSubscribeData"
+          >
             <img src="/images/btn-envelope.svg" /> שלח
           </NuxtLink>
         </div>
@@ -165,7 +171,8 @@ footer {
           img {
             width: 30px;
             height: 30px;
-
+            margin-left: 10px;
+            
             &:not(:first-child) {
               margin-right: 15px;
             }
@@ -208,6 +215,7 @@ footer {
 
         a {
           display: block;
+          color: white;
 
           &:not(:first-child) {
             margin-top: 20px;
@@ -293,7 +301,7 @@ footer {
           }
 
           @media (max-width: 768px) {
-            font-size: 8px;
+            font-size: 14px;
           }
         }
       }

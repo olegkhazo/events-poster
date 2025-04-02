@@ -23,15 +23,15 @@ useHead({
           <TheHeader />
           <div class="slide-content">
             <div class="banner-text">
-              <h2>אירועים</h2>
-              <p>למידע נוסף על אירועים</p>
+              <h2>יצירת אירוע</h2>
+              <p>הוסף את האירוע שלך לאתר</p>
             </div>
 
             <div class="filter-social">
               <div class="social-icons">
-                <img src="/images/whatsapp.png" />
-                <img src="/images/instagram.png" />
-                <img src="/images/facebook.png" />
+                <!-- <img src="/images/whatsapp.png" />-->
+                <a href="https://www.instagram.com/pickevent0/" target="_blank"><img src="/images/instagram.png" /></a>
+                <a href="https://www.facebook.com/groups/ashdodfun" target="_blank"><img src="/images/facebook.png" /></a>
               </div>
             </div>
           </div>
@@ -98,7 +98,7 @@ useHead({
               letter-spacing: 4px;
 
               @media (max-width: 768px) {
-                font-size: 32px;
+                font-size: 40px;
               }
             }
 
@@ -109,7 +109,7 @@ useHead({
 
               @media (max-width: 768px) {
                 margin-top: 15px;
-                font-size: 8px;
+                font-size: 32px;
                 font-weight: 300;
               }
             }

@@ -23,7 +23,7 @@ const successData = props.eventId
       header: "Your event updated successfully!",
     }
   : {
-      header: "Your event created successfully!",
+      header: "האירוע נוצר בהצלחה, לאחר אישור יוצג באתר!",
     };
 
 const formButtonClicked = ref(false);
@@ -45,14 +45,15 @@ const eventData = ref({
 });
 
 const validationRules = {
-  event_title: "COMMON_NOT_EMPTY_PATTERN",
-  location: "COMMON_NOT_EMPTY_PATTERN",
-  event_page: "URL_PATTERN",
-  event_date: "COMMON_NOT_EMPTY_PATTERN",
+  event_title: "",
+  event_description: "",
+  location: "",
+  event_page: "",
+  event_date: "",
   phone: "PHONE_PATTERN",
   email: "EMAIL_PATTERN",
   event_time: "TIME_PATTERN",
-  event_price: "COMMON_NOT_EMPTY_PATTERN",
+  event_price: "",
 };
 
 async function fileToBase64(file) {
@@ -116,6 +117,7 @@ async function getSingleEventData() {
 function getErrorMessage(field) {
   const errorMessages = {
     event_title: "Invalid title.",
+    event_description: "Invalid description.",
     location: "Invalid location.",
     event_page: "Invalid URL.",
     event_date: "Invalid date.",
@@ -128,19 +130,19 @@ function getErrorMessage(field) {
 
 function getPlaceholder(field) {
   const placeholders = {
-    event_title: "Event title *",
-    event_description: "Event description",
-    location: "Event location *",
-    event_page: "Event URL *",
-    event_date: "Event date*",
-    phone: "Your phone number",
-    event_price: "Price",
-    email: "Your email",
-    event_time: "Event time (10:00, 18:15 etc.) *",
-    event_image_url: "Image url",
-    event_image_blob: "Event image",
+    event_title: "כותרת האירוע",
+    event_description: "תיאור האירוע",
+    location: "מיקום האירוע",
+    event_page: "כתובת אתר",
+    event_date: "תאריך האירוע",
+    phone: "טלפון",
+    event_price: "מחיר",
+    email: "דואר אלקטרוני",
+    event_time: "שעת האירוע (10:00, 18:15 וכו.) ",
+    /*event_image_url: "Image url",*/
+    event_image_blob: "תמונת האירוע",
   };
-  return placeholders[field] || "Enter value *";
+  return placeholders[field] || "הכנס ערך";
 }
 
 const isFieldValid = (field) => {
@@ -160,7 +162,7 @@ async function createEvent() {
 
   eventData.value.approved = authManager.loggedIn;
 
-  if (isFormValid.value) {
+  //if (isFormValid.value) {
     if (!imageFile.value) {
       eventData.value.event_image_blob = "";
     }
@@ -189,7 +191,7 @@ async function createEvent() {
     } catch (err) {
       console.error("Error creating event:", err);
     }
-  }
+ // }
 }
 
 function hideSuccessWindow() {
@@ -210,7 +212,7 @@ onMounted(() => {
         <h1 v-if="props.eventId">
           עריכת אירוע: <span>{{ eventData.event_title }}</span>
         </h1>
-        <h1 v-else>צור אירוע</h1>
+        <!--<h1 v-else>צור אירוע</h1>-->
       </div>
 
       <div class="event-form-content">
@@ -239,12 +241,12 @@ onMounted(() => {
           />
         </div>
 
-        <input
+        <!--<input
           v-model="eventData.event_image_url"
           type="text"
           :placeholder="getPlaceholder('event_image_url')"
           class="image-url-input"
-        />
+        />-->
 
         <input type="file" @change="handleImageUpload" accept="image/*" />
 
@@ -267,6 +269,13 @@ onMounted(() => {
       <button class="blue-btn" @click.prevent="createEvent">
         {{ props.eventId ? "עדכון האירוע" : "צור אירוע" }}
       </button>
+
+      <div class="confirm-information">
+         פרטי האירוע לא ניתנים לשינוי/עדכון לאחר השמירה. 
+         <br/>
+        לביצוע שינוי, יש ליצור קשר במייל.
+        <a href="mailto:info@pickevent.co.il" target="_blank">info@pickevent.co.il</a>
+      </div>
     </div>
 
     <SuccessRequestWindow
@@ -279,7 +288,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @import "@/assets/styles/_variables.scss";
-
+.confirm-information{
+  padding-top: 30px;
+}
 .event-form-wrapper {
   min-height: 80vh;
   display: flex;
@@ -297,6 +308,7 @@ onMounted(() => {
     background-color: $light-gray;
     border-radius: 30px;
     text-align: center;
+    font-size: 18px;
 
     @media (max-width: 1440px) {
       padding: 30px 100px;
@@ -373,7 +385,7 @@ onMounted(() => {
         width: 100%;
         padding: 20px 60px;
         color: $gray-paragraph;
-        font-size: 14px;
+        font-size: 18px;
         background-color: $white;
 
         @media (max-width: 768px) {
@@ -399,7 +411,7 @@ onMounted(() => {
 
     .blue-btn {
       font-weight: 300;
-      font-size: 14px;
+      font-size: 25px;
       margin: 30px auto 0 auto;
       padding: 18px 0;
       border-radius: 100px;

@@ -70,9 +70,9 @@ async function signIn() {
 
             <div class="filter-social">
               <div class="social-icons">
-                <img src="/images/whatsapp.png" />
-                <img src="/images/instagram.png" />
-                <img src="/images/facebook.png" />
+                <!-- <img src="/images/whatsapp.png" />-->
+                <a href="https://www.instagram.com/pickevent0/" target="_blank"><img src="/images/instagram.png" /></a>
+                <a href="https://www.facebook.com/groups/ashdodfun" target="_blank"><img src="/images/facebook.png" /></a>
               </div>
             </div>
           </div>
@@ -186,7 +186,7 @@ async function signIn() {
               letter-spacing: 4px;
 
               @media (max-width: 768px) {
-                font-size: 32px;
+                font-size: 40px;
               }
             }
 
@@ -197,7 +197,7 @@ async function signIn() {
 
               @media (max-width: 768px) {
                 margin-top: 15px;
-                font-size: 8px;
+                font-size: 32px;
                 font-weight: 300;
               }
             }

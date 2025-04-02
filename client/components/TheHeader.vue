@@ -1,4 +1,4 @@
-<script setup>
+This is the original text<script setup>
 import { useAuthStore } from "@/stores/useAuthStore";
 const authManager = useAuthStore();
 
@@ -34,9 +34,9 @@ function hideMobileMenu() {
               >פאנל ניהול</NuxtLink
             >
           </li>
-          <li><NuxtLink class="nav-link" to="/about-us">עלינו</NuxtLink></li>
+          <li><NuxtLink class="nav-link" to="/about-us">אודות</NuxtLink></li>
           <li>
-            <NuxtLink class="nav-link" to="/events">רשימת אירועים</NuxtLink>
+            <NuxtLink class="nav-link" to="/events">כל האירועים</NuxtLink>
           </li>
         </ul>
 
@@ -60,7 +60,7 @@ function hideMobileMenu() {
       >
         <div class="top-mobile-menu">
           <ul @click="hideMobileMenu">
-            <li><NuxtLink to="/about-us">עלינו</NuxtLink></li>
+            <li><NuxtLink to="/about-us">אודות</NuxtLink></li>
             <li><NuxtLink to="/events">רשימת אירועים</NuxtLink></li>
             <li>
               <NuxtLink to="/create-event" class="create-event-link"
@@ -76,9 +76,9 @@ function hideMobileMenu() {
         </div>
 
         <div class="mobile-social-icons">
-          <img src="/images/whatsapp.png" />
-          <img src="/images/instagram.png" />
-          <img src="/images/facebook.png" />
+            <!-- <img src="/images/whatsapp.png" />-->
+            <a href="https://www.instagram.com/pickevent0/" target="_blank"><img src="/images/instagram.png" /></a>
+            <a href="https://www.facebook.com/groups/ashdodfun" target="_blank"><img src="/images/facebook.png" /></a>
         </div>
       </div>
     </nav>
@@ -173,6 +173,7 @@ header {
     .content-wrapper {
       justify-content: flex-start;
       align-items: center;
+      width: 90%;
 
       @media (max-width: 768px) {
         justify-content: space-between;
@@ -190,7 +191,7 @@ header {
       }
 
       .logo {
-        width: 15%;
+        width: 20%;
 
         @media (max-width: 768px) {
           width: 70%;
@@ -198,7 +199,7 @@ header {
 
         .logo-wrapper {
           position: relative;
-          width: 75px;
+          width: 200px;
 
           img {
             width: 100%;
@@ -222,7 +223,7 @@ header {
 
         li {
           .nav-link {
-            font-size: 14px;
+            font-size: 18px;
             color: $white;
             font-weight: 600;
             &:hover {
@@ -233,7 +234,7 @@ header {
       }
 
       .nav-btn-wrapper {
-        width: 25%;
+        width: 43%;
         display: flex;
         justify-content: flex-end;
 
@@ -246,6 +247,7 @@ header {
           border: none;
           color: $white;
           font-weight: 300;
+          font-size: 20px;
           padding: 19px 35px;
           border-radius: 100px;
           cursor: pointer;

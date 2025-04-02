@@ -119,6 +119,7 @@ const updateCurrentFilter = (filter) => {
     &::placeholder {
       color: $gray-850;
       margin: 0 auto;
+      font-size: 14px;
     }
 
     @media (max-width: 1280px) {

@@ -76,7 +76,7 @@ const switchToAnotherMonth = (step) => emit("switchToAnotherMonth", step);
 
   @media (max-width: 768px) {
     padding: 0;
-    font-size: 12px;
+    font-size: 17px;
   }
 
   .prev-month,

@@ -24,72 +24,76 @@ function recordEventToStore(event) {
 </script>
 
 <template>
-  <div class="single-event">
-    <div class="event-img">
-      <img
-        v-if="
-          event.event_image_blob ||
-          (event.event_image_url &&
-            !event.event_image_url.includes('no_pic.png'))
-        "
-        :src="event.event_image_blob || event.event_image_url"
-        :alt="event.eventAltText"
-      />
-      <img
-        v-else
-        src="/images/about-us-block/openair.png"
-        alt="Fallback Image"
-      />
-    </div>
-
-    <div class="event-data">
-      <div v-if="event.event_title" class="data-point">
-        <span class="point-title">
-          {{ event.event_title }}
-        </span>
-      </div>
-
-      <div v-if="event.event_date" class="data-point">
-        <div class="data-img">
-          <img src="/images/event-card/calendar.svg" alt="calendar" />
-        </div>
-        <span class="point-text">
-          {{ event.event_date }}
-        </span>
-      </div>
-
-      <div v-if="event.event_time" class="data-point">
-        <div class="data-img">
-          <img src="/images/event-card/clock.svg" alt="clock" />
-        </div>
-        <span class="point-text">
-          {{ event.event_time }}
-        </span>
-      </div>
-
-      <div v-if="event.location" class="data-point">
-        <div class="data-img">
-          <img src="/images/event-card/geo.svg" alt="geo" />
-        </div>
-        <span class="point-text">
-          {{ event.location }}
-        </span>
-      </div>
-    </div>
-
-    <div class="btn-wrapper">
-      <NuxtLink :to="event.event_page" class="buy-ticckets-link" target="_blank"
-        >לרכישה</NuxtLink
-      >
-
-      <NuxtLink
+  <NuxtLink
         @click="recordEventToStore(event)"
-        :to="'/event-page/' + event._id"
-        class="additional-info-link"
-        >מידע נוסף</NuxtLink
-      >
+        :to="'/event-page/' + event._id">
+    <div class="single-event">
+      <div class="event-img">
+        <img
+          v-if="
+            event.event_image_blob ||
+            (event.event_image_url &&
+              !event.event_image_url.includes('no_pic.png'))
+          "
+          :src="event.event_image_blob || event.event_image_url"
+          :alt="event.eventAltText"
+        />
+        <img
+          v-else
+          src="/images/about-us-block/openair.png"
+          alt="Fallback Image"
+        />
+      </div>
+
+      <div class="event-data">
+        <div v-if="event.event_title" class="data-point">
+          <span class="point-title">
+            {{ event.event_title }}
+          </span>
+        </div>
+
+        <div v-if="event.event_date" class="data-point">
+          <div class="data-img">
+            <img src="/images/event-card/calendar.svg" alt="calendar" />
+          </div>
+          <span class="point-text">
+            {{ event.event_date }}
+          </span>
+        </div>
+
+        <div v-if="event.event_time" class="data-point">
+          <div class="data-img">
+            <img src="/images/event-card/clock.svg" alt="clock" />
+          </div>
+          <span class="point-text">
+            {{ event.event_time }}
+          </span>
+        </div>
+
+        <div v-if="event.location" class="data-point">
+          <div class="data-img">
+            <img src="/images/event-card/geo.svg" alt="geo" />
+          </div>
+          <span class="point-text">
+            {{ event.location }}
+          </span>
+        </div>
+      </div>
+
+      <div class="btn-wrapper">
+        <NuxtLink :to="event.event_page" class="buy-ticckets-link" target="_blank"
+          >לרכישה</NuxtLink
+        >
+
+        <NuxtLink
+          @click="recordEventToStore(event)"
+          :to="'/event-page/' + event._id"
+          class="additional-info-link"
+          >מידע נוסף</NuxtLink
+        >
+      </div>
     </div>
-  </div>
+  </NuxtLink>
 </template>
 
 <style lang="scss" scoped>
@@ -129,7 +133,7 @@ function recordEventToStore(event) {
       }
 
       .point-title {
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 600;
       }
 
@@ -144,11 +148,11 @@ function recordEventToStore(event) {
 
       .point-text {
         margin-right: 10px;
-        font-size: 10px;
-        font-weight: 600;
+        font-size: 15px;
+        font-weight: 400;
 
         @media (max-width: 1220px) {
-          font-size: 12px;
+          font-size: 16px;
         }
 
         @media (max-width: 394px) {
@@ -166,7 +170,7 @@ function recordEventToStore(event) {
 
     a {
       font-weight: 500;
-      font-size: 14px;
+      font-size: 18px;
       padding: 12px 0;
       cursor: pointer;
       border-radius: 100px;

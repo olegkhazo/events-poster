@@ -97,9 +97,9 @@ async function fetchEventAdditionalData() {
 
             <div class="filter-social">
               <div class="social-icons">
-                <img src="/images/whatsapp.png" />
-                <img src="/images/instagram.png" />
-                <img src="/images/facebook.png" />
+                <!-- <img src="/images/whatsapp.png" />-->
+                <a href="https://www.instagram.com/pickevent0/" target="_blank"><img src="/images/instagram.png" /></a>
+                <a href="https://www.facebook.com/groups/ashdodfun" target="_blank"><img src="/images/facebook.png" /></a>
               </div>
             </div>
           </div>
@@ -118,7 +118,7 @@ async function fetchEventAdditionalData() {
               <img src="/images/event-card/calendar.svg" />
             </div>
             <div class="additional-info-text">
-              <span class="additional-info-title">תַאֲרִיך</span>
+              <span class="additional-info-title">תאריך</span>
               <span class="additional-info-description">{{
                 currentEvent.event_date
               }}</span>
@@ -129,7 +129,7 @@ async function fetchEventAdditionalData() {
               <img src="/images/event-card/clock.svg" />
             </div>
             <div class="additional-info-text">
-              <span class="additional-info-title">זְמַן</span>
+              <span class="additional-info-title">שעה</span>
               <span class="additional-info-description">{{
                 currentEvent.event_time
               }}</span>
@@ -146,10 +146,40 @@ async function fetchEventAdditionalData() {
               <img src="/images/walet.png" />
             </div>
             <div class="additional-info-text">
-              <span class="additional-info-title">עֲלוּת </span>
+              <span class="additional-info-title">עלות </span>
               <span class="additional-info-description">{{
                 currentEvent.event_price ||
                 additionalSingleEventData[0].capturedTexts.event_price
+              }}</span>
+            </div>
+          </li>
+          <li
+            v-if="
+              currentEvent.phone
+            "
+          >
+            <div class="additional-info-img">
+              <img src="/images/event-card/phone.svg" />
+            </div>
+            <div class="additional-info-text">
+              <span class="additional-info-title">טלפון </span>
+              <span class="additional-info-description">{{
+                currentEvent.phone
+              }}</span>
+            </div>
+          </li>
+          <li
+            v-if="
+              currentEvent.email
+            "
+          >
+            <div class="additional-info-img">
+              <img src="/images/event-card/email.svg" />
+            </div>
+            <div class="additional-info-text">
+              <span class="additional-info-title">דואל אלקטרוני </span>
+              <span class="additional-info-description">{{
+                currentEvent.email
               }}</span>
             </div>
           </li>
@@ -220,7 +250,7 @@ async function fetchEventAdditionalData() {
       </div>
 
       <div class="btn-wrapper">
-        <a class="back-btn" @click="$router.go(-1)">חזרה לאירועים</a>
+        <a class="back-btn" @click="$router.go(-1)">חזרה לכל לאירועים</a>
       </div>
     </div>
     <div v-else class="preloader">
@@ -286,7 +316,7 @@ async function fetchEventAdditionalData() {
               letter-spacing: 4px;
 
               @media (max-width: 768px) {
-                font-size: 32px;
+                font-size: 40px;
               }
             }
 
@@ -297,7 +327,7 @@ async function fetchEventAdditionalData() {
 
               @media (max-width: 768px) {
                 margin-top: 15px;
-                font-size: 8px;
+                font-size: 32px;
                 font-weight: 300;
               }
             }
@@ -360,7 +390,7 @@ async function fetchEventAdditionalData() {
       color: $black-1000;
 
       @media (max-width: 768px) {
-        font-size: 22px;
+        font-size: 30px;
       }
     }
 
@@ -408,7 +438,7 @@ async function fetchEventAdditionalData() {
               font-size: 18px;
 
               @media (max-width: 425px) {
-                font-size: 15px;
+                font-size: 20px;
               }
             }
 
@@ -416,7 +446,7 @@ async function fetchEventAdditionalData() {
               color: $gray-800;
 
               @media (max-width: 425px) {
-                font-size: 12px;
+                font-size: 16px;
               }
             }
           }
@@ -440,7 +470,7 @@ async function fetchEventAdditionalData() {
       }
 
       .event-img {
-        width: 45%;
+        width: 35%;
 
         @media (max-width: 768px) {
           width: 100%;
@@ -463,15 +493,15 @@ async function fetchEventAdditionalData() {
           background: linear-gradient(90deg, $blue 0%, $purple 100%);
           border: none;
           color: $white;
-          font-weight: 300;
+          font-weight: 500;
           padding: 19px 55px;
           border-radius: 100px;
           cursor: pointer;
           transition: transform 0.2s;
 
           @media (max-width: 768px) {
-            font-size: 8px;
-            padding: 19px 85px;
+            font-size: 20px;
+            padding: 14px 75px;
           }
         }
       }
@@ -488,9 +518,13 @@ async function fetchEventAdditionalData() {
         }
 
         .main-info-title {
-          font-size: 18px;
+          font-size: 25px;
           font-weight: 600;
           color: $black-1000;
+        }
+
+        .location {
+          margin-top: 25px;
         }
 
         .description {

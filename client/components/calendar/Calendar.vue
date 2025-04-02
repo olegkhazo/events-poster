@@ -261,9 +261,9 @@ const isToday = (date) => {
               "
               class="number-of-events"
             >
-              <span class="purple-circle"></span>
-              {{ eventsForDay[dayObj.date.format("YYYY-MM-DD")].length }}
-              אירועים
+              <!--<span class="purple-circle"></span>-->
+              {{ eventsForDay[dayObj.date.format("YYYY-MM-DD")].length }}  
+              &#x1F389;
             </span>
           </div>
 
@@ -326,12 +326,12 @@ const isToday = (date) => {
       border: 1px solid $gray-200;
 
       @media (max-width: 1280px) {
-        font-size: 16px;
+        font-size: 30px;
       }
 
       @media (max-width: 768px) {
         padding: 5px 0 5px 0;
-        font-size: 10px;
+        font-size: 20px;
         text-align: center;
       }
 
@@ -386,13 +386,19 @@ const isToday = (date) => {
           .day-date {
             position: absolute;
             top: 3px;
+            font-size: 35px;
+
+
+            @media (max-width: 768px) {
+              font-size: 25px;
+            }
           }
 
           .number-of-events {
             color: $purple;
-            font-weight: 300;
+            font-weight: 600;
             margin-bottom: 2px;
-            font-size: 24px;
+            font-size: 28px;
             font-style: italic;
             display: flex;
             align-items: center;
@@ -408,7 +414,8 @@ const isToday = (date) => {
             }
 
             @media (max-width: 500px) {
-              font-size: 5px;
+              font-size: 20px;
+              font-weight: 500;
             }
 
             .purple-circle {
@@ -453,16 +460,16 @@ const isToday = (date) => {
 
         .today-day {
           .day-date {
-            padding: 1px 9px;
+            padding: 3px 8px;
             border-radius: 50%;
             border: 1px solid $purple;
 
             @media (max-width: 1280px) {
-              padding: 0px 5px;
+              padding: 2px 5px;
             }
 
             @media (max-width: 768px) {
-              padding: 1px 3px;
+              padding: 1px 2px;
             }
           }
         }
@@ -477,7 +484,7 @@ const isToday = (date) => {
           }
 
           @media (max-width: 768px) {
-            font-size: 14px;
+            font-size: 16px;
           }
         }
 

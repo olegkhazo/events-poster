@@ -112,7 +112,7 @@ import { iconCollection } from "~/utils/collections";
         font-weight: 300;
 
         @media (max-width: 768px) {
-          font-size: 20px;
+          font-size: 25px;
           line-height: 30px;
           margin-top: 10px 0;
         }
@@ -120,7 +120,7 @@ import { iconCollection } from "~/utils/collections";
 
       p {
         @media (max-width: 768px) {
-          font-size: 10px;
+          font-size: 20px;
           margin: 0;
         }
       }
@@ -157,7 +157,8 @@ import { iconCollection } from "~/utils/collections";
 
             @media (max-width: 768px) {
               margin: auto 5px auto 0;
-              font-size: 10px;
+              font-size: 17px;
+              text-align: right;
             }
           }
         }
@@ -176,7 +177,7 @@ import { iconCollection } from "~/utils/collections";
 
         @media (max-width: 768px) {
           margin: 35px auto 0 auto;
-          font-size: 8px;
+          font-size: 17px;
           padding: 10px 35px;
         }
       }

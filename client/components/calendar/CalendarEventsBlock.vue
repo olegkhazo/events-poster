@@ -30,7 +30,7 @@ function recordEventToStore(event) {
       class="single-event"
     >
       <div class="single-event-wrapper">
-        <div class="event-img">
+        <!--<div class="event-img">
           <img
             v-if="
               event.event_image_blob ||
@@ -45,9 +45,12 @@ function recordEventToStore(event) {
             src="/images/about-us-block/openair.png"
             alt="Fallback Image"
           />
-        </div>
-
+        </div>-->
+        
         <div class="event-data">
+          <div v-if="event.event_title" class="data-point data-point-title">
+            {{ event.event_title }}
+          </div>
           <div v-if="event.event_date" class="data-point">
             <div class="data-img">
               <img src="/images/event-card/calendar.svg" alt="calendar" />
@@ -75,9 +78,7 @@ function recordEventToStore(event) {
             </span>
           </div>
 
-          <div v-if="event.event_title" class="data-point">
-            {{ event.event_title }}
-          </div>
+          
         </div>
       </div>
       <div class="btn-wrapper">
@@ -117,6 +118,12 @@ function recordEventToStore(event) {
     flex-direction: column;
     justify-content: space-between;
     margin-bottom: 40px;
+    border: #e5d7f3;
+    border-style: groove;
+    border-radius: 2%;
+    padding: 10px;
+    border-width: 3px;
+    //text-align: center;
 
     @media (max-width: 1080px) {
       width: 90%;
@@ -133,7 +140,9 @@ function recordEventToStore(event) {
           border-radius: 10px;
         }
       }
-
+      .data-point-title{
+        font-weight: 600;
+      }
       .event-data {
         margin-right: 20px;
         display: flex;
@@ -158,15 +167,15 @@ function recordEventToStore(event) {
 
           .point-text {
             margin-right: 10px;
-            font-size: 14px;
-            font-weight: 600;
+            font-size: 20px;
+            //font-weight: 600;
 
             @media (max-width: 1220px) {
-              font-size: 12px;
+              font-size: 15px;
             }
 
             @media (max-width: 394px) {
-              font-size: 10px;
+              font-size: 15px;
             }
           }
         }
@@ -180,7 +189,7 @@ function recordEventToStore(event) {
     margin-top: 20px;
 
     @media (max-width: 1080px) {
-      justify-content: start;
+      justify-content: center;
     }
 
     @media (max-width: 394px) {
@@ -190,9 +199,9 @@ function recordEventToStore(event) {
     .purple-button,
     .white-button {
       width: 48%;
-      font-weight: 300;
-      font-size: 8px;
-      padding: 12px 0;
+      font-weight: 500;
+      font-size: 18px;
+      padding: 8px 0;
       cursor: pointer;
       border-radius: 100px;
       text-align: center;

@@ -98,6 +98,7 @@
       @media (max-width: 1180px) {
         padding: 30px 0;
         width: 200px;
+        text-align: center;
       }
 
       .number {

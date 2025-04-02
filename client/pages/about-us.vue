@@ -29,9 +29,9 @@ useHead({
 
             <div class="filter-social">
               <div class="social-icons">
-                <img src="/images/whatsapp.png" />
-                <img src="/images/instagram.png" />
-                <img src="/images/facebook.png" />
+                <!-- <img src="/images/whatsapp.png" />-->
+                <a href="https://www.instagram.com/pickevent0/" target="_blank"><img src="/images/instagram.png" /></a>
+                <a href="https://www.facebook.com/groups/ashdodfun" target="_blank"><img src="/images/facebook.png" /></a>
               </div>
             </div>
           </div>
@@ -103,7 +103,7 @@ useHead({
             <img src="/images/about-us-block/asia-girl.png" alt="asia-girl" />
           </span>
           <div class="btn-wrapper">
-            <NuxtLink class="link" to="/create-event"> קרא עוד </NuxtLink>
+            <NuxtLink class="link" to="/create-event">צור אירוע</NuxtLink>
           </div>
         </div>
       </div>
@@ -120,12 +120,12 @@ useHead({
               <div class="img-wrapper">
                 <img src="/images/additional-info/darts.png" alt="darts" />
               </div>
-              <h5>הקריירה שלנו</h5>
+              <h5>המטרה שלנו</h5>
             </div>
             <p>
-              אנו אוספים עבורכם מידע ממגוון רחב של מקורות ומוסדות עירוניים, כדי
-              שתהיו הראשונים לדעת על האירועים הכי חמים – מתערוכות ייחודיות, דרך
-              הופעות מרגשות ועד סדנאות מעשירות ופעילויות לכל המשפחה.
+              המטרה שלנו לרכז עבורכם את כל האירועים הכי מעניינים בעיר – מהופעות חיות ותערוכות ועד סדנאות ופעילויות לכל המשפחה.<br/>
+במקום אחד, פשוט ונגיש, תוכלו לגלות מה קורה סביבכם ולהיות הראשונים לדעת על האירועים החמים ביותר.
+
             </p>
           </div>
 
@@ -134,7 +134,7 @@ useHead({
               <div class="img-wrapper">
                 <img src="/images/additional-info/deal.png" alt="deal" />
               </div>
-              <h5>הקריירה שלנו</h5>
+              <h5>מה אנחנו עושים</h5>
             </div>
             <p>
               אנו אוספים עבורכם מידע ממגוון רחב של מקורות ומוסדות עירוניים, כדי
@@ -148,12 +148,12 @@ useHead({
               <div class="img-wrapper">
                 <img src="/images/additional-info/team.png" alt="team" />
               </div>
-              <h5>הקריירה שלנו</h5>
+              <h5>החזון שלנו</h5>
             </div>
             <p>
-              אנו אוספים עבורכם מידע ממגוון רחב של מקורות ומוסדות עירוניים, כדי
-              שתהיו הראשונים לדעת על האירועים הכי חמים – מתערוכות ייחודיות, דרך
-              הופעות מרגשות ועד סדנאות מעשירות ופעילויות לכל המשפחה.
+              החזון שלנו הוא להפוך את חוויית גילוי האירועים לקלה ומהנה.<br/><br/>
+אנו שואפים לחבר בין אנשים לקהילה באמצעות מידע עדכני ומקיף על אירועים ופעילויות, כדי שכולם יוכלו למצוא את מה שמעניין אותם – בכל זמן ובכל מקום.
+
             </p>
           </div>
         </div>
@@ -217,7 +217,7 @@ useHead({
               letter-spacing: 4px;
 
               @media (max-width: 768px) {
-                font-size: 32px;
+                font-size: 40px;
               }
             }
 
@@ -228,7 +228,7 @@ useHead({
 
               @media (max-width: 768px) {
                 margin-top: 15px;
-                font-size: 8px;
+                font-size: 32px;
                 font-weight: 300;
               }
             }
@@ -314,7 +314,7 @@ useHead({
 
         .pre-header-block {
           color: $purple;
-          font-size: 20px;
+          font-size: 30px;
           font-weight: 500;
           margin: 0;
         }
@@ -339,7 +339,7 @@ useHead({
 
         p {
           @media (max-width: 768px) {
-            font-size: 10px;
+            font-size: 20px;
             margin: 0;
           }
         }
@@ -360,14 +360,14 @@ useHead({
             background: linear-gradient(90deg, $blue 0%, $purple 100%);
             border: none;
             color: $white;
-            font-weight: 300;
+            font-weight: 500;
             padding: 19px 55px;
             border-radius: 100px;
             cursor: pointer;
             transition: transform 0.2s;
 
             @media (max-width: 768px) {
-              font-size: 8px;
+              font-size: 18px;
               padding: 19px 85px;
             }
           }
@@ -484,7 +484,7 @@ useHead({
         color: $purple;
 
         @media (max-width: 768px) {
-          font-size: 10px;
+          font-size: 25px;
           margin: 0;
         }
       }
